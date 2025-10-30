@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # Aplicación NestJS
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${BUILD_TARGET:-production}
+    container_name: mokka-backend
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${PORT:-3000}
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - mokka-network
+    restart: unless-stopped
+
+  # MongoDB
+  mongodb:
+    image: mongo:7
+    container_name: mokka-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-mokka}
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mokka-network
+    restart: unless-stopped
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: mokka-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - mokka-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+  redis-bull:
+    image: redis:7-alpine
+    container_name: mokka-redis-bull
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_bull_data:/data 
+    networks:
+      - mokka-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+volumes:
+  mongodb_data:
+  redis_data:
+  redis_bull_data: 
+
+networks:
+  mokka-network:
+    driver: bridge
