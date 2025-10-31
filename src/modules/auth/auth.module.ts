@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { AuthWriterController } from "./auth-writer.controller";
-import { AuthReaderController } from "./auth-reader.controller";
+import { AuthCommandController } from "./auth-command.controller";
+import { AuthQueryController } from "./auth-query.controller";
 import { MongooseModule } from "@nestjs/mongoose";
 import { SharedModule } from "src/shared/shared.module";
 import { UserSchema } from "./infrastructure/schemas/user.schema";
@@ -13,6 +13,7 @@ import { HashPort } from "./application/ports/hash.port";
 import { LoginWithCredentialsUseCase } from "./application/use-cases/login-crendetials.use-case";
 import { GoogleAuthService } from "./infrastructure/adapters/google-auth.service";
 import { LoginWithGoogleUseCase } from "./application/use-cases/login-with-google.use-case";
+import { CreateAccountWithCredentialsUseCase } from "./application/use-cases/create-account-with-credemtails.use-case";
 
 @Module({
     imports:[
@@ -22,6 +23,7 @@ import { LoginWithGoogleUseCase } from "./application/use-cases/login-with-googl
     providers:[
         LoginWithCredentialsUseCase,
         LoginWithGoogleUseCase,
+        CreateAccountWithCredentialsUseCase,
         {
             provide:AuthRepository,
             useClass:AuthCommandService
@@ -37,8 +39,8 @@ import { LoginWithGoogleUseCase } from "./application/use-cases/login-with-googl
         }
     ],
     controllers:[
-        AuthWriterController,
-        AuthReaderController
+        AuthCommandController,
+        AuthQueryController
     ],
     exports:[
         AuthRepository,
