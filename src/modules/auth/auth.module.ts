@@ -14,6 +14,8 @@ import { LoginWithCredentialsUseCase } from "./application/use-cases/login-crend
 import { GoogleAuthService } from "./infrastructure/adapters/google-auth.service";
 import { LoginWithGoogleUseCase } from "./application/use-cases/login-with-google.use-case";
 import { CreateAccountWithCredentialsUseCase } from "./application/use-cases/create-account-with-credemtails.use-case";
+import { RefreshTokenUseCase } from "./application/use-cases/refresh-token.use-case";
+import { GetProfileUseCase } from "./application/use-cases/get-profile.use-case";
 
 @Module({
     imports:[
@@ -24,6 +26,8 @@ import { CreateAccountWithCredentialsUseCase } from "./application/use-cases/cre
         LoginWithCredentialsUseCase,
         LoginWithGoogleUseCase,
         CreateAccountWithCredentialsUseCase,
+        RefreshTokenUseCase,
+        GetProfileUseCase,
         {
             provide:AuthRepository,
             useClass:AuthCommandService

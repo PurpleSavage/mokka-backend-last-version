@@ -36,11 +36,11 @@ export class LoginWithCredentialsUseCase{
                 errorType:'Mokka_ERROR'
             },HttpStatus.CONFLICT)
         }
-        const token = await this.jwtService.generateToken({ email: user.email },'15m')
+        const token = await this.jwtService.generateToken({ email: user.email},'15m')
         if(!token){
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error:'An error occurred while creating the account, please try again later.',
+                error:'An error occurred while creating session, please try again later.',
                 errorType:'Mokka_ERROR'
             },HttpStatus.INTERNAL_SERVER_ERROR)
         }

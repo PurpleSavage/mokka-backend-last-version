@@ -22,7 +22,7 @@ export class CreateAccountWithCredentialsUseCase{
             },HttpStatus.CONFLICT)
         }
         const userCreated=  await this.authCommandService.createAccount(loginWithCredentialsDto.email,loginWithCredentialsDto.password)
-        const token = await this.jwtService.generateToken({ email:userCreated.email },'15m')
+        const token = await this.jwtService.generateToken({email:userCreated.email },'15m')
         if(!token){
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
