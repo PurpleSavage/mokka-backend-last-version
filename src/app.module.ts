@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
+import { LoggerModule } from 'nestjs-pino';
 
 
 
@@ -23,6 +24,20 @@ import { HttpModule } from '@nestjs/axios';
           limit: 20
         },
       ],
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: process.env.NODE_ENV !== 'production' 
+          ? {
+              target: 'pino-pretty',
+              options: {
+                colorize: true,
+                singleLine: true,
+                translateTime: 'SYS:HH:MM:ss',
+              },
+            }
+          : undefined,
+      },
     }),
     HttpModule,
     SharedModule,

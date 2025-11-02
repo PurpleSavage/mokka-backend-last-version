@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import cookie from '@fastify/cookie'; 
+import { Logger } from 'nestjs-pino'
 
 async function bootstrap() {
   const whitelist = [
@@ -12,7 +13,10 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
+    { bufferLogs: true }
   )
+  app.useLogger(app.get(Logger))
+  
   app.enableCors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true)

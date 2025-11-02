@@ -7,6 +7,8 @@ import { SharedMdReaderService } from "./infrastructure/adapters/reader-md.servi
 import { StorageService } from "./infrastructure/adapters/storage.service";
 import { StorageRepository } from "./domain/repositories/storage.repository";
 import { MdReaderPort } from "./application/ports/md-reader.port";
+import { DownloadVideoUseCase } from "./infrastructure/adapters/downloa-file.service";
+import { DownloadFilePort } from "./application/ports/downlaod-file.port";
 
 
 @Global() 
@@ -28,13 +30,18 @@ import { MdReaderPort } from "./application/ports/md-reader.port";
         {
             useClass:StorageService,
             provide:StorageRepository
+        },
+        {
+            useClass:DownloadVideoUseCase,
+            provide:DownloadFilePort
         }
     ],
     exports:[
         MdReaderPort,
         JwtPort,
         MultimediaGeneratorPort,
-        StorageRepository
+        StorageRepository,
+        DownloadFilePort
     ]
 })
 export class SharedModule{}

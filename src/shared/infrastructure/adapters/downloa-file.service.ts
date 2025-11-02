@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { HttpService } from '@nestjs/axios';
 import { AxiosError } from 'axios';
+import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
 
 @Injectable()
-export class DownloadVideoUseCase {
+export class DownloadVideoUseCase implements DownloadFilePort{
     constructor(private readonly httpService: HttpService) {}
 
     async downloadUrl(url: string): Promise<Buffer> {
