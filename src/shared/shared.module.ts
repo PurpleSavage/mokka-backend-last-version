@@ -3,16 +3,20 @@ import { JwtPort } from "./application/ports/jwt.port";
 import { JwtAuthService } from "./infrastructure/adapters/jwt.service";
 import { MultimediaService } from "./infrastructure/adapters/multimedia.service";
 import { MultimediaGeneratorPort } from "./application/ports/multimedia-generator.port";
-import { SharedMdReaderService } from "./domain/services/reader-md.service";
+import { SharedMdReaderService } from "./infrastructure/adapters/reader-md.service";
 import { StorageService } from "./infrastructure/adapters/storage.service";
 import { StorageRepository } from "./domain/repositories/storage.repository";
+import { MdReaderPort } from "./application/ports/md-reader.port";
 
 
 @Global() 
 @Module({
 
     providers:[
-        SharedMdReaderService,
+        {
+            useClass:SharedMdReaderService,
+            provide:MdReaderPort
+        },
         {
             useClass:JwtAuthService,
             provide:JwtPort
@@ -27,7 +31,7 @@ import { StorageRepository } from "./domain/repositories/storage.repository";
         }
     ],
     exports:[
-        SharedMdReaderService,
+        MdReaderPort,
         JwtPort,
         MultimediaGeneratorPort,
         StorageRepository

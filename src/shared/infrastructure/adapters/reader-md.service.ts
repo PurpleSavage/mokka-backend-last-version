@@ -1,9 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import * as fs from 'fs';
 import * as path from 'path';
+import { MdReaderPort } from "src/shared/application/ports/md-reader.port";
 
 @Injectable()
-export class SharedMdReaderService {
+export class SharedMdReaderService implements MdReaderPort{
   private readonly templateCache = new Map<string, {content: string, timestamp: number}>();
   private readonly CACHE_TTL = 5 * 60 * 1000;
 

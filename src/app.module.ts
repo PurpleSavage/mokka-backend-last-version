@@ -6,6 +6,7 @@ import { ThrottlerCustomGuard } from './guards/rate-limiting/throttler-custom.gu
 import { ConfigModule } from '@nestjs/config';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { HttpModule } from '@nestjs/axios';
 
 
 
@@ -23,6 +24,7 @@ import { AuthModule } from './modules/auth/auth.module';
         },
       ],
     }),
+    HttpModule,
     SharedModule,
     AuthModule
   ],
