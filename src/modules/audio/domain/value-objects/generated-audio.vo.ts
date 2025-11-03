@@ -2,7 +2,7 @@ import { IdModelsAudio, ModelsAudio } from "../enums/audio-models";
 
 export class GenerateAudioVO {
   public prompt: string
-  public idUser: string
+  public user: string
   public idModel: IdModelsAudio
   public nameModelAudio: ModelsAudio
   public urlAudio: string
@@ -19,8 +19,8 @@ export class GenerateAudioVO {
     return this;
   }
 
-  setIdUser(idUser: string) {
-    this.idUser = idUser;
+  setUser(user: string) {
+    this.user = user;
     return this;
   }
 

@@ -8,6 +8,8 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
 import { LoggerModule } from 'nestjs-pino';
+import { BullModule } from '@nestjs/bullmq';
+import { NotifierModule } from './notifier/notifier.module';
 
 
 
@@ -25,6 +27,12 @@ import { LoggerModule } from 'nestjs-pino';
         },
       ],
     }),
+    BullModule.forRoot({
+      connection: {
+        host: process.env.QUEUE_REDIS_URL,
+        port: 6379,
+      },
+    }),
     LoggerModule.forRoot({
       pinoHttp: {
         transport: process.env.NODE_ENV !== 'production' 
@@ -39,6 +47,7 @@ import { LoggerModule } from 'nestjs-pino';
           : undefined,
       },
     }),
+    NotifierModule,
     HttpModule,
     SharedModule,
     AuthModule

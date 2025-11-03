@@ -1,47 +1,37 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { AudioRepository } from "../../domain/repositories/audio.repository";
 import { AudioEntity } from "../../domain/entities/audio.entity";
-import { GenerateAudioVO } from "../../domain/value-objects/generated-audio.vo";
 import { AudioDocument } from "../schemas/audio.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { normalizeId } from "src/shared/application/helpers/normalized-obj";
+import { AudioPort } from "../../application/ports/audio.port";
 
 @Injectable()
-export class AudioQueryService implements AudioRepository{
+export class AudioQueryService implements AudioPort{
     constructor(
         @InjectModel('Audio') private readonly audioModel: Model<AudioDocument>
     ){}
-    async saveGeneratedAudio(generatedAudioVo: GenerateAudioVO): Promise<AudioEntity> {
+    async listAudios(idUser: string): Promise<AudioEntity[]> {
         try {
-            const audio = new this.audioModel({
-                idUser:generatedAudioVo.idUser,
-                prompt:generatedAudioVo.prompt,
-                urlAudio:generatedAudioVo.urlAudio,
-                nameModelAudio:generatedAudioVo.nameModelAudio,
-                idModel:generatedAudioVo.idModel,
-                speed: generatedAudioVo.speed,
-                stability: generatedAudioVo.stability,
-                similarity: generatedAudioVo.similarity,
-                exaggeration: generatedAudioVo.exaggeration,
-                useSpeakerBoost: generatedAudioVo.useSpeakerBoost
-            })
-            const savedAudio = await audio.save()
-            const audioGenerated = new AudioEntity()
-            .setCreateDate(savedAudio.createdAt)
-            .setExaggeration(savedAudio.exaggeration)
-            .setId(savedAudio._id.toString())
-            .setIdModel(savedAudio.idModel)
-            .setIdUser(normalizeId(savedAudio.idUser))
-            .setNameModelAudio(savedAudio.nameModelAudio)
-            .setPrompt(savedAudio.prompt)
-            .setSimilarity(savedAudio.similarity)
-            .setSpeed(savedAudio.speed)
-            .setStability(savedAudio.stability)
-            .setUrlAudio(savedAudio.urlAudio)
-            .setUseSpeakerBoost(savedAudio.useSpeakerBoost)
-            .build()
-            return audioGenerated
+            const audios = await this.audioModel.find({
+                idUser
+            }).exec()
+             return audios.map((audio) =>
+                new AudioEntity()
+                .setId(audio._id.toString())
+                .setIdUser(normalizeId(audio.idUser))
+                .setPrompt(audio.prompt)
+                .setCreateDate(audio.createdAt)
+                .setUrlAudio(audio.urlAudio)
+                .setIdModel(audio.idModel)
+                .setNameModelAudio(audio.nameModelAudio)
+                .setSpeed(audio.speed)
+                .setStability(audio.stability)
+                .setSimilarity(audio.similarity)
+                .setExaggeration(audio.exaggeration)
+                .setUseSpeakerBoost(audio.useSpeakerBoost)
+                .build()
+            )
         } catch (error) {
             console.log(error)
             throw new HttpException({

@@ -11,7 +11,7 @@ export type AudioDocument = HydratedDocument<Audio>
 @Schema()
 export class Audio {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
-  idUser: MongooseSchema.Types.ObjectId;
+  user: MongooseSchema.Types.ObjectId;
 
   @Prop({required:true})
   prompt: string;
