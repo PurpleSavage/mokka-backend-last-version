@@ -2,7 +2,10 @@ import { ConfigService } from "@nestjs/config";
 import { GenerateAudioDto } from "../../application/dtos/generate-audio.dto";
 import { AudioGeneratorPort } from "../../application/ports/audio-generator.port";
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
-import { HttpException, HttpStatus } from "@nestjs/common";
+import {  HttpStatus, Injectable } from "@nestjs/common";
+import { AudioGeneratorError } from "src/shared/errors/audio-generator.error";
+
+@Injectable()
 export class AudioGeneratorService implements AudioGeneratorPort{
 
     private clientElevenLabs: ElevenLabsClient
@@ -33,10 +36,11 @@ export class AudioGeneratorService implements AudioGeneratorPort{
             return audioBuffer
         } catch (error) {
             console.log(error)
-            throw new HttpException({
-                status: HttpStatus.CONFLICT,
-                error:'Invalid credentials',
-                errorType:'ElevenLabs_ERROR'
-            },HttpStatus.CONFLICT)}
+            throw new AudioGeneratorError(
+                'Failed to save audio record',
+                'Database operation failed',
+                HttpStatus.INTERNAL_SERVER_ERROR
+            )
+        }
     }
 }

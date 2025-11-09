@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { AudioDocument } from "../schemas/audio.schema";
 import { Model } from "mongoose";
@@ -7,6 +7,7 @@ import { AudioEntity } from "../../domain/entities/audio.entity";
 import { normalizeId } from "src/shared/application/helpers/normalized-obj";
 import { AudioRepository } from "../../domain/repositories/audio.repository";
 import { GenerateAudioVO } from "../../domain/value-objects/generated-audio.vo";
+import { MokkaError } from "src/shared/errors/mokka.error";
 
 @Injectable()
 export class AudioCommandService implements AudioRepository{
@@ -45,11 +46,12 @@ export class AudioCommandService implements AudioRepository{
                 return audioGenerated
             } catch (error) {
                 console.log(error)
-                throw new HttpException({
-                    status: HttpStatus.CONFLICT,
-                    error:'Invalid credentials',
-                    errorType:'Mokka_ERROR'
-                },HttpStatus.CONFLICT)
+                throw new MokkaError(
+                    'Failed to save audio record',
+                    'Database operation failed',
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
+                
             }
         }
 }

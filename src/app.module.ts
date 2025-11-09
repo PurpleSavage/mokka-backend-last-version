@@ -10,6 +10,8 @@ import { HttpModule } from '@nestjs/axios';
 import { LoggerModule } from 'nestjs-pino';
 import { BullModule } from '@nestjs/bullmq';
 import { NotifierModule } from './notifier/notifier.module';
+import { AudioModule } from './modules/audio/audio.module';
+import { ImageModule } from './modules/image/image.module';
 
 
 
@@ -50,7 +52,9 @@ import { NotifierModule } from './notifier/notifier.module';
     NotifierModule,
     HttpModule,
     SharedModule,
-    AuthModule
+    AuthModule,
+    AudioModule,
+    ImageModule
   ],
   controllers: [],
   providers: [
