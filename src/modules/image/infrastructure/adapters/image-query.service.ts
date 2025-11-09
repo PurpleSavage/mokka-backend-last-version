@@ -82,8 +82,8 @@ export class ImageQueryService implements ImagePort{
                 .setEmail(user.email)
                 .build()
 
-                return new SharedImageEntity().
-                setId(doc._id.toString())
+                return new SharedImageEntity()
+                .setId(doc._id.toString())
                 .setImage(image)
                 .setSharedBy(sharedBy)
                 .setRemixes(doc.remixes)

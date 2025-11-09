@@ -69,9 +69,9 @@ export class StorageService implements StorageRepository{
         }
     }
     
-    async saveImage(bufferImage:Buffer<ArrayBufferLike>,idUser:string):Promise<SupabaseImageResponse>{
+    async saveImage(bufferImage:Buffer<ArrayBufferLike>,userId:string):Promise<SupabaseImageResponse>{
         
-        const filename = `${idUser}-${this.generateId()}.png`
+        const filename = `${userId}-${this.generateId()}.png`
 
         const size = this.calculateSizeFile(bufferImage.length)
 

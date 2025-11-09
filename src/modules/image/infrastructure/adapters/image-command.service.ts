@@ -11,6 +11,9 @@ import { ImageSharedDocument } from "../schemas/image-shared.schema";
 import { Model } from "mongoose";
 import { MokkaError } from "src/shared/errors/mokka.error";
 import { ObjectId } from 'mongodb';
+import { normalizeId } from "src/shared/application/helpers/normalized-obj";
+import { UserDocument } from "src/modules/auth/infrastructure/schemas/user.schema";
+import { SharedByEntity } from "../../domain/entities/shared-by.entity";
 @Injectable()
 export class ImageCommandService implements ImageRepository{
     constructor(
@@ -95,6 +98,95 @@ export class ImageCommandService implements ImageRepository{
         }
     }
     async shareImage(imageId: string, sharedBy: string): Promise<SharedImageEntity> {
-        
+        try {
+            const sharedImage = new this.sharedImageModel({
+                sharedBy,
+                downloads:0,
+                remixes: 0,
+                image:imageId
+            })
+            const response = await sharedImage.save()
+
+            return new SharedImageEntity()
+            .setId(response._id.toString())
+            .setImage(normalizeId(response.image))
+            .setSharedBy(normalizeId(response.sharedBy))
+            .setRemixes(response.remixes)
+            .setDownloads(response.downloads)
+            .build()
+        } catch (error) {
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:"Error creating the image shared"
+                },
+                'Error creating the image shared'
+            )
+            throw new MokkaError(
+                'Error creating the image shared',
+                'Database operation failed',
+                HttpStatus.INTERNAL_SERVER_ERROR
+            )
+        }
+    }
+    async createRemixImage(imageSharedId:string):Promise<SharedImageEntity>{
+        try {
+            const updatedSharedImage = await this.sharedImageModel.findByIdAndUpdate(
+                new ObjectId(imageSharedId),                  // buscar por _id
+                { $inc: { remixes: 1 } },                 // incrementar en 1
+                { new: true }
+            )
+            .populate<{ image: ImageDocument}>('image')
+            .populate<{ sharedBy: UserDocument}>('sharedBy')
+            .exec()
+
+            if(!updatedSharedImage){
+               throw new MokkaError(
+                    'Error creating new shared image remix',
+                    'Database operation failed',
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
+            }
+            const image = new ImageEntity()
+            .setAspectRatio(updatedSharedImage.image.aspectRatio)
+            .setCreateDate(updatedSharedImage.image.createdAt)
+            .setHeight(updatedSharedImage.image.height)
+            .setImageUrl(updatedSharedImage.image.imageUrl)
+            .setPrompt(updatedSharedImage.image.prompt)
+            .setSize(updatedSharedImage.image.size)
+            .setStyle(updatedSharedImage.image.style)
+            .setSubStyle(updatedSharedImage.image.subStyle)
+            .setWidth(updatedSharedImage.image.width)
+            .build();
+
+            const sharedBy = new SharedByEntity()
+            .setId(updatedSharedImage.sharedBy._id.toString())
+            .setEmail(updatedSharedImage.sharedBy.email)
+            .build();
+
+
+            const sharedImageEntity = new SharedImageEntity()
+            .setId(updatedSharedImage._id.toString())
+            .setImage(image)
+            .setSharedBy(sharedBy)
+            .setRemixes(updatedSharedImage.remixes)
+            .setDownloads(updatedSharedImage.downloads)
+            .build()
+
+            return sharedImageEntity
+        } catch (error) {
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:'Error creating new shared image remix'
+                },
+                'Error creating new shared image remix'
+            )
+            throw new MokkaError(
+                'Error creating new shared image remix',
+                'Database operation failed',
+                HttpStatus.INTERNAL_SERVER_ERROR
+            )
+        }
     }
 }

@@ -6,5 +6,7 @@ import { Controller } from "@nestjs/common";
     version:"1"
 })
 export class ImageCommandController{
-    constructor(){}
+    constructor(
+        
+    ){}
 }

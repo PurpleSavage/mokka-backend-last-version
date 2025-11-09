@@ -22,11 +22,11 @@ export class SharedImageEntity{
         this.downloads=downloads
         return this
     }
-    setImage(image:ImageEntity){
+    setImage(image:ImageEntity| string){
         this.image = image
         return this
     }
-    setSharedBy(sharedBy:SharedByEntity){
+    setSharedBy(sharedBy:SharedByEntity | string){
         this.sharedBy=sharedBy
         return this
     }
