@@ -33,6 +33,7 @@ export class ImageQueryService implements ImagePort{
                 .setStyle(image.style)
                 .setSubStyle(image.subStyle)
                 .setWidth(image.width)
+                .build()
             })
 
         } catch (error) {
@@ -73,8 +74,8 @@ export class ImageQueryService implements ImagePort{
                 .setSize(img.size)
                 .setStyle(img.style)
                 .setSubStyle(img.subStyle)
-                .setWidth(img.width).
-                build()
+                .setWidth(img.width)
+                .build()
 
                 const  sharedBy = new SharedByEntity()
                 .setId(user._id.toString())
@@ -87,6 +88,7 @@ export class ImageQueryService implements ImagePort{
                 .setSharedBy(sharedBy)
                 .setRemixes(doc.remixes)
                 .setDownloads(doc.downloads)
+                .build()
             })
 
             return listSharedImage

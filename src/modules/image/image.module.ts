@@ -11,6 +11,8 @@ import { ImageQueryService } from "./infrastructure/adapters/image-query.service
 import { ImagePort } from "./application/ports/image.port";
 import { ListSharedImageUseCase } from "./application/use-cases/list-shared-image.use-case";
 import { ListImagesUseCase } from "./application/use-cases/list-images.use-case";
+import { ImageCommandService } from "./infrastructure/adapters/image-command.service";
+import { ImageRepository } from "./domain/repositories/image.repository";
 
 @Module({
     imports:[
@@ -30,6 +32,10 @@ import { ListImagesUseCase } from "./application/use-cases/list-images.use-case"
         {
             useClass:ImageQueryService,
             provide:ImagePort
+        },
+        {
+            useClass:ImageCommandService,
+            provide:ImageRepository
         }
     ],
     controllers:[
@@ -37,7 +43,8 @@ import { ListImagesUseCase } from "./application/use-cases/list-images.use-case"
         ImageCommandController
     ],
     exports:[
-
+        ImageRepository,
+        ImagePort
     ]
 })
 export class ImageModule{}
