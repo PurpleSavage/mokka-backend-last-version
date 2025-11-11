@@ -13,6 +13,10 @@ import { ListSharedImageUseCase } from "./application/use-cases/list-shared-imag
 import { ListImagesUseCase } from "./application/use-cases/list-images.use-case";
 import { ImageCommandService } from "./infrastructure/adapters/image-command.service";
 import { ImageRepository } from "./domain/repositories/image.repository";
+import { UpdateDownloadsSharedImageUseCase } from "./application/use-cases/update-downloads-shared-image.use-case";
+import { ShareImageUseCase } from "./application/use-cases/shared-image.use-case";
+import { CreateRemixImageUseCase } from "./application/use-cases/create-remix-image.use-case";
+
 
 @Module({
     imports:[
@@ -29,6 +33,9 @@ import { ImageRepository } from "./domain/repositories/image.repository";
     providers:[
         ListSharedImageUseCase,
         ListImagesUseCase,
+        UpdateDownloadsSharedImageUseCase,
+        ShareImageUseCase,
+        CreateRemixImageUseCase,
         {
             useClass:ImageQueryService,
             provide:ImagePort
