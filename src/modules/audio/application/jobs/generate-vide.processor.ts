@@ -5,6 +5,8 @@ import { GenerateAudioDto } from "../dtos/generate-audio.dto";
 import { Job } from "bullmq";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { PinoLogger } from "nestjs-pino";
+import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { ExtractErrorInfo } from "src/shared/infrastructure/helpers/ExtractErrorInfo";
 
 
 @Processor('audio-queue')
@@ -25,7 +27,7 @@ export class AudioProcessor extends WorkerHost {
                 generateAudioDto.idUser,{
                     jobId:job.id as string,
                     entity:result,
-                    status:'completed',
+                    status:StatusQueue.COMPLETED,
                     message:'Image generated'
                 }
             )
@@ -43,16 +45,10 @@ export class AudioProcessor extends WorkerHost {
                 },
                 'Error generating audio'
             )
-            const errorMessage = error instanceof AppBaseError 
-                ? error.message 
-                : 'Unexpected error occurred to generate audio'
+            const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
             this.audioNotifierService.notifyAudioError(
                 generateAudioDto.idUser,
-                {
-                    jobId:job.id as string,
-                    status:'failed',
-                    error:errorMessage
-                }
+                 errorInfo
             )
             throw error
         }

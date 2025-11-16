@@ -1,6 +1,9 @@
 // shared/infrastructure/websockets/notification.service.ts
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { NotifierGateway } from "./notifier.gateway";
+import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+
+import { AudioErrorNotification } from "src/shared/infrastructure/helpers/ExtractErrorInfo";
 
 
 @Injectable()
@@ -16,10 +19,11 @@ export class NotifierService implements OnModuleInit {
         userId: string, 
         type: 'image' | 'video' | 'audio',
         data: {
-            jobId: string | number;
-            entity: T;
-            status: string;
-            message?: string;
+            jobId: string | number,
+            entity: T,
+            status: StatusQueue,
+            message?: string,
+            
         }
     ) {
         this.gateway.emitToUser(userId, `${type}-ready`, data);
@@ -28,37 +32,36 @@ export class NotifierService implements OnModuleInit {
     notifyError(
         userId: string,
         type: 'image' | 'video' | 'audio',
-        data: {
-            jobId: string | number;
-            error: string;
-            status: string;
-        }
+        data: AudioErrorNotification
     ) {
         this.gateway.emitToUser(userId, `${type}-error`, data);
     }
 
     // Métodos específicos para cada tipo (opcional, para mejor tipado)
-    notifyImageReady(userId: string, data: { jobId: string | number; entity: any; status: string; message?: string }) {
+    notifyImageReady(userId: string, data: { jobId: string | number; entity: any; status: StatusQueue; message?: string }) {
         this.notifyReady(userId, 'image', data);
     }
 
-    notifyImageError(userId: string, data: { jobId: string | number; error: string; status: string }) {
+    notifyImageError(userId: string, data: AudioErrorNotification
+    ) {
         this.notifyError(userId, 'image', data);
     }
 
-    notifyVideoReady(userId: string, data: { jobId: string | number; entity: any; status: string; message?: string }) {
+    notifyVideoReady(userId: string, data: { jobId: string | number; entity: any; status: StatusQueue; message?: string }) {
         this.notifyReady(userId, 'video', data);
     }
 
-    notifyVideoError(userId: string, data: { jobId: string | number; error: string; status: string }) {
+    notifyVideoError(userId: string, data:AudioErrorNotification
+    ) {
         this.notifyError(userId, 'video', data);
     }
 
-    notifyAudioReady(userId: string, data: { jobId: string | number; entity: any; status: string; message?: string }) {
+    notifyAudioReady(userId: string, data: { jobId: string | number; entity: any; status: StatusQueue; message?: string }) {
         this.notifyReady(userId, 'audio', data);
     }
 
-    notifyAudioError(userId: string, data: { jobId: string | number; error: string; status: string }) {
+    notifyAudioError(userId: string, data: AudioErrorNotification
+    ) {
         this.notifyError(userId, 'audio', data);
     }
 }

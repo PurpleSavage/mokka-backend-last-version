@@ -4,6 +4,9 @@ import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { GenerateAudioDto } from "./application/dtos/generate-audio.dto";
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
+import { RequiresCredits } from "src/decorators/requires-credits.decorator";
+import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
+import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 
 @Controller({
   path:'audio/write',
@@ -16,6 +19,8 @@ export class AudioCommandController{
 
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   @UseGuards(AccesstokenGuard)
+  @UseGuards(CreditsGuard)
+  @RequiresCredits(30)
   @Post('generations')
   @HttpCode(HttpStatus.OK)
   async audioGeneration(
@@ -30,7 +35,7 @@ export class AudioCommandController{
     )
     return{
       jobId:job.id,
-      status:'processing',
+      status:StatusQueue.PROCESSING,
       message:'Audio generation started'
     }
   }

@@ -5,6 +5,7 @@ import { GenerateImageDto } from '../dtos/generate-image.dto';
 import { PinoLogger } from 'nestjs-pino';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { Job } from 'bullmq';
+import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 
 @Processor('image-queue')
 export class ImageProcessor extends WorkerHost {
@@ -23,7 +24,7 @@ export class ImageProcessor extends WorkerHost {
                 generateImageDto.userId,{
                     jobId:job.id as string,
                     entity:result,
-                    status:'completed',
+                    status:StatusQueue.COMPLETED,
                     message:'Image generated'
                 }
 
@@ -52,7 +53,7 @@ export class ImageProcessor extends WorkerHost {
           : 'Unexpected error occurred to generate audio';
       this.imageNotifierService.notifyImageError(generateImageDto.userId, {
         jobId: job.id as string,
-        status: 'failed',
+        status: StatusQueue.FAILED,
         error: errorMessage,
       });
       throw error;

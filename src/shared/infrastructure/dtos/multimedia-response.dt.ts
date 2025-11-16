@@ -34,3 +34,4 @@ export interface MultimediaResponseDto<T=any>{
         get: string;
     };
 }
+/* formate error "E1001: Model ran out of memory" */

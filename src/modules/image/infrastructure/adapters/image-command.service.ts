@@ -136,7 +136,7 @@ export class ImageCommandService implements ImageRepository{
         try {
             const remixImage= new this.remixImageModel({
                 user:remixImageVo.user,
-                imageBase:remixImageVo.imageShared,
+                imageBase:remixImageVo.imageBase,
                 prompt:remixImageVo.prompt,
                 width:remixImageVo.width,
                 height:remixImageVo.height,
@@ -156,7 +156,7 @@ export class ImageCommandService implements ImageRepository{
             .setPrevImageUrl(remixImage.prevImageUrl)
             .setPrompt(remixImageSaved.prompt)
             .setSize(remixImageSaved.size)
-            
+            .setImageBase(normalizeId(remixImage.imageBase))
             
         } catch (error) {
             this.logger.error(

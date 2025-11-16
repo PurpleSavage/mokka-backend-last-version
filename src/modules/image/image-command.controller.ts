@@ -10,6 +10,9 @@ import { CreateRemixImageDto } from "./application/dtos/create-remix-image.dto";
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
 import { GenerateImageDto } from "./application/dtos/generate-image.dto";
+import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
+import { RequiresCredits } from "src/decorators/requires-credits.decorator";
+import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 
 @Controller({
     path:'image/read',
@@ -47,10 +50,12 @@ export class ImageCommandController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
+    @UseGuards(CreditsGuard)
+    @RequiresCredits(20)
     @Get('remix/:imageSharedId')
     @HttpCode(HttpStatus.OK)
     createRemix(
-        @Param() createRemixImageDto:CreateRemixImageDto
+        @Param() createRemixImageDto:CreateRemixImageDto //falta ponerlo en la cola
     ){
         return this.createRemixImageUseCase.execute(createRemixImageDto)
     }
@@ -58,6 +63,8 @@ export class ImageCommandController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
+    @UseGuards(CreditsGuard)
+    @RequiresCredits(30)
     @Post('generations')
     @HttpCode(HttpStatus.OK)
     async generateImage(
@@ -72,7 +79,7 @@ export class ImageCommandController{
         )
         return{
             jobId:job.id,
-            status:'processing',
+            status:StatusQueue.PROCESSING,
             message:'Image generation started'
         }
     }

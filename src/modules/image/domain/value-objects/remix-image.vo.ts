@@ -8,9 +8,9 @@ export class RemixImageVo {
     readonly height: number,
     readonly imageUrl:string,
     readonly aspectRatio:AspectRatio,
-    readonly imageShared:string,
     readonly prevImageUrl:string,
-    readonly size:number
+    readonly size:string,
+    readonly imageBase:string
   ) {}
 
   static create(props: {
@@ -20,10 +20,9 @@ export class RemixImageVo {
     height: number,
     imageUrl:string,
     aspectRatio:AspectRatio,
-    imageShared:string,
     prevImageUrl:string,
     imageBase:string,
-    size:number
+    size:string
   }) {
     return new RemixImageVo(
         props.user,
@@ -32,9 +31,9 @@ export class RemixImageVo {
         props.height,
         props.imageUrl,
         props.aspectRatio,
-        props.imageShared,
         props.prevImageUrl,
-        props.size
+        props.size,
+        props.imageBase
     )
   }
 }

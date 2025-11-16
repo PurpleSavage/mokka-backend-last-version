@@ -5,6 +5,8 @@ import Replicate, { Prediction } from "replicate";
 import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
 import { MultimediaGeneratorError } from "src/shared/errors/multimedia-generator.error";
 import { MultimediaErrorTypes } from "../enums/error-detail-types";
+import { MultimediaResponseDto } from "../dtos/multimedia-response.dt";
+
 
 @Injectable()
 export class MultimediaService implements MultimediaGeneratorPort{
@@ -49,22 +51,24 @@ export class MultimediaService implements MultimediaGeneratorPort{
            }) 
            prediction = await this.multimediaClient.wait(prediction)
             if (prediction.status !== 'succeeded') {
-                throw new HttpException({
-                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'An error occurred while creating video, please try again later.',
-                    errorType:'Replicate_ERROR'
-                },HttpStatus.INTERNAL_SERVER_ERROR)
+                throw new MultimediaGeneratorError(
+                    'An error occurred while creating video, please try again later.',
+                    MultimediaErrorTypes.PREDICTION_FAILED,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
+        
             }
             const outputArray = prediction.output as string[]
             
             const videoUrl: string | undefined = Array.isArray(outputArray) ? outputArray[0] : undefined;
 
             if (!videoUrl) {
-                throw new HttpException({
-                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'An error occurred while creating url video, please try again later.',
-                    errorType:'Replicate_ERROR'
-                },HttpStatus.INTERNAL_SERVER_ERROR)
+                throw new MultimediaGeneratorError(
+                    'An error occurred while creating url video, please try again later.',
+                    MultimediaErrorTypes.MISSING_OUTPUT,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
+        
             }
             return videoUrl
         } catch (error) {
@@ -75,11 +79,16 @@ export class MultimediaService implements MultimediaGeneratorPort{
                 },
                 'Error updating the number of image downloads'
             )
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: 'An error occurred while creating video, please try again later.',
-                errorType:'Replicate_ERROR'
-            },HttpStatus.INTERNAL_SERVER_ERROR)
+            if (typeof error === 'object' && error !== null && 'error' in error) {
+                throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto)
+            }
+
+            // Si no sabemos qué es, lanzamos error genérico
+            throw new MultimediaGeneratorError(
+                'Unexpected error when generating image',
+                MultimediaErrorTypes.PREDICTION_FAILED,
+                HttpStatus.INTERNAL_SERVER_ERROR
+            )
         }
     }
     async createImage(aspectRatio: string, prompt: string): Promise<string> {
@@ -107,22 +116,22 @@ export class MultimediaService implements MultimediaGeneratorPort{
             prediction = await this.multimediaClient.wait(prediction);
             
             if (prediction.status !== 'succeeded') {
-                throw new HttpException({
-                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'Image generation failed ',
-                    errorType: 'Replicate_ERROR'
-                }, HttpStatus.INTERNAL_SERVER_ERROR)
+                throw new MultimediaGeneratorError(
+                    'Image generation failed ',
+                    MultimediaErrorTypes.PREDICTION_FAILED,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
             }
             
             const outputArray = prediction.output as string[];
             const imageUrl: string | undefined = Array.isArray(outputArray) ? outputArray[0] : undefined
             
             if (!imageUrl) {
-                throw new HttpException({
-                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'No image URL in response',
-                    errorType: 'Replicate_ERROR'
-                }, HttpStatus.INTERNAL_SERVER_ERROR)
+                throw new MultimediaGeneratorError(
+                    'No image URL in response',
+                    MultimediaErrorTypes.MISSING_OUTPUT,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
             }
             
             return imageUrl
@@ -134,11 +143,16 @@ export class MultimediaService implements MultimediaGeneratorPort{
                 },
                 'Error updating the number of image downloads'
             )
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: 'An error occurred while creating image, please try again later.',
-                errorType:'Replicate_ERROR'
-            },HttpStatus.INTERNAL_SERVER_ERROR)
+            if (typeof error === 'object' && error !== null && 'error' in error) {
+                throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto)
+            }
+
+            // Si no sabemos qué es, lanzamos error genérico
+            throw new MultimediaGeneratorError(
+                'Unexpected error when generating image',
+                MultimediaErrorTypes.PREDICTION_FAILED,
+                HttpStatus.INTERNAL_SERVER_ERROR
+            )
         }
     }
     async createRemixBasedImage(imageUrl: string, prompt: string): Promise<string> {
@@ -158,26 +172,26 @@ export class MultimediaService implements MultimediaGeneratorPort{
             prediction = await this.multimediaClient.wait(prediction);
             
             if (prediction.status !== 'succeeded') {
-                throw new HttpException({
-                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'Image remix generation failed',
-                    errorType: 'Replicate_ERROR'
-                }, HttpStatus.INTERNAL_SERVER_ERROR)
+                throw new MultimediaGeneratorError(
+                    'Unexpected error when generating image',
+                    MultimediaErrorTypes.PREDICTION_FAILED,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
             }
             
             const outputArray = prediction.output as string[];
             const remixedImageUrl: string | undefined = Array.isArray(outputArray) ? outputArray[0] : undefined
             
             if (!remixedImageUrl) {
-                throw new HttpException({
-                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'No remixed image URL in response',
-                    errorType: 'Replicate_ERROR'
-                }, HttpStatus.INTERNAL_SERVER_ERROR)
+                throw new MultimediaGeneratorError(
+                    'Unexpected error when generating url image',
+                    MultimediaErrorTypes.MISSING_OUTPUT,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
             }
             
             return remixedImageUrl
-        } catch (error) {
+        } catch (error:unknown) {
             this.logger.error(
                 {
                     stack: error instanceof Error ? error.stack : undefined,
@@ -185,10 +199,16 @@ export class MultimediaService implements MultimediaGeneratorPort{
                 },
                 'Error updating the number of image downloads'
             )
-            throw new MultimediaGeneratorError( 
-                'Image generation failed',
-                MultimediaErrorTypes.NSFW,
-                HttpStatus.NOT_FOUND
+            
+            if (typeof error === 'object' && error !== null && 'error' in error) {
+                throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto)
+            }
+
+            // Si no sabemos qué es, lanzamos error genérico
+            throw new MultimediaGeneratorError(
+                'Unexpected error when generating image',
+                MultimediaErrorTypes.PREDICTION_FAILED,
+                HttpStatus.INTERNAL_SERVER_ERROR
             )
         }
     }
