@@ -1,12 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { PinoLogger } from "nestjs-pino";
 import Replicate, { Prediction } from "replicate";
 import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
+import { MultimediaGeneratorError } from "src/shared/errors/multimedia-generator.error";
+import { MultimediaErrorTypes } from "../enums/error-detail-types";
 
 @Injectable()
 export class MultimediaService implements MultimediaGeneratorPort{
     private videoModel = "google/veo-3"
     private imageModel="google/imagen-4-fast"
+    private imageRemixModel = "black-forest-labs/flux-kontext-pro" 
     private readonly multimediaClient: Replicate
     private readonly validImageDimensions = {
         '1:1': { width: 1024, height: 1024 },
@@ -16,7 +20,10 @@ export class MultimediaService implements MultimediaGeneratorPort{
         '3:4': { width: 896, height: 1152 },
     }
 
-    constructor(private readonly configService:ConfigService){
+    constructor(
+        private readonly configService:ConfigService,
+         private readonly logger: PinoLogger
+    ){
         const token = this.configService.get<string>('REPLICATE_API_TOKEN');
         if (!token) {
             throw new Error('REPLICATE_API_TOKEN is not configured.');
@@ -61,7 +68,13 @@ export class MultimediaService implements MultimediaGeneratorPort{
             }
             return videoUrl
         } catch (error) {
-            console.log(error)
+             this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:"Error updating the number of image downloads"
+                },
+                'Error updating the number of image downloads'
+            )
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                 error: 'An error occurred while creating video, please try again later.',
@@ -114,12 +127,69 @@ export class MultimediaService implements MultimediaGeneratorPort{
             
             return imageUrl
         } catch (error) {
-            console.log(error)
+             this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:"Error updating the number of image downloads"
+                },
+                'Error updating the number of image downloads'
+            )
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                 error: 'An error occurred while creating image, please try again later.',
                 errorType:'Replicate_ERROR'
             },HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+    async createRemixBasedImage(imageUrl: string, prompt: string): Promise<string> {
+        try {
+            const input = {
+                image_url: imageUrl, // URL pública de tu imagen
+                prompt: prompt,
+                guidance_scale: 7.5, // Controla qué tan fuerte sigue el prompt
+                num_inference_steps: 28, // Más pasos = mejor calidad pero más lento
+                output_format: "webp"
+            }
+            let prediction = await this.multimediaClient.predictions.create({
+                model: this.imageRemixModel,
+                input
+            })
+            
+            prediction = await this.multimediaClient.wait(prediction);
+            
+            if (prediction.status !== 'succeeded') {
+                throw new HttpException({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Image remix generation failed',
+                    errorType: 'Replicate_ERROR'
+                }, HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+            
+            const outputArray = prediction.output as string[];
+            const remixedImageUrl: string | undefined = Array.isArray(outputArray) ? outputArray[0] : undefined
+            
+            if (!remixedImageUrl) {
+                throw new HttpException({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'No remixed image URL in response',
+                    errorType: 'Replicate_ERROR'
+                }, HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+            
+            return remixedImageUrl
+        } catch (error) {
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:"Error updating the number of image downloads"
+                },
+                'Error updating the number of image downloads'
+            )
+            throw new MultimediaGeneratorError( 
+                'Image generation failed',
+                MultimediaErrorTypes.NSFW,
+                HttpStatus.NOT_FOUND
+            )
         }
     }
 }

@@ -1,5 +1,5 @@
 
-export class UpdateDownloadsResultDomainDto{
+export class UpdateDownloadsResultDomainModel{
     public downloads:number
     public imageId:string
     constructor(){}

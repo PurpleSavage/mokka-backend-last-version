@@ -24,17 +24,17 @@ export class GenerateImageUseCase{
         const buffer = await this.downloadService.downloadUrl(imageUrl)
         const storageResponse = await this.storageService.saveImage(buffer,generateImageDto.userId)
 
-        const imageGenerated = new SavedGenerateImageVO()
-        .setAspectRatio(generateImageDto.aspectRatio)
-        .setHeight(generateImageDto.height)
-        .setImageUrl(storageResponse.url)
-        .setPrompt(generateImageDto.prompt)
-        .setSize(storageResponse.size)
-        .setStyle(generateImageDto.style)
-        .setSubStyle(generateImageDto.subStyle)
-        .setUserId(generateImageDto.userId)
-        .setWidth(generateImageDto.width)
-        .build()
+        const imageGenerated = SavedGenerateImageVO.create({
+            userId: generateImageDto.userId,
+            prompt: generateImageDto.prompt,
+            width: generateImageDto.width,
+            height: generateImageDto.height,
+            aspectRatio: generateImageDto.aspectRatio,
+            imageUrl: storageResponse.url,
+            size: storageResponse.size,
+            style: generateImageDto.style,
+            subStyle: generateImageDto.subStyle,
+        })
 
         return await this.imageCommandService.savedGeneratedImage(imageGenerated)
     }

@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from "@nestjs/common";
 import { ImageRepository } from "../../domain/repositories/image.repository";
 import { ImageEntity } from "../../domain/entities/image.entity";
 import { SavedGenerateImageVO } from "../../domain/value-objects/saved-generate-image.vo";
-import { UpdateDownloadsResultDomainDto } from "../../domain/dtos/download-result.dto";
+import {  UpdateDownloadsResultDomainModel } from "../../domain/models/download-result.model";
 import { SharedImageEntity } from "../../domain/entities/shared-image.entity";
 import { PinoLogger } from "nestjs-pino";
 import { InjectModel } from "@nestjs/mongoose";
@@ -12,13 +12,16 @@ import { Model } from "mongoose";
 import { MokkaError } from "src/shared/errors/mokka.error";
 import { ObjectId } from 'mongodb';
 import { normalizeId } from "src/shared/application/helpers/normalized-obj";
-import { UserDocument } from "src/modules/auth/infrastructure/schemas/user.schema";
-import { SharedByEntity } from "../../domain/entities/shared-by.entity";
+import { RemixImageVo } from "../../domain/value-objects/remix-image.vo";
+import { RemixImageEntity } from "../../domain/entities/remix-image.entity";
+import { RemixImageDocument } from "../schemas/remix-image.schema";
+
 @Injectable()
 export class ImageCommandService implements ImageRepository{
     constructor(
         @InjectModel('Image') private readonly imageModel: Model<ImageDocument>,
         @InjectModel('ShredImage') private readonly sharedImageModel: Model<ImageSharedDocument>,
+        @InjectModel('RemixImage') private readonly remixImageModel:Model<RemixImageDocument>,
         private readonly logger: PinoLogger
     ){}
     async savedGeneratedImage(savedGenerateImageVO: SavedGenerateImageVO): Promise<ImageEntity> {
@@ -27,7 +30,7 @@ export class ImageCommandService implements ImageRepository{
                 idUser:savedGenerateImageVO.userId,
                 prompt:savedGenerateImageVO.prompt,
                 aspectRatio:savedGenerateImageVO.aspectRatio,
-                height:savedGenerateImageVO.width,
+                height:savedGenerateImageVO.height,
                 width:savedGenerateImageVO.width,
                 imageUrl:savedGenerateImageVO.imageUrl,
                 size:savedGenerateImageVO.size,
@@ -63,7 +66,7 @@ export class ImageCommandService implements ImageRepository{
             )
         }
     }
-    async updateDownLoadsSharedImage(imageId: string): Promise<UpdateDownloadsResultDomainDto> {
+    async updateDownLoadsSharedImage(imageId: string): Promise<UpdateDownloadsResultDomainModel> {
         try {
             const updatedImage = await this.sharedImageModel.findByIdAndUpdate(
                 new ObjectId(imageId),                  // buscar por _id
@@ -78,7 +81,7 @@ export class ImageCommandService implements ImageRepository{
                 )
             }
 
-            return new UpdateDownloadsResultDomainDto()
+            return new UpdateDownloadsResultDomainModel()
             .setImageId(updatedImage._id.toString())
             .setDownloads(updatedImage.downloads)
             .build()
@@ -129,51 +132,32 @@ export class ImageCommandService implements ImageRepository{
             )
         }
     }
-    async createRemixImage(imageSharedId:string):Promise<SharedImageEntity>{
+    async saveRemixImage(remixImageVo:RemixImageVo):Promise<RemixImageEntity>{
         try {
-            const updatedSharedImage = await this.sharedImageModel.findByIdAndUpdate(
-                new ObjectId(imageSharedId),                  // buscar por _id
-                { $inc: { remixes: 1 } },                 // incrementar en 1
-                { new: true }
-            )
-            .populate<{ image: ImageDocument}>('image')
-            .populate<{ sharedBy: UserDocument}>('sharedBy')
-            .exec()
-
-            if(!updatedSharedImage){
-               throw new MokkaError(
-                    'Error creating new shared image remix',
-                    'Database operation failed',
-                    HttpStatus.INTERNAL_SERVER_ERROR
-                )
-            }
-            const image = new ImageEntity()
-            .setAspectRatio(updatedSharedImage.image.aspectRatio)
-            .setCreateDate(updatedSharedImage.image.createdAt)
-            .setHeight(updatedSharedImage.image.height)
-            .setImageUrl(updatedSharedImage.image.imageUrl)
-            .setPrompt(updatedSharedImage.image.prompt)
-            .setSize(updatedSharedImage.image.size)
-            .setStyle(updatedSharedImage.image.style)
-            .setSubStyle(updatedSharedImage.image.subStyle)
-            .setWidth(updatedSharedImage.image.width)
-            .build();
-
-            const sharedBy = new SharedByEntity()
-            .setId(updatedSharedImage.sharedBy._id.toString())
-            .setEmail(updatedSharedImage.sharedBy.email)
-            .build();
-
-
-            const sharedImageEntity = new SharedImageEntity()
-            .setId(updatedSharedImage._id.toString())
-            .setImage(image)
-            .setSharedBy(sharedBy)
-            .setRemixes(updatedSharedImage.remixes)
-            .setDownloads(updatedSharedImage.downloads)
-            .build()
-
-            return sharedImageEntity
+            const remixImage= new this.remixImageModel({
+                user:remixImageVo.user,
+                imageBase:remixImageVo.imageShared,
+                prompt:remixImageVo.prompt,
+                width:remixImageVo.width,
+                height:remixImageVo.height,
+                imageUrl:remixImageVo.imageUrl,
+                prevImageUrl:remixImageVo.prevImageUrl,
+                aspectRatio:remixImageVo.aspectRatio,
+                size:remixImageVo.size
+            })
+            const remixImageSaved = await remixImage.save()
+            return new RemixImageEntity()
+            .setAspectRatio(remixImageSaved.aspectRatio)
+            .setCreateDate(remixImageSaved.createdAt)
+            .setHeight(remixImageSaved.height)
+            .setWidth(remixImageSaved.width)
+            .setId(remixImageSaved._id.toString())
+            .setImageUrl(remixImageSaved.imageUrl)
+            .setPrevImageUrl(remixImage.prevImageUrl)
+            .setPrompt(remixImageSaved.prompt)
+            .setSize(remixImageSaved.size)
+            
+            
         } catch (error) {
             this.logger.error(
                 {

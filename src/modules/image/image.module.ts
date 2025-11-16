@@ -16,6 +16,7 @@ import { ImageRepository } from "./domain/repositories/image.repository";
 import { UpdateDownloadsSharedImageUseCase } from "./application/use-cases/update-downloads-shared-image.use-case";
 import { ShareImageUseCase } from "./application/use-cases/shared-image.use-case";
 import { CreateRemixImageUseCase } from "./application/use-cases/create-remix-image.use-case";
+import { RemixImageSchema } from "./infrastructure/schemas/remix-image.schema";
 
 
 @Module({
@@ -23,7 +24,8 @@ import { CreateRemixImageUseCase } from "./application/use-cases/create-remix-im
         SharedModule,
         MongooseModule.forFeature([
             { name: 'Image', schema: ImageSchema},
-            {name:'ImageShared',schema:ImageSharedSchema}
+            {name:'ImageShared',schema:ImageSharedSchema},
+            {name:'RemixImage',schema:RemixImageSchema}
         ]),
         BullModule.registerQueue({  // registrar cola
             name: 'image-queue',
