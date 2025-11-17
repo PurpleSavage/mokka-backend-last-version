@@ -29,6 +29,10 @@ import { RemixImageSchema } from "./infrastructure/schemas/remix-image.schema";
         ]),
         BullModule.registerQueue({  // registrar cola
             name: 'image-queue',
+            
+        }),
+        BullModule.registerQueue({              // ← Agrega esta cola
+            name: 'remix-image-queue',
         }),
         NotifierModule
     ],

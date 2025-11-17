@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PinoLogger } from "nestjs-pino";
-import Replicate, { Prediction } from "replicate";
 import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
 import { MultimediaGeneratorError } from "src/shared/errors/multimedia-generator.error";
 import { MultimediaErrorTypes } from "../enums/error-detail-types";
 import { MultimediaResponseDto } from "../dtos/multimedia-response.dt";
+import Replicate, { Prediction } from "replicate";
 
 
 @Injectable()

@@ -16,7 +16,7 @@ import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail
 export class ImageQueryService implements ImagePort{
     constructor(
         @InjectModel('Image') private readonly imageModel: Model<ImageDocument>,
-        @InjectModel('ShredImage') private readonly sharedImageModel: Model<ImageSharedDocument>,
+        @InjectModel('ImageShared') private readonly sharedImageModel: Model<ImageSharedDocument>,
         private readonly logger: PinoLogger 
     ){}
     async listImagesByUserId(userId: string): Promise<ImageEntity[]> {

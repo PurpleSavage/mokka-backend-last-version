@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import { ImageQueryService } from "../../infrastructure/adapters/image-query.service";
 import { ListSharedImageDto } from "../dtos/list-shared-image.dto";
 import { CacheManagerPort } from "src/shared/application/ports/cache-manager.port";
 import { SharedImageEntity } from "../../domain/entities/shared-image.entity";
+import { ImagePort } from "../ports/image.port";
 
 @Injectable()
 export class ListSharedImageUseCase{
     private readonly CACHE_KEY = 'images:list'
     constructor(
-        private readonly imageQueryService:ImageQueryService,
+        private readonly imageQueryService:ImagePort,
         private readonly cacheService: CacheManagerPort
     ){}
     async execute(listSharedImageDto:ListSharedImageDto){

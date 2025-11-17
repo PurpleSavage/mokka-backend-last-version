@@ -10,7 +10,7 @@ export class RemixImage{
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
     user: MongooseSchema.Types.ObjectId;
 
-    @Prop({type: MongooseSchema.Types.ObjectId, ref: 'User', required: true})
+    @Prop({type: MongooseSchema.Types.ObjectId, ref: 'Image', required: true})
     imageBase:MongooseSchema.Types.ObjectId;
 
     @Prop({ required: true })
@@ -38,5 +38,5 @@ export class RemixImage{
     size:string
 }
 
-export const RemixImageSchema = SchemaFactory.createForClass(Image);
+export const RemixImageSchema = SchemaFactory.createForClass(RemixImage);
 RemixImageSchema.set('timestamps', true);

@@ -6,7 +6,7 @@ import { MokkaError } from "src/shared/errors/mokka.error";
 import { ErrorPlatformMokka } from "../enums/error-detail-types";
 
 @Injectable()
-export class DownloadVideoUseCase implements DownloadFilePort{
+export class DownloadFileService implements DownloadFilePort{
     constructor(private readonly httpService: HttpService) {}
 
     async downloadUrl(url: string): Promise<Buffer> {

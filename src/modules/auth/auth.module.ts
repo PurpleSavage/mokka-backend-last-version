@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { AuthCommandController } from "./auth-command.controller";
 import { AuthQueryController } from "./auth-query.controller";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -16,7 +16,9 @@ import { LoginWithGoogleUseCase } from "./application/use-cases/login-with-googl
 import { CreateAccountWithCredentialsUseCase } from "./application/use-cases/create-account-with-credemtails.use-case";
 import { RefreshTokenUseCase } from "./application/use-cases/refresh-token.use-case";
 import { GetProfileUseCase } from "./application/use-cases/get-profile.use-case";
+import { HashService } from "./infrastructure/adapters/hash.service";
 
+@Global()
 @Module({
     imports:[
         SharedModule,
@@ -40,6 +42,10 @@ import { GetProfileUseCase } from "./application/use-cases/get-profile.use-case"
         {
             provide:GooglePort,
             useClass:GoogleAuthService
+        },
+        {
+            provide:HashPort,
+            useClass:HashService
         }
     ],
     controllers:[

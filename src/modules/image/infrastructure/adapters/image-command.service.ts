@@ -22,7 +22,7 @@ import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail
 export class ImageCommandService implements ImageRepository{
     constructor(
         @InjectModel('Image') private readonly imageModel: Model<ImageDocument>,
-        @InjectModel('ShredImage') private readonly sharedImageModel: Model<ImageSharedDocument>,
+        @InjectModel('ImageShared') private readonly sharedImageModel: Model<ImageSharedDocument>,
         @InjectModel('RemixImage') private readonly remixImageModel:Model<RemixImageDocument>,
         private readonly logger: PinoLogger
     ){}

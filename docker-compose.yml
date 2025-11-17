@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   # Aplicación NestJS
   app:
@@ -7,68 +6,77 @@ services:
       context: .
       dockerfile: Dockerfile
       target: ${BUILD_TARGET:-production}
-    container_name: mokka-backend
+    container_name: mokka-backend-v2
     ports:
-      - "${PORT:-3000}:${PORT:-3000}"
+      - "${PORT:-3001}:${PORT:-3000}"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - PORT=${PORT:-3000}
       - MONGODB_URI=${MONGODB_URI}
       - JWT_SECRET=${JWT_SECRET}
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}           # ← Agrega esta línea
+      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}               # ← Agrega esta línea
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}                   # ← Agrega esta línea
+      - ELEVEN_LABS_API_KEY=${ELEVEN_LABS_API_KEY}           # ← Agrega esta línea
+      - SUPABASE_URL=${SUPABASE_URL}                         # ← Agrega esta línea
+      - SUPABASE_API_KEY=${SUPABASE_API_KEY}                 # ← Agrega esta línea
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}                 # ← Agrega esta línea
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET} 
     env_file:
       - .env
     depends_on:
       - mongodb
       - redis
     networks:
-      - mokka-network
+      - mokka-network-v2
     restart: unless-stopped
 
   # MongoDB
   mongodb:
     image: mongo:7
-    container_name: mokka-mongodb
+    container_name: mokka-mongodb-v2
     ports:
-      - "27017:27017"
+      - "27018:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
-      MONGO_INITDB_DATABASE: ${MONGO_DB:-mokka}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-mokka-v2}
     volumes:
-      - mongodb_data:/data/db
+      - mongodb_data_v2:/data/db
     networks:
-      - mokka-network
+      - mokka-network-v2
     restart: unless-stopped
 
   # Redis
   redis:
     image: redis:7-alpine
-    container_name: mokka-redis
+    container_name: mokka-redis-v2
     ports:
-      - "6379:6379"
+      - "6381:6379"
     volumes:
-      - redis_data:/data
+      - redis_data_v2:/data
     networks:
-      - mokka-network
+      - mokka-network-v2
     restart: unless-stopped
     command: redis-server --appendonly yes
+
   redis-bull:
     image: redis:7-alpine
-    container_name: mokka-redis-bull
+    container_name: mokka-redis-bull-v2
     ports:
-      - "6380:6379"
+      - "6382:6379"
     volumes:
-      - redis_bull_data:/data 
+      - redis_bull_data_v2:/data 
     networks:
-      - mokka-network
+      - mokka-network-v2
     restart: unless-stopped
     command: redis-server --appendonly yes
 
 volumes:
-  mongodb_data:
-  redis_data:
-  redis_bull_data: 
+  mongodb_data_v2:
+  redis_data_v2:
+  redis_bull_data_v2: 
 
 networks:
-  mokka-network:
+  mokka-network-v2:
     driver: bridge

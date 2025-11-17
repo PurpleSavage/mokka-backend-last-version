@@ -7,16 +7,23 @@ import { SharedMdReaderService } from "./infrastructure/adapters/reader-md.servi
 import { StorageService } from "./infrastructure/adapters/storage.service";
 import { StorageRepository } from "./domain/repositories/storage.repository";
 import { MdReaderPort } from "./application/ports/md-reader.port";
-import { DownloadVideoUseCase } from "./infrastructure/adapters/download-file.service";
+import { DownloadFileService} from "./infrastructure/adapters/download-file.service";
 import { DownloadFilePort } from "./application/ports/downlaod-file.port";
 import { ConfigService } from "@nestjs/config";
 import Redis from 'ioredis';
 import { CacheManagerService } from "./infrastructure/adapters/cache-manager.service";
 import { CacheManagerPort } from "./application/ports/cache-manager.port";
+import { JwtModule } from "@nestjs/jwt";
+import { HttpModule } from "@nestjs/axios";
 
 @Global() 
 @Module({
-
+    imports: [
+        JwtModule.register({
+        secret: process.env.JWT_SECRET,
+        }),
+        HttpModule,
+    ],
     providers:[
         {
             useClass:SharedMdReaderService,
@@ -35,7 +42,7 @@ import { CacheManagerPort } from "./application/ports/cache-manager.port";
             provide:StorageRepository
         },
         {
-            useClass:DownloadVideoUseCase,
+            useClass:DownloadFileService,
             provide:DownloadFilePort
         },
         {
@@ -69,7 +76,8 @@ import { CacheManagerPort } from "./application/ports/cache-manager.port";
         MultimediaGeneratorPort,
         StorageRepository,
         DownloadFilePort,
-        CacheManagerPort
+        CacheManagerPort,
+        'REDIS_CLIENT'
     ]
 })
 export class SharedModule{}
