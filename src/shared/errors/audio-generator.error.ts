@@ -3,8 +3,16 @@ import { AppBaseError } from './base.error';
 import { HttpStatus } from '@nestjs/common';
 
 export class AudioGeneratorError extends AppBaseError {
-  constructor(message: string, details?: string, status: HttpStatus = HttpStatus.BAD_GATEWAY) {
-    super(message, ErrorPlatformMokka.ELEVENLABS_ERROR
-      , status, details);
+  constructor(config: {
+    message: string
+    details?: string
+    status?: HttpStatus
+  }) {
+    super(
+      config.message,
+      ErrorPlatformMokka.ELEVENLABS_ERROR,
+      config.status ?? HttpStatus.BAD_GATEWAY,
+      config.details
+    )
   }
 }

@@ -7,6 +7,7 @@ import { normalizeId } from "src/shared/application/helpers/normalized-obj";
 import { AudioPort } from "../../application/ports/audio.port";
 import { MokkaError } from "src/shared/errors/mokka.error";
 import { PinoLogger } from "nestjs-pino";
+import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
 
 @Injectable()
 export class AudioQueryService implements AudioPort{
@@ -14,15 +15,15 @@ export class AudioQueryService implements AudioPort{
         @InjectModel('Audio') private readonly audioModel: Model<AudioDocument>,
         private readonly logger: PinoLogger
     ){}
-    async listAudios(idUser: string): Promise<AudioEntity[]> {
+    async listAudios(userId: string): Promise<AudioEntity[]> {
         try {
             const audios = await this.audioModel.find({
-                idUser
+                userId
             }).exec()
              return audios.map((audio) =>
                 new AudioEntity()
                 .setId(audio._id.toString())
-                .setIdUser(normalizeId(audio.user))
+                .setUser(normalizeId(audio.user))
                 .setPrompt(audio.prompt)
                 .setCreateDate(audio.createdAt)
                 .setUrlAudio(audio.urlAudio)
@@ -36,12 +37,20 @@ export class AudioQueryService implements AudioPort{
                 .build()
             )
         } catch (error) {
-            console.log(error)
-            throw new MokkaError(
-                'Failed to save audio record',
-                'Database operation failed',
-                HttpStatus.INTERNAL_SERVER_ERROR
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:'Failed to list audios',
+                    userId
+                },
+                'Failed to list audios'
             )
+            throw new MokkaError({
+                message: 'Database operation failed',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.PAYLOAD_TOO_LARGE,
+                details: 'Failed to list audios'
+            })
         }
     }
 }

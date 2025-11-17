@@ -4,12 +4,16 @@ import { AudioGeneratorPort } from "../../application/ports/audio-generator.port
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
 import {  HttpStatus, Injectable } from "@nestjs/common";
 import { AudioGeneratorError } from "src/shared/errors/audio-generator.error";
+import { PinoLogger } from "nestjs-pino";
 
 @Injectable()
 export class AudioGeneratorService implements AudioGeneratorPort{
 
     private clientElevenLabs: ElevenLabsClient
-    constructor(private configService: ConfigService) {
+    constructor(
+        private configService: ConfigService,
+        private readonly logger: PinoLogger
+    ) {
         const apiKey = this.configService.get<string>('ELEVEN_LABS_API_KEY')
         this.clientElevenLabs = new ElevenLabsClient({ apiKey })
     }
@@ -35,11 +39,20 @@ export class AudioGeneratorService implements AudioGeneratorPort{
             const audioBuffer = Buffer.concat(chunks);
             return audioBuffer
         } catch (error) {
-            console.log(error)
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:'Failed to generate audio record',
+                    userId:generateAudioDto.userId
+                },
+                'Failed to generate audio record'
+            )
             throw new AudioGeneratorError(
-                'Failed to save audio record',
-                'Database operation failed',
-                HttpStatus.INTERNAL_SERVER_ERROR
+                {
+                    message:'Audio failed',
+                    details:'Failed to generate audio record',
+                    status:HttpStatus.INTERNAL_SERVER_ERROR
+                }
             )
         }
     }

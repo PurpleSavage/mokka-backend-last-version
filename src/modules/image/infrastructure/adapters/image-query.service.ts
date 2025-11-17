@@ -10,6 +10,7 @@ import { SharedImageEntity } from "../../domain/entities/shared-image.entity";
 import { ImageSharedDocument } from "../schemas/image-shared.schema";
 import { UserDocument } from "src/modules/auth/infrastructure/schemas/user.schema";
 import { SharedByEntity } from "../../domain/entities/shared-by.entity";
+import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
 
 @Injectable()
 export class ImageQueryService implements ImagePort{
@@ -40,15 +41,16 @@ export class ImageQueryService implements ImagePort{
             this.logger.error(
                 {
                     stack: error instanceof Error ? error.stack : undefined,
-                    message:"Error to list images by userId"
+                    message:"Error to list images by userId",
                 },
-                'Error generating audio'
+                "Error to list images by userId"
             )
-            throw new MokkaError(
-                'Failed to save audio record',
-                'Database operation failed',
-                HttpStatus.INTERNAL_SERVER_ERROR
-            )
+            throw new MokkaError({
+                message: "Error to list images, please Ttry again later",
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Database operation failed'
+            })
         }
     }
     async listSharedImage(page:number): Promise<SharedImageEntity[]> {
@@ -96,15 +98,16 @@ export class ImageQueryService implements ImagePort{
             this.logger.error(
                 {
                     stack: error instanceof Error ? error.stack : undefined,
-                    message:"Error to list shared images by userId"
+                    message:"Error to list shared images by userId",
                 },
-                'Error generating audio'
+                "Error to list shared images by userId"
             )
-            throw new MokkaError(
-                'Failed to save audio record',
-                'Database operation failed',
-                HttpStatus.INTERNAL_SERVER_ERROR
-            )
+            throw new MokkaError({
+                message: "Error to list shared images of community",
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Database operation failed'
+            })
         }
     }
 }

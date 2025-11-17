@@ -15,19 +15,19 @@ export class GenerateAudioUseCase{
     ){}
     async execute(dto:GenerateAudioDto){
         const audioBuffer = await this.audioGeneratorService.generateVoice(dto)
-        const {url} = await this.storageService.saveAudio(dto.idUser,audioBuffer)
-        const vo = new GenerateAudioVO()
-            .setPrompt(dto.prompt)
-            .setUser(dto.idUser)
-            .setIdModel(dto.idModel)
-            .setNameModelAudio(dto.nameModelAudio)
-            .setUrlAudio(url)
-            .setSpeed(dto.speed)
-            .setStability(dto.stability)
-            .setSimilarity(dto.similarity)
-            .setExaggeration(dto.exaggeration)
-            .setUseSpeakerBoost(dto.useSpeakerBoost)
-            .build();
+        const {url} = await this.storageService.saveAudio(dto.userId,audioBuffer)
+        const vo = GenerateAudioVO.create({
+            prompt: dto.prompt,
+            user: dto.userId,
+            idModel: dto.idModel,
+            nameModelAudio: dto.nameModelAudio,
+            urlAudio: url,
+            speed: dto.speed,
+            stability: dto.stability,
+            similarity: dto.similarity,
+            exaggeration: dto.exaggeration,
+            useSpeakerBoost: dto.useSpeakerBoost
+        })
         const audio = await this.audioCommandService.saveGeneratedAudio(vo)
         return audio
     }

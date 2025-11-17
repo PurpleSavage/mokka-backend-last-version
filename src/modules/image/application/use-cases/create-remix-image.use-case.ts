@@ -19,6 +19,7 @@ export class CreateRemixImageUseCase{
         const urlRemixImage= await this.multimediaService.createRemixBasedImage(createRemixImageDto.imageUrl,createRemixImageDto.prompt)
         const imagebuffer = await this.downloadService.downloadUrl(urlRemixImage)
         const imageUrlStorage = await this.storageService.saveImage(imagebuffer,createRemixImageDto.user)
+        const imageSharedId =await this.imageCommandService.updateRemixes(createRemixImageDto.imageShared)
         const vo = RemixImageVo.create({
             user:createRemixImageDto.user,
             prompt: createRemixImageDto.prompt,
@@ -26,7 +27,7 @@ export class CreateRemixImageUseCase{
             height: createRemixImageDto.height,
             imageUrl:imageUrlStorage.url,
             aspectRatio:createRemixImageDto.aspectRatio,
-            imageBase:createRemixImageDto.imageShared,
+            imageBase:imageSharedId,
             size:imageUrlStorage.size,
             prevImageUrl:createRemixImageDto.prevImageUrl
         })

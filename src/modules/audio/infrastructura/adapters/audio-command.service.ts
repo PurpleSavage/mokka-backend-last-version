@@ -8,11 +8,14 @@ import { normalizeId } from "src/shared/application/helpers/normalized-obj";
 import { AudioRepository } from "../../domain/repositories/audio.repository";
 import { GenerateAudioVO } from "../../domain/value-objects/generated-audio.vo";
 import { MokkaError } from "src/shared/errors/mokka.error";
+import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { PinoLogger } from "nestjs-pino";
 
 @Injectable()
 export class AudioCommandService implements AudioRepository{
     constructor(
-        @InjectModel('Audio') private readonly audioModel: Model<AudioDocument>
+        @InjectModel('Audio') private readonly audioModel: Model<AudioDocument>,
+        private readonly logger: PinoLogger
     ){}
     async saveGeneratedAudio(generatedAudioVo: GenerateAudioVO): Promise<AudioEntity> {
             try {
@@ -34,7 +37,7 @@ export class AudioCommandService implements AudioRepository{
                 .setExaggeration(savedAudio.exaggeration)
                 .setId(savedAudio._id.toString())
                 .setIdModel(savedAudio.idModel)
-                .setIdUser(normalizeId(savedAudio.user))
+                .setUser(normalizeId(savedAudio.user))
                 .setNameModelAudio(savedAudio.nameModelAudio)
                 .setPrompt(savedAudio.prompt)
                 .setSimilarity(savedAudio.similarity)
@@ -45,13 +48,20 @@ export class AudioCommandService implements AudioRepository{
                 .build()
                 return audioGenerated
             } catch (error) {
-                console.log(error)
-                throw new MokkaError(
-                    'Failed to save audio record',
-                    'Database operation failed',
-                    HttpStatus.INTERNAL_SERVER_ERROR
+                this.logger.error(
+                    {
+                        stack: error instanceof Error ? error.stack : undefined,
+                        message:'Failed to generate audio record',
+                        userId:generatedAudioVo.user
+                    },
+                    'Failed to generate audio record'
                 )
-                
+                throw new MokkaError({
+                    message: 'Database operation failed',
+                    errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    details: 'Failed to save audio record'
+                })
             }
         }
 }

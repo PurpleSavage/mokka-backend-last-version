@@ -9,7 +9,10 @@ import { StorageRepository } from "./domain/repositories/storage.repository";
 import { MdReaderPort } from "./application/ports/md-reader.port";
 import { DownloadVideoUseCase } from "./infrastructure/adapters/download-file.service";
 import { DownloadFilePort } from "./application/ports/downlaod-file.port";
-
+import { ConfigService } from "@nestjs/config";
+import Redis from 'ioredis';
+import { CacheManagerService } from "./infrastructure/adapters/cache-manager.service";
+import { CacheManagerPort } from "./application/ports/cache-manager.port";
 
 @Global() 
 @Module({
@@ -34,6 +37,30 @@ import { DownloadFilePort } from "./application/ports/downlaod-file.port";
         {
             useClass:DownloadVideoUseCase,
             provide:DownloadFilePort
+        },
+        {
+            useClass:CacheManagerService,
+            provide:CacheManagerPort
+        },
+        {
+            provide: 'REDIS_CLIENT',
+            useFactory:(configService: ConfigService) => {
+                const client = new Redis({
+                host: configService.get('REDIS_URL', 'localhost'),
+                port: 6379,
+                });
+
+                client.on('connect', () => {
+                console.log('✅ Conectado a Redis');
+                });
+
+                client.on('error', (err) => {
+                console.error('❌ Error en Redis:', err);
+                });
+
+                return client;
+            },
+            inject: [ConfigService]
         }
     ],
     exports:[
@@ -41,7 +68,8 @@ import { DownloadFilePort } from "./application/ports/downlaod-file.port";
         JwtPort,
         MultimediaGeneratorPort,
         StorageRepository,
-        DownloadFilePort
+        DownloadFilePort,
+        CacheManagerPort
     ]
 })
 export class SharedModule{}

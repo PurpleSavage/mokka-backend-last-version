@@ -3,7 +3,7 @@ import { IdModelsAudio, ModelsAudio } from "../enums/audio-models"
 
 export class AudioEntity {
   public id: string
-  public idUser: string
+  public user: string
   public prompt: string
   public createDate: Date
   public urlAudio: string
@@ -22,8 +22,8 @@ export class AudioEntity {
     return this
   }
 
-  setIdUser(idUser: string) {
-    this.idUser = idUser
+  setUser(user: string) {
+    this.user = user
     return this
   }
 

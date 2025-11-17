@@ -5,7 +5,6 @@ import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { UpdateDownloadsSharedImageDto } from "./application/dtos/update-downloads-image.dto";
 import { ShareImageUseCase } from "./application/use-cases/shared-image.use-case";
 import { ShareImageDto } from "./application/dtos/share-image.dto";
-import { CreateRemixImageUseCase } from "./application/use-cases/create-remix-image.use-case";
 import { CreateRemixImageDto } from "./application/dtos/create-remix-image.dto";
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
@@ -21,9 +20,9 @@ import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 export class ImageCommandController{
     constructor(
         @InjectQueue('image-queue') private imageQueue: Queue,
+        @InjectQueue('remix-image-queue') private remixImageQueue: Queue,
         private readonly updateDownloadsSharedImageUseCase:UpdateDownloadsSharedImageUseCase,
         private readonly shareImageUseCase:ShareImageUseCase,
-        private readonly createRemixImageUseCase:CreateRemixImageUseCase
     ){}
     
     @Patch('community-image/:sharedImageId')
@@ -54,10 +53,21 @@ export class ImageCommandController{
     @RequiresCredits(20)
     @Get('remix/:imageSharedId')
     @HttpCode(HttpStatus.OK)
-    createRemix(
+    async createRemix(
         @Param() createRemixImageDto:CreateRemixImageDto //falta ponerlo en la cola
     ){
-        return this.createRemixImageUseCase.execute(createRemixImageDto)
+        const job = await this.imageQueue.add('remix-image', 
+            createRemixImageDto,
+            {
+                removeOnComplete: false, // o true si también quieres limpiar los completados
+                removeOnFail: true,      // 🔹 elimina el job de Redis si falla
+            },
+        )
+        return{
+            jobId:job.id,
+            status:StatusQueue.PROCESSING,
+            message:'Image generation started'
+        }
     }
 
 

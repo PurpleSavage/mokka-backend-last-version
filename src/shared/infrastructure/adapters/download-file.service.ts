@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { HttpService } from '@nestjs/axios';
 import { AxiosError } from 'axios';
 import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
+import { MokkaError } from "src/shared/errors/mokka.error";
+import { ErrorPlatformMokka } from "../enums/error-detail-types";
 
 @Injectable()
 export class DownloadVideoUseCase implements DownloadFilePort{
@@ -22,11 +24,12 @@ export class DownloadVideoUseCase implements DownloadFilePort{
             const contentLength= headers['content-length'] as string | undefined;
             
             if (contentLength && parseInt(contentLength) > 100 * 1024 * 1024) {
-                throw new HttpException({
+                throw new MokkaError({
+                    message: 'File too large (max 100MB)',
+                    errorType: ErrorPlatformMokka.FILE_SIZE_ERROR,
                     status: HttpStatus.PAYLOAD_TOO_LARGE,
-                    error: 'File too large (max 100MB)',
-                    errorType: 'FILE_SIZE_ERROR'
-                }, HttpStatus.PAYLOAD_TOO_LARGE);
+                    details: 'File size exceeds maximum allowed'
+                })
             }
 
             return Buffer.from(data);
@@ -42,28 +45,31 @@ export class DownloadVideoUseCase implements DownloadFilePort{
             // Manejar errores de Axios
             if (error instanceof AxiosError) {
                 if (error.code === 'ECONNABORTED') {
-                    throw new HttpException({
-                        status: HttpStatus.REQUEST_TIMEOUT,
-                        error: 'Download timeout (30 seconds exceeded)',
-                        errorType: 'DOWNLOAD_TIMEOUT_ERROR'
-                    }, HttpStatus.REQUEST_TIMEOUT);
+                    throw new MokkaError({
+                        message: 'timeout',
+                        errorType: ErrorPlatformMokka.DOWNLOAD_TIMEOUT_ERROR,
+                        status: HttpStatus.PAYLOAD_TOO_LARGE,
+                        details: 'Download timeout (30 seconds exceeded)'
+                    })
                 }
 
                 if (error.response) {
-                    throw new HttpException({
-                        status: HttpStatus.BAD_GATEWAY,
-                        error: `HTTP error! status: ${error.response.status}`,
-                        errorType: 'HTTP_ERROR'
-                    }, HttpStatus.BAD_GATEWAY);
+                    throw new MokkaError({
+                        message: 'failed http',
+                        errorType: ErrorPlatformMokka.HTTP_ERROR,
+                        status: HttpStatus.PAYLOAD_TOO_LARGE,
+                        details: `HTTP error! status: ${error.response.status}`
+                    })
                 }
             }
 
             // Error genérico
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: 'An error occurred while downloading video, please try again later.',
-                errorType: 'DOWNLOAD_ERROR'
-            }, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new MokkaError({
+                message: 'An error occurred while downloading video, please try again later.',
+                errorType: ErrorPlatformMokka.DOWNLOAD_ERROR,
+                status: HttpStatus.PAYLOAD_TOO_LARGE,
+                details: 'An error occurred while downloading video, unknow error.'
+            })
         }
     }
 }

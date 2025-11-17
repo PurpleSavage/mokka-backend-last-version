@@ -1,38 +1,39 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { NotifierService } from 'src/notifier/notifier.service';
-import { GenerateImageUseCase } from '../use-cases/generate-image.use-case';
-import { GenerateImageDto } from '../dtos/generate-image.dto';
+
 import { PinoLogger } from 'nestjs-pino';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { Job } from 'bullmq';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
+import { CreateRemixImageUseCase } from '../use-cases/create-remix-image.use-case';
+import { CreateRemixImageDto } from '../dtos/create-remix-image.dto';
 
-@Processor('image-queue')
-export class ImageProcessor extends WorkerHost {
+@Processor('remix-image-queue')
+export class RemixImageProcessor extends WorkerHost {
   constructor(
-    private readonly generateImageUseCase: GenerateImageUseCase,
+    private readonly createRemixImageUseCase: CreateRemixImageUseCase,
     private readonly imageNotifierService: NotifierService,
     private readonly logger: PinoLogger,
   ) {
     super();
   }
-  async process(job: Job<GenerateImageDto>) {
+  async process(job: Job<CreateRemixImageDto>) {
     try {
-      const generateImageDto = job.data;
-      const result = await this.generateImageUseCase.execute(generateImageDto);
-      this.imageNotifierService.notifyImageReady(generateImageDto.userId, {
+      const createRemixImageDto = job.data;
+      const result = await this.createRemixImageUseCase.execute(createRemixImageDto);
+      this.imageNotifierService.notifyImageReady(createRemixImageDto.user, {
         jobId: job.id as string,
         entity: result,
         status: StatusQueue.COMPLETED,
         message: 'Image generated',
       });
     } catch (error) {
-      const generateImageDto = job.data;
+      const createRemixImageDto = job.data;
       this.logger.error(
         {
           jobId: job.id,
-          userId: generateImageDto.userId,
+          userId: createRemixImageDto.user,
           errorType:
             error instanceof AppBaseError ? error.errorType : 'UNKNOWN_ERROR',
           errorMessage:
@@ -47,7 +48,7 @@ export class ImageProcessor extends WorkerHost {
       );
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
       this.imageNotifierService.notifyAudioError(
-        generateImageDto.userId,
+        createRemixImageDto.user,
         errorInfo,
       );
       throw error;

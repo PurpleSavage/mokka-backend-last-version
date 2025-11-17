@@ -15,6 +15,8 @@ import { normalizeId } from "src/shared/application/helpers/normalized-obj";
 import { RemixImageVo } from "../../domain/value-objects/remix-image.vo";
 import { RemixImageEntity } from "../../domain/entities/remix-image.entity";
 import { RemixImageDocument } from "../schemas/remix-image.schema";
+import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+
 
 @Injectable()
 export class ImageCommandService implements ImageRepository{
@@ -59,11 +61,12 @@ export class ImageCommandService implements ImageRepository{
                 },
                 'Error saving image'
             )
-            throw new MokkaError(
-                'Failed to save audio record',
-                'Database operation failed',
-                HttpStatus.INTERNAL_SERVER_ERROR
-            )
+            throw new MokkaError({
+                message: 'Failed to save audio record',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Database operation failed'
+            })
         }
     }
     async updateDownLoadsSharedImage(imageId: string): Promise<UpdateDownloadsResultDomainModel> {
@@ -74,11 +77,12 @@ export class ImageCommandService implements ImageRepository{
                 { new: true }                           // devolver el doc actualizado
             )
             if (!updatedImage) {
-                throw new MokkaError(
-                    'Image not found',
-                    'Database operation failed',
-                    HttpStatus.NOT_FOUND
-                )
+                throw new MokkaError({
+                    message: 'Image not found',
+                    errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                    status: HttpStatus.NOT_FOUND,
+                    details: 'Database operation failed to search image'
+                })
             }
 
             return new UpdateDownloadsResultDomainModel()
@@ -93,11 +97,12 @@ export class ImageCommandService implements ImageRepository{
                 },
                 'Error updating the number of image downloads'
             )
-            throw new MokkaError(
-                'Error updating the number of image downloads',
-                'Database operation failed',
-                HttpStatus.INTERNAL_SERVER_ERROR
-            )
+            throw new MokkaError({
+                message: 'Error updating the number of image downloads',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Database operation failed to find image'
+            })
         }
     }
     async shareImage(imageId: string, sharedBy: string): Promise<SharedImageEntity> {
@@ -121,15 +126,17 @@ export class ImageCommandService implements ImageRepository{
             this.logger.error(
                 {
                     stack: error instanceof Error ? error.stack : undefined,
-                    message:"Error creating the image shared"
+                    message:'Error sharing imgae',
+                    imageId
                 },
                 'Error creating the image shared'
             )
-            throw new MokkaError(
-                'Error creating the image shared',
-                'Database operation failed',
-                HttpStatus.INTERNAL_SERVER_ERROR
-            )
+            throw new MokkaError({
+                message: 'Error sharing imgae',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Database operation failed'
+            })
         }
     }
     async saveRemixImage(remixImageVo:RemixImageVo):Promise<RemixImageEntity>{
@@ -162,15 +169,50 @@ export class ImageCommandService implements ImageRepository{
             this.logger.error(
                 {
                     stack: error instanceof Error ? error.stack : undefined,
-                    message:'Error creating new shared image remix'
+                    message:'Error creating new remix image',
+                    user:remixImageVo.user
                 },
-                'Error creating new shared image remix'
+                'Error creating new remix image'
             )
-            throw new MokkaError(
-                'Error creating new shared image remix',
-                'Database operation failed',
-                HttpStatus.INTERNAL_SERVER_ERROR
+            throw new MokkaError({
+                message: 'Error creating new remix image',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Database operation failed'
+            })
+        }
+    }
+    async updateRemixes(imageShared: string): Promise<string> {
+        try {
+            const updatedImage = await this.sharedImageModel.findByIdAndUpdate(
+                new ObjectId(imageShared),                  // buscar por _id
+                { $inc: { remixes: 1 } },                 // incrementar en 1
+                { new: true }                           // devolver el doc actualizado
             )
+            if (!updatedImage) {
+                throw new MokkaError({
+                    message: 'Image not found',
+                    errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                    status: HttpStatus.NOT_FOUND,
+                    details: 'Database operation failed to search image'
+                })
+            }
+            return updatedImage._id.toString()
+        } catch (error) {
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:'Error creating new remix image',
+                    imageSharedId:imageShared
+                },
+                'Error creating new remix image'
+            )
+            throw new MokkaError({
+                message: 'Error to update remixes',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Database operation failed'
+            })
         }
     }
 }

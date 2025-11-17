@@ -9,6 +9,6 @@ export class ListAudiosUseCase{
         private readonly audioQueryService:AudioPort
     ){}
     async execute(dto:ListAudiosDto):Promise<AudioEntity[]>{   
-        return await this.audioQueryService.listAudios(dto.idUser)
+        return await this.audioQueryService.listAudios(dto.userId)
     }
 }

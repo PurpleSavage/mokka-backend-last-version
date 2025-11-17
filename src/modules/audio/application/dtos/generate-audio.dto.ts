@@ -9,7 +9,7 @@ export class GenerateAudioDto {
 
   @IsString()
   @IsNotEmpty()
-  idUser:string
+  userId:string
 
   @IsString()
   @IsNotEmpty()

@@ -10,4 +10,5 @@ export abstract class ImageRepository{
     abstract shareImage(imageId:string,sharedBy:string):Promise<SharedImageEntity>
     abstract savedGeneratedImage(savedGenerateImageVO:SavedGenerateImageVO):Promise<ImageEntity>
     abstract saveRemixImage(remixImageVo:RemixImageVo):Promise<RemixImageEntity>
+    abstract updateRemixes(imageShared:string):Promise<string>
 }

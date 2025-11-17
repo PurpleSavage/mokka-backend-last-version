@@ -1,38 +1,38 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { NotifierService } from 'src/notifier/notifier.service';
-import { GenerateImageUseCase } from '../use-cases/generate-image.use-case';
-import { GenerateImageDto } from '../dtos/generate-image.dto';
-import { PinoLogger } from 'nestjs-pino';
-import { AppBaseError } from 'src/shared/errors/base.error';
+import { GenerateAudioUseCase } from '../use-cases/generate-audio.use-case';
+import { GenerateAudioDto } from '../dtos/generate-audio.dto';
 import { Job } from 'bullmq';
+import { AppBaseError } from 'src/shared/errors/base.error';
+import { PinoLogger } from 'nestjs-pino';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
 
-@Processor('image-queue')
-export class ImageProcessor extends WorkerHost {
+@Processor('audio-queue')
+export class AudioProcessor extends WorkerHost {
   constructor(
-    private readonly generateImageUseCase: GenerateImageUseCase,
-    private readonly imageNotifierService: NotifierService,
+    private readonly generateAudioUseCase: GenerateAudioUseCase,
+    private readonly audioNotifierService: NotifierService,
     private readonly logger: PinoLogger,
   ) {
     super();
   }
-  async process(job: Job<GenerateImageDto>) {
+  async process(job: Job<GenerateAudioDto>): Promise<any> {
     try {
-      const generateImageDto = job.data;
-      const result = await this.generateImageUseCase.execute(generateImageDto);
-      this.imageNotifierService.notifyImageReady(generateImageDto.userId, {
+      const generateAudioDto = job.data;
+      const result = await this.generateAudioUseCase.execute(generateAudioDto);
+      this.audioNotifierService.notifyAudioReady(generateAudioDto.userId, {
         jobId: job.id as string,
         entity: result,
         status: StatusQueue.COMPLETED,
         message: 'Image generated',
       });
     } catch (error) {
-      const generateImageDto = job.data;
+      const generateAudioDto = job.data;
       this.logger.error(
         {
           jobId: job.id,
-          userId: generateImageDto.userId,
+          userId: generateAudioDto.userId,
           errorType:
             error instanceof AppBaseError ? error.errorType : 'UNKNOWN_ERROR',
           errorMessage:
@@ -46,8 +46,8 @@ export class ImageProcessor extends WorkerHost {
         'Error generating audio',
       );
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-      this.imageNotifierService.notifyAudioError(
-        generateImageDto.userId,
+      this.audioNotifierService.notifyAudioError(
+        generateAudioDto.userId,
         errorInfo,
       );
       throw error;

@@ -1,70 +1,61 @@
 import { IdModelsAudio, ModelsAudio } from "../enums/audio-models";
 
 export class GenerateAudioVO {
-  public prompt: string
-  public user: string
-  public idModel: IdModelsAudio
-  public nameModelAudio: ModelsAudio
-  public urlAudio: string
-  public speed: number
-  public stability: number
-  public similarity: number
-  public exaggeration: number
-  public useSpeakerBoost: boolean
+  public readonly prompt: string
+  public readonly user: string
+  public readonly idModel: IdModelsAudio
+  public readonly nameModelAudio: ModelsAudio
+  public readonly urlAudio: string
+  public readonly speed: number
+  public readonly stability: number
+  public readonly similarity: number
+  public readonly exaggeration: number
+  public readonly useSpeakerBoost: boolean
 
-  constructor() {}
-
-  setPrompt(prompt: string) {
-    this.prompt = prompt;
-    return this;
+  private constructor(data: {
+    prompt: string
+    user: string
+    idModel: IdModelsAudio
+    nameModelAudio: ModelsAudio
+    urlAudio: string
+    speed: number
+    stability: number
+    similarity: number
+    exaggeration: number
+    useSpeakerBoost: boolean
+  }) {
+    this.prompt = data.prompt
+    this.user = data.user
+    this.idModel = data.idModel
+    this.nameModelAudio = data.nameModelAudio
+    this.urlAudio = data.urlAudio
+    this.speed = data.speed
+    this.stability = data.stability
+    this.similarity = data.similarity
+    this.exaggeration = data.exaggeration
+    this.useSpeakerBoost = data.useSpeakerBoost
+    
+   
   }
 
-  setUser(user: string) {
-    this.user = user;
-    return this;
-  }
+  // private validate(): void {
+  //   if (!this.prompt) throw new Error('Prompt is required')
+  //   if (this.speed < 0 || this.speed > 2) throw new Error('Speed must be between 0 and 2')
+  //   // ... más validaciones
+  // }
 
-  setIdModel(idModel: IdModelsAudio) {
-    this.idModel = idModel;
-    return this;
-  }
-
-  setNameModelAudio(nameModelAudio: ModelsAudio) {
-    this.nameModelAudio = nameModelAudio;
-    return this;
-  }
-
-  setUrlAudio(urlAudio: string) {
-    this.urlAudio = urlAudio;
-    return this;
-  }
-
-  setSpeed(speed: number) {
-    this.speed = speed;
-    return this;
-  }
-
-  setStability(stability: number) {
-    this.stability = stability;
-    return this;
-  }
-
-  setSimilarity(similarity: number) {
-    this.similarity = similarity;
-    return this;
-  }
-
-  setExaggeration(exaggeration: number) {
-    this.exaggeration = exaggeration;
-    return this;
-  }
-
-  setUseSpeakerBoost(useSpeakerBoost: boolean) {
-    this.useSpeakerBoost = useSpeakerBoost;
-    return this;
-  }
-
-  build(): GenerateAudioVO {
-    return this;
+  static create(data: {
+    prompt: string
+    user: string
+    idModel: IdModelsAudio
+    nameModelAudio: ModelsAudio
+    urlAudio: string
+    speed: number
+    stability: number
+    similarity: number
+    exaggeration: number
+    useSpeakerBoost: boolean
+  }): GenerateAudioVO {
+    return new GenerateAudioVO(data)
   }
 }
