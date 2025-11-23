@@ -34,5 +34,28 @@ export enum ErrorPlatformMokka{
   DATABASE_FAILED='DATABASE_FILED',
   DOWNLOAD_TIMEOUT_ERROR='DOWNLOAD_TIMEOUT_ERROR',
   HTTP_ERROR='HTTP_ERROR',
-  DOWNLOAD_ERROR='DOWNLOAD_ERROR'
+  DOWNLOAD_ERROR='DOWNLOAD_ERROR',
+  OPENAI_ERROR = 'OPENAI_ERROR',
+}
+
+
+export enum OpenAIErrorCode {
+    CONTENT_POLICY_VIOLATION = 'content_policy_violation',
+    CONTEXT_LENGTH_EXCEEDED = 'context_length_exceeded',
+    RATE_LIMIT_EXCEEDED = 'rate_limit_exceeded',
+    INSUFFICIENT_QUOTA = 'insufficient_quota',
+    INVALID_API_KEY = 'invalid_api_key',
+    INVALID_REQUEST = 'invalid_request_error',
+    SERVER_ERROR = 'server_error',
+}
+
+export enum OpenAIErrorTypes {
+    NSFW = 'NSFW_CONTENT',
+    CONTEXT_TOO_LONG = 'CONTEXT_TOO_LONG',
+    RATE_LIMIT = 'RATE_LIMIT',
+    QUOTA_EXCEEDED = 'QUOTA_EXCEEDED',
+    INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
+    INVALID_INPUT = 'INVALID_INPUT',
+    SERVER_ERROR = 'SERVER_ERROR',
+    UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }

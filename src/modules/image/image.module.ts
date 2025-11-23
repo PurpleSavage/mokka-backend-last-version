@@ -17,6 +17,7 @@ import { UpdateDownloadsSharedImageUseCase } from "./application/use-cases/updat
 import { ShareImageUseCase } from "./application/use-cases/shared-image.use-case";
 import { CreateRemixImageUseCase } from "./application/use-cases/create-remix-image.use-case";
 import { RemixImageSchema } from "./infrastructure/schemas/remix-image.schema";
+import { GenerateImageUseCase } from "./application/use-cases/generate-image.use-case";
 
 
 @Module({
@@ -41,6 +42,7 @@ import { RemixImageSchema } from "./infrastructure/schemas/remix-image.schema";
         ListImagesUseCase,
         UpdateDownloadsSharedImageUseCase,
         ShareImageUseCase,
+        GenerateImageUseCase,
         CreateRemixImageUseCase,
         {
             useClass:ImageQueryService,

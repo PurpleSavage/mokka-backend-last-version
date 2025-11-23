@@ -79,8 +79,14 @@ export class MultimediaService implements MultimediaGeneratorPort{
                 },
                 'Error updating the number of image downloads'
             )
+            if (error instanceof MultimediaGeneratorError) {
+                throw error;
+            }
             if (typeof error === 'object' && error !== null && 'error' in error) {
                 throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto)
+            }
+            if (error instanceof HttpException) {
+                throw error;
             }
 
             // Si no sabemos qué es, lanzamos error genérico
@@ -143,8 +149,14 @@ export class MultimediaService implements MultimediaGeneratorPort{
                 },
                 'Error updating the number of image downloads'
             )
+            if (error instanceof MultimediaGeneratorError) {
+                throw error;
+            }
             if (typeof error === 'object' && error !== null && 'error' in error) {
                 throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto)
+            }
+            if (error instanceof HttpException) {
+                throw error;
             }
 
             // Si no sabemos qué es, lanzamos error genérico
@@ -199,9 +211,15 @@ export class MultimediaService implements MultimediaGeneratorPort{
                 },
                 'Error updating the number of image downloads'
             )
+            if (error instanceof MultimediaGeneratorError) {
+                throw error;
+            }
             
             if (typeof error === 'object' && error !== null && 'error' in error) {
                 throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto)
+            }
+            if (error instanceof HttpException) {
+                throw error;
             }
 
             // Si no sabemos qué es, lanzamos error genérico

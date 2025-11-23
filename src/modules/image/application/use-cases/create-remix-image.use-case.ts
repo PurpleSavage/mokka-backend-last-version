@@ -16,7 +16,7 @@ export class CreateRemixImageUseCase{
          private readonly downloadService:DownloadFilePort,
     ){}
     async execute(createRemixImageDto:CreateRemixImageDto){
-        const urlRemixImage= await this.multimediaService.createRemixBasedImage(createRemixImageDto.imageUrl,createRemixImageDto.prompt)
+        const urlRemixImage= await this.multimediaService.createRemixBasedImage(createRemixImageDto.prevImageUrl,createRemixImageDto.prompt)
         const imagebuffer = await this.downloadService.downloadUrl(urlRemixImage)
         const imageUrlStorage = await this.storageService.saveImage(imagebuffer,createRemixImageDto.user)
         const imageSharedId =await this.imageCommandService.updateRemixes(createRemixImageDto.imageShared)
