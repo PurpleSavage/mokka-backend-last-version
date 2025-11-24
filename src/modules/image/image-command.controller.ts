@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { UpdateDownloadsSharedImageUseCase } from "./application/use-cases/update-downloads-shared-image.use-case";
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
@@ -51,12 +51,12 @@ export class ImageCommandController{
     @UseGuards(AccesstokenGuard)
     @UseGuards(CreditsGuard)
     @RequiresCredits(20)
-    @Get('remix/:imageSharedId')
+    @Post('remix/:imageSharedId')
     @HttpCode(HttpStatus.OK)
     async createRemix(
-        @Param() createRemixImageDto:CreateRemixImageDto //falta ponerlo en la cola
+        @Body() createRemixImageDto:CreateRemixImageDto //falta ponerlo en la cola
     ){
-        const job = await this.imageQueue.add('remix-image', 
+        const job = await this.remixImageQueue.add('remix-image', 
             createRemixImageDto,
             {
                 removeOnComplete: false, // o true si también quieres limpiar los completados

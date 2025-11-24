@@ -12,8 +12,8 @@ export class CreateRemixImageUseCase{
     constructor(
         private readonly imageCommandService:ImageRepository,
         public readonly multimediaService:MultimediaGeneratorPort,
-         private readonly storageService:StorageRepository,
-         private readonly downloadService:DownloadFilePort,
+        private readonly storageService:StorageRepository,
+        private readonly downloadService:DownloadFilePort,
     ){}
     async execute(createRemixImageDto:CreateRemixImageDto){
         const urlRemixImage= await this.multimediaService.createRemixBasedImage(createRemixImageDto.prevImageUrl,createRemixImageDto.prompt)

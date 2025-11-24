@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class ListHistoryText{
+export class ListHistoryTextDto{
     @IsString()
     @IsNotEmpty()
     user:string

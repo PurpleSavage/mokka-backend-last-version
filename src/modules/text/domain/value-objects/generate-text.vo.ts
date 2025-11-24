@@ -4,7 +4,7 @@ import { Tone } from "../enums/tone-options"
 
 export class GenerateTextVO{
     public readonly user: string
-    public readonly prompt: string
+    public readonly context: string
     public readonly promotionType: string
     public readonly title: string
     public readonly toneType: Tone
@@ -13,7 +13,7 @@ export class GenerateTextVO{
     public readonly improvedContext:string
     private constructor(data:{
         user: string
-        prompt: string
+        context: string
         promotionType: string
         title: string
         toneType: Tone
@@ -22,7 +22,7 @@ export class GenerateTextVO{
         improvedContext:string
     }){
         this.user = data.user
-        this.prompt=data.prompt
+        this.context=data.context
         this.promotionType=data.promotionType
         this.title=data.title
         this.toneType=data.toneType
@@ -32,7 +32,7 @@ export class GenerateTextVO{
     }
     public static create(data:{
         user: string
-        prompt: string
+        context: string
         promotionType: string
         title: string
         toneType: Tone
