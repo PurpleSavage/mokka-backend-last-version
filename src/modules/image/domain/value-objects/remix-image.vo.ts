@@ -1,4 +1,4 @@
-import { AspectRatio } from "../enums/image-aspect-ratio"
+import { AspectRatioImage } from "../enums/image-aspect-ratio"
 
 export class RemixImageVo {
   private constructor(
@@ -7,7 +7,7 @@ export class RemixImageVo {
     readonly width: number,
     readonly height: number,
     readonly imageUrl:string,
-    readonly aspectRatio:AspectRatio,
+    readonly aspectRatio:AspectRatioImage,
     readonly prevImageUrl:string,
     readonly size:string,
     readonly imageBase:string
@@ -19,7 +19,7 @@ export class RemixImageVo {
     width: number,
     height: number,
     imageUrl:string,
-    aspectRatio:AspectRatio,
+    aspectRatio:AspectRatioImage,
     prevImageUrl:string,
     imageBase:string,
     size:string

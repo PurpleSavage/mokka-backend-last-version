@@ -1,8 +1,8 @@
 import { Transform } from "class-transformer"
-import { IsBoolean, IsEnum, IsIn, IsNotEmpty, IsNumber,IsString, MaxLength } from "class-validator"
+import { IsArray, IsBoolean, IsEnum, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from "class-validator"
 import { VideoAspectRatio } from "../../domain/enums/video-aspectratio"
 
-export class GenerateVideoDto{
+export class GenerateRemixVideoDto{
 
     @IsNotEmpty()
     @IsString()
@@ -16,18 +16,25 @@ export class GenerateVideoDto{
 
     @IsNotEmpty()
     @IsNumber()
-    @IsIn([1280,720,960,1104,1584])
+    @IsIn([1920,1080])
     height:number
 
     @IsNotEmpty()
     @IsNumber()
-    @IsIn([720,1280,960,832,672])
+    @IsIn([1920,1080])
     width:number
 
 
     @IsEnum(VideoAspectRatio)
     @Transform(({ value }) => value as VideoAspectRatio) //para probar
     aspectRatio:VideoAspectRatio
+
+
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true })
+    referenceImages:string[]
+
 
     @IsBoolean()
     audio:boolean

@@ -62,7 +62,7 @@ export class ImageCommandService implements ImageRepository{
                 'Error saving image'
             )
             throw new MokkaError({
-                message: 'Failed to save audio record',
+                message: 'Failed to save image',
                 errorType: ErrorPlatformMokka.DATABASE_FAILED,
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                 details: 'Database operation failed'

@@ -1,14 +1,14 @@
-import { AspectRatio } from "../enums/image-aspect-ratio"
+import { AspectRatioImage } from "../enums/image-aspect-ratio"
 import { TypeStyle } from "../enums/image-styles"
 import { TypeSubStyle } from "../enums/image-substyle"
 
 export class SavedGenerateImageVO {
-    private constructor(
+  private constructor(
     readonly user: string,
     readonly prompt: string,
     readonly width: number,
     readonly height: number,
-    readonly aspectRatio: AspectRatio,
+    readonly aspectRatio: AspectRatioImage,
     readonly imageUrl: string,
     readonly size: string,
     readonly style: TypeStyle,
@@ -20,7 +20,7 @@ export class SavedGenerateImageVO {
     prompt: string;
     width: number;
     height: number;
-    aspectRatio: AspectRatio;
+    aspectRatio: AspectRatioImage;
     imageUrl: string;
     size: string;
     style: TypeStyle;

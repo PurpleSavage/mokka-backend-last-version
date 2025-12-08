@@ -6,6 +6,8 @@ import { SharedModule } from "src/shared/shared.module";
 import { VideoSchema } from "./infrastructure/schemas/video.schema";
 import { VideoCommandController } from "./video-command.controller";
 import { VideoQueryController } from "./video-query.controller";
+import { VideoRepository } from "./domain/repositories/video.repository";
+import { VideoCommandService } from "./infrastructure/adapters/video-command.service";
 
 
 @Module({
@@ -21,14 +23,17 @@ import { VideoQueryController } from "./video-query.controller";
         NotifierModule
     ],
     providers:[
-            
+        {
+            useClass:VideoCommandService,
+            provide:VideoRepository
+        }
     ],
     controllers:[
         VideoCommandController,
         VideoQueryController
     ],
     exports:[
-           
+       VideoRepository    
     ]
 })
 export class VideoModule{

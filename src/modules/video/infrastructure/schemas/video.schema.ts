@@ -5,7 +5,7 @@ import { VideoAspectRatio } from "../../domain/enums/video-aspectratio";
 
 
 
-export type ImageSharedDocument = HydratedDocument<Video>
+export type VideoDocument = HydratedDocument<Video>
 @Schema()
 export class Video{
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })

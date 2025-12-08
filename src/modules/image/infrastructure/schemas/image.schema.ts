@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
-import { AspectRatio } from "../../domain/enums/image-aspect-ratio";
+import {  AspectRatioImage } from "../../domain/enums/image-aspect-ratio";
 import { TypeStyle } from "../../domain/enums/image-styles";
 import { TypeSubStyle } from "../../domain/enums/image-substyle";
 
@@ -26,8 +26,8 @@ export class Image{
     @Prop({required:true})
     imageUrl:string;
 
-    @Prop({required:true,enum:AspectRatio})
-    aspectRatio:AspectRatio
+    @Prop({required:true,enum:AspectRatioImage})
+    aspectRatio:AspectRatioImage
 
     @Prop({required:true})  //peso de la imagen
     size:string
