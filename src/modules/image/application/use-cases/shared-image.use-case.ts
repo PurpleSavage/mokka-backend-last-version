@@ -9,6 +9,6 @@ export class ShareImageUseCase{
         private readonly imageCommandService:ImageRepository
     ){}
     execute(shareImageDto:ShareImageDto){
-        return this.imageCommandService.shareImage(shareImageDto.imageId,shareImageDto.sharedBy)
+        return this.imageCommandService.shareImage(shareImageDto.image,shareImageDto.sharedBy)
     }
 }

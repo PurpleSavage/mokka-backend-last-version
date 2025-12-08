@@ -8,6 +8,6 @@ export class UpdateDownloadsSharedImageUseCase{
         private readonly imageCommandService:ImageRepository
     ){}
     async execute(updateDownloadsImageDto:UpdateDownloadsSharedImageDto){
-        return this.imageCommandService.updateDownLoadsSharedImage(updateDownloadsImageDto.sharedImageId)
+        return this.imageCommandService.updateDownLoadsSharedImage(updateDownloadsImageDto.sharedImage)
     }
 }

@@ -3,8 +3,8 @@ import { TypeStyle } from "../enums/image-styles"
 import { TypeSubStyle } from "../enums/image-substyle"
 
 export class SavedGenerateImageVO {
-     private constructor(
-    readonly userId: string,
+    private constructor(
+    readonly user: string,
     readonly prompt: string,
     readonly width: number,
     readonly height: number,
@@ -16,7 +16,7 @@ export class SavedGenerateImageVO {
   ) {}
 
   static create(props: {
-    userId: string;
+    user: string;
     prompt: string;
     width: number;
     height: number;
@@ -27,7 +27,7 @@ export class SavedGenerateImageVO {
     subStyle: TypeSubStyle;
   }): SavedGenerateImageVO {
     return new SavedGenerateImageVO(
-      props.userId,
+      props.user,
       props.prompt,
       props.width,
       props.height,

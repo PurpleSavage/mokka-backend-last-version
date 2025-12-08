@@ -29,7 +29,7 @@ export class ImageCommandService implements ImageRepository{
     async savedGeneratedImage(savedGenerateImageVO: SavedGenerateImageVO): Promise<ImageEntity> {
         try {
             const image = new this.imageModel({
-                idUser:savedGenerateImageVO.userId,
+                user:savedGenerateImageVO.user,
                 prompt:savedGenerateImageVO.prompt,
                 aspectRatio:savedGenerateImageVO.aspectRatio,
                 height:savedGenerateImageVO.height,

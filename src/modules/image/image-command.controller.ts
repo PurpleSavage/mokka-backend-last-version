@@ -25,7 +25,7 @@ export class ImageCommandController{
         private readonly shareImageUseCase:ShareImageUseCase,
     ){}
     
-    @Patch('community-image/:sharedImageId')
+    @Patch('community-image/:sharedImage')
     @Throttle({ default: { limit: 400, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
     @HttpCode(HttpStatus.OK)

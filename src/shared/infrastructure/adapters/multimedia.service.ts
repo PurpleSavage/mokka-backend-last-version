@@ -6,22 +6,18 @@ import { MultimediaGeneratorError } from "src/shared/errors/multimedia-generator
 import { MultimediaErrorTypes } from "../enums/error-detail-types";
 import { MultimediaResponseDto } from "../dtos/multimedia-response.dt";
 import Replicate, { Prediction } from "replicate";
+import { AspectRatioImage } from "src/modules/image/domain/enums/image-aspect-ratio";
+import { VideoAspectRatio } from "src/modules/video/domain/enums/video-aspectratio";
 
 
 @Injectable()
 export class MultimediaService implements MultimediaGeneratorPort{
     private videoModel = "google/veo-3"
-    private imageModel="google/imagen-4-fast"
+    private imageModel="google/nano-banana-pro"
     private imageRemixModel = "black-forest-labs/flux-kontext-pro" 
     private readonly multimediaClient: Replicate
-    private readonly validImageDimensions = {
-        '1:1': { width: 1024, height: 1024 },
-        '16:9': { width: 1408, height: 768 },
-        '9:16': { width: 768, height: 1408 },
-        '4:3': { width: 1152, height: 896 },
-        '3:4': { width: 896, height: 1152 },
-    }
-
+    
+    
     constructor(
         private readonly configService:ConfigService,
          private readonly logger: PinoLogger
@@ -36,14 +32,26 @@ export class MultimediaService implements MultimediaGeneratorPort{
         });
       
     }
-    async createVideo(aspectRatio: string,prompt: string): Promise<string> {
+   
+    async createVideo(aspectRatio: string,prompt: string,audio:boolean,referenceImages?:string[]): Promise<string> {
         
         try {
+            const isValid = Object.values(VideoAspectRatio).includes(aspectRatio as VideoAspectRatio)
+            if (!isValid) {
+                throw new HttpException({
+                    status: HttpStatus.BAD_REQUEST,
+                    error: `Invalid aspect ratio. Valid options: ${Object.keys(VideoAspectRatio).join(', ')}`,
+                    errorType: 'INVALID_ASPECT_RATIO'
+                }, HttpStatus.BAD_REQUEST)
+            }
             let prediction: Prediction
             const input = {
                 prompt, 
-                duration: 5,
-                aspect_ratio: aspectRatio
+                duration: 8,
+                resolution: "1080p",
+                reference_images:referenceImages,
+                aspect_ratio: aspectRatio,
+                audio
             }
             prediction = await this.multimediaClient.predictions.create({
                 model:this.videoModel,
@@ -99,13 +107,14 @@ export class MultimediaService implements MultimediaGeneratorPort{
     }
     async createImage(aspectRatio: string, prompt: string): Promise<string> {
         try {
-            if (!(aspectRatio in this.validImageDimensions)) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: `Invalid aspect ratio. Valid options: ${Object.keys(this.validImageDimensions).join(', ')}`,
-                errorType: 'INVALID_ASPECT_RATIO'
-            }, HttpStatus.BAD_REQUEST)
-        }
+            const isValid = Object.values(AspectRatioImage).includes(aspectRatio as AspectRatioImage)
+            if (!isValid) {
+                throw new HttpException({
+                    status: HttpStatus.BAD_REQUEST,
+                    error: `Invalid aspect ratio. Valid options: ${Object.keys(AspectRatioImage).join(', ')}`,
+                    errorType: 'INVALID_ASPECT_RATIO'
+                }, HttpStatus.BAD_REQUEST)
+            }
 
             const input = {
                 prompt,
@@ -173,7 +182,7 @@ export class MultimediaService implements MultimediaGeneratorPort{
                 image_url: imageUrl, // URL pública de tu imagen
                 prompt: prompt,
                 guidance_scale: 7.5, // Controla qué tan fuerte sigue el prompt
-                num_inference_steps: 28, // Más pasos = mejor calidad pero más lento
+                num_inference_steps: 28, 
                 output_format: "webp"
             }
             let prediction = await this.multimediaClient.predictions.create({

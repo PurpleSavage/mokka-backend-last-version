@@ -22,10 +22,10 @@ export class GenerateImageUseCase{
         const templateFill = this.mdReaderService.fillTemplate(pormptmd,generateImageDto)
         const imageUrl = await this.multimediaService.createImage(aspectRatio,templateFill)
         const buffer = await this.downloadService.downloadUrl(imageUrl)
-        const storageResponse = await this.storageService.saveImage(buffer,generateImageDto.userId)
+        const storageResponse = await this.storageService.saveImage(buffer,generateImageDto.user)
 
         const imageGenerated = SavedGenerateImageVO.create({
-            userId: generateImageDto.userId,
+            user: generateImageDto.user,
             prompt: generateImageDto.prompt,
             width: generateImageDto.width,
             height: generateImageDto.height,

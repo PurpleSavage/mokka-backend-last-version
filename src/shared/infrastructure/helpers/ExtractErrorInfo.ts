@@ -3,7 +3,7 @@ import { StatusQueue } from "../enums/status-queue";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { ErrorPlatformMokka } from "../enums/error-detail-types";
 
-export interface AudioErrorNotification {
+export interface ErrorNotification {
     jobId: string;
     status: StatusQueue;
     error: string;
@@ -13,7 +13,7 @@ export interface AudioErrorNotification {
     details?: string;
 }
 export class ExtractErrorInfo{
-    static extract(error: unknown, jobId: string):AudioErrorNotification{
+    static extract(error: unknown, jobId: string):ErrorNotification{
         const timestamp = new Date()
         if (error instanceof AppBaseError) {
             return {

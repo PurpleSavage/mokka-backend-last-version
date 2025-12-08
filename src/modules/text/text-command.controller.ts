@@ -20,13 +20,13 @@ export class TextCommandController {
     @UseGuards(AccesstokenGuard)
     @UseGuards(CreditsGuard)
     @RequiresCredits(20)
-    @Post('remix/:imageSharedId')
+    @Post('new')
     @HttpCode(HttpStatus.OK)
-    async createRemix(
+    async generateText(
         @Body() generateTextDto: GenerateTextDto, //falta ponerlo en la cola
     ) {
         const job = await this.textQueue.add(
-            'remix-image',
+            'generate-text',
            generateTextDto,
             {
                 removeOnComplete: false, // o true si también quieres limpiar los completados
@@ -36,7 +36,7 @@ export class TextCommandController {
         return {
             jobId: job.id,
             status: StatusQueue.PROCESSING,
-            message: 'Image generation started',
+            message: 'Text generation started',
         }
     }
 }

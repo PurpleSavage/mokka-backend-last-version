@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { AspectRatio } from "../../domain/enums/image-aspect-ratio";
+import { AspectRatioImage } from "../../domain/enums/image-aspect-ratio";
 import { TypeStyle } from "../../domain/enums/image-styles";
 import { TypeSubStyle } from "../../domain/enums/image-substyle";
 
@@ -7,7 +7,7 @@ import { TypeSubStyle } from "../../domain/enums/image-substyle";
 export class GenerateImageDto {
   @IsString()
   @IsNotEmpty()
-  userId:string
+  user:string
 
   @IsString()
   @IsNotEmpty()
@@ -21,8 +21,8 @@ export class GenerateImageDto {
   @IsNotEmpty()
   height: number;
 
-  @IsEnum(AspectRatio)
-  aspectRatio:AspectRatio
+  @IsEnum(AspectRatioImage)
+  aspectRatio:AspectRatioImage
 
 
   @IsEnum(TypeStyle)

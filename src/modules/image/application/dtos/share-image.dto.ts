@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString } from "class-validator";
 export class ShareImageDto{
     @IsString()
     @IsNotEmpty()
-    imageId:string
+    image:string
 
 
     @IsString()

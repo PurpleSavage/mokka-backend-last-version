@@ -11,6 +11,8 @@ import { TextQueryService } from "./infrastructure/adapters/text-query.service";
 import { TextPort } from "./application/ports/text.port";
 import { TextGeneratorService } from "./infrastructure/adapters/text-generator.service";
 import { TextGeneratorPort } from "./application/ports/text-generator.port";
+import { GenerateTextUseCase } from "./application/use-cases/generate-text.use-case";
+import { ListTextHistoryUseCase } from "./application/use-cases/list-history-text.use-case";
 
 @Module({
     imports:[
@@ -18,9 +20,11 @@ import { TextGeneratorPort } from "./application/ports/text-generator.port";
         MongooseModule.forFeature([{ name: 'Text', schema: TextSchema}]),
         BullModule.registerQueue({  // registrar cola
             name: 'text-queue',
-        }),         
+        }), 
     ],
     providers:[
+        GenerateTextUseCase,
+        ListTextHistoryUseCase,
         {
             useClass:TextCommandService,
             provide:TextRepository

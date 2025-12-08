@@ -9,6 +9,6 @@ export class ListImagesUseCase{
         private readonly imageQueryService:ImagePort
     ){}
     execute(listImagesDto:ListImagesDto){
-        return this.imageQueryService.listImagesByUserId(listImagesDto.userId)
+        return this.imageQueryService.listImagesByUserId(listImagesDto.user)
     }
 }

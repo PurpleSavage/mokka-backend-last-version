@@ -22,7 +22,7 @@ export class RemixImageProcessor extends WorkerHost {
     try {
       const createRemixImageDto = job.data;
       const result = await this.createRemixImageUseCase.execute(createRemixImageDto);
-      this.imageNotifierService.notifyImageReady(createRemixImageDto.user, {
+      this.imageNotifierService.notifyImageRemixReady(createRemixImageDto.user, {
         jobId: job.id as string,
         entity: result,
         status: StatusQueue.COMPLETED,

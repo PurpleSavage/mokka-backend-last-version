@@ -12,6 +12,8 @@ import { BullModule } from '@nestjs/bullmq';
 import { NotifierModule } from './notifier/notifier.module';
 import { AudioModule } from './modules/audio/audio.module';
 import { ImageModule } from './modules/image/image.module';
+import { VideoModule } from './modules/video/video.module';
+import { TextModule } from './modules/text/text.module';
 
 
 
@@ -54,7 +56,9 @@ import { ImageModule } from './modules/image/image.module';
     SharedModule,
     AuthModule,
     AudioModule,
-    ImageModule
+    ImageModule,
+    VideoModule,
+    TextModule
   ],
   controllers: [],
   providers: [

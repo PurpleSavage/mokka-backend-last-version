@@ -18,7 +18,7 @@ export class ImageQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Get('images/:idUser')
+    @Get('images/:user')
     @HttpCode(HttpStatus.OK)
     listImages(
         @Param() listImagesDto:ListImagesDto

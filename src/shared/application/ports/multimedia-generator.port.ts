@@ -1,6 +1,6 @@
 
 export abstract class MultimediaGeneratorPort{
-   abstract createVideo(aspectRatio: string,prompt:string):Promise<string>
+   abstract createVideo(aspectRatio: string,prompt:string,audio:boolean,referenceImages?:string[]):Promise<string>
    abstract createImage(aspectRatio: string, prompt: string):Promise<string>
    abstract createRemixBasedImage(urlImage:string,prompt:string):Promise<string>
 }

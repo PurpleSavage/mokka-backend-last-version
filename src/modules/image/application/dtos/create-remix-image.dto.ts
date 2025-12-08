@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString, IsUrl } from "class-validator";
-import { AspectRatio } from "../../domain/enums/image-aspect-ratio";
+import {AspectRatioImage } from "../../domain/enums/image-aspect-ratio";
 
 export class CreateRemixImageDto{
     
@@ -32,6 +32,6 @@ export class CreateRemixImageDto{
     @IsNotEmpty()
     height: number;
     
-    @IsEnum(AspectRatio)
-    aspectRatio:AspectRatio
+    @IsEnum(AspectRatioImage)
+    aspectRatio:AspectRatioImage
 }
