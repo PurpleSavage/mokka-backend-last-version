@@ -1,8 +1,10 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, UseGuards } from "@nestjs/common";
-import { ListAudiosUseCase } from "./application/use-cases/list-audios.use-case";
+
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
-import { ListAudiosDto } from "./application/dtos/list-audios.dto";
+import { ListAudiosDto } from "../../application/dtos/list-audios.dto";
+import { ListAudiosUseCase } from "../../application/use-cases/list-audios.use-case";
+
 
 @Controller({
     path:'audio/read',

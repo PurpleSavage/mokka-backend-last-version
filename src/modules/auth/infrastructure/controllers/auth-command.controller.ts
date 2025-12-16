@@ -1,7 +1,9 @@
 import { Body, Controller, Post, Res } from "@nestjs/common";
-import { CreateAccountWithCredentialsUseCase } from "./application/use-cases/create-account-with-credemtails.use-case";
+
 import { FastifyReply } from 'fastify';
-import { LoginWithCredentialsDto } from "./application/dtos/login-with-credentials.dto";
+import { LoginWithCredentialsDto } from "../../application/dtos/login-with-credentials.dto";
+import { CreateAccountWithCredentialsUseCase } from "../../application/use-cases/create-account-with-credemtails.use-case";
+
 
 @Controller({
   path:'auth/write',

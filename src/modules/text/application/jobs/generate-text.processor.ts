@@ -45,7 +45,7 @@ export class GenerateTextProcessor extends WorkerHost{
                 error instanceof AppBaseError ? error.getStatus() : undefined,
               stack: error instanceof Error ? error.stack : undefined,
             },
-            'Error generating audio',
+            'Error generating text',
           );
           const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
           this.textNotifierService.notifyTextError(

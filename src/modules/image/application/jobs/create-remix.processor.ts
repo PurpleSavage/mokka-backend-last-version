@@ -26,7 +26,7 @@ export class RemixImageProcessor extends WorkerHost {
         jobId: job.id as string,
         entity: result,
         status: StatusQueue.COMPLETED,
-        message: 'Image generated',
+        message: 'Image remix generated',
       });
     } catch (error) {
       const createRemixImageDto = job.data;
@@ -47,7 +47,7 @@ export class RemixImageProcessor extends WorkerHost {
         'Error generating audio',
       );
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-      this.imageNotifierService.notifyAudioError(
+      this.imageNotifierService.notifyImageRemixError(
         createRemixImageDto.user,
         errorInfo,
       );

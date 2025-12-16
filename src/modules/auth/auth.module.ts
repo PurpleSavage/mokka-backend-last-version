@@ -1,6 +1,4 @@
 import { Global, Module } from "@nestjs/common";
-import { AuthCommandController } from "./auth-command.controller";
-import { AuthQueryController } from "./auth-query.controller";
 import { MongooseModule } from "@nestjs/mongoose";
 import { SharedModule } from "src/shared/shared.module";
 import { UserSchema } from "./infrastructure/schemas/user.schema";
@@ -17,6 +15,8 @@ import { CreateAccountWithCredentialsUseCase } from "./application/use-cases/cre
 import { RefreshTokenUseCase } from "./application/use-cases/refresh-token.use-case";
 import { GetProfileUseCase } from "./application/use-cases/get-profile.use-case";
 import { HashService } from "./infrastructure/adapters/hash.service";
+import { AuthCommandController } from "./infrastructure/controllers/auth-command.controller";
+import { AuthQueryController } from "./infrastructure/controllers/auth-query.controller";
 
 @Global()
 @Module({

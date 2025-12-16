@@ -1,12 +1,13 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
-import { GenerateAudioDto } from "./application/dtos/generate-audio.dto";
+
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
 import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { GenerateAudioDto } from "../../application/dtos/generate-audio.dto";
 
 @Controller({
   path:'audio/write',

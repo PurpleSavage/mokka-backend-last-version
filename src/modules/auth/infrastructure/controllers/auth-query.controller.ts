@@ -1,13 +1,17 @@
 import { Body, Controller,Get,HttpCode,HttpStatus,Post, Req, Res, UseGuards } from "@nestjs/common";
-import { LoginWithCredentialsUseCase } from "./application/use-cases/login-crendetials.use-case";
-import { LoginWithGoogleUseCase } from "./application/use-cases/login-with-google.use-case";
-import { LoginWithCredentialsDto } from "./application/dtos/login-with-credentials.dto";
+
 import { FastifyReply } from 'fastify';
-import { LoginWithGoogleDto } from "./application/dtos/login-with-google.dto";
-import { RefreshTokenUseCase } from "./application/use-cases/refresh-token.use-case";
+
 import { RefreshtokenGuard, RequestWithUser } from "src/guards/tokens/refresh-token.guard";
-import { RefreshTokenDto } from "./application/dtos/refresh-token.dto";
-import { GetProfileUseCase } from "./application/use-cases/get-profile.use-case";
+
+import { GetProfileUseCase } from "../../application/use-cases/get-profile.use-case";
+import { LoginWithCredentialsUseCase } from "../../application/use-cases/login-crendetials.use-case";
+import { LoginWithGoogleUseCase } from "../../application/use-cases/login-with-google.use-case";
+import { RefreshTokenUseCase } from "../../application/use-cases/refresh-token.use-case";
+import { LoginWithCredentialsDto } from "../../application/dtos/login-with-credentials.dto";
+import { LoginWithGoogleDto } from "../../application/dtos/login-with-google.dto";
+import { RefreshTokenDto } from "../../application/dtos/refresh-token.dto";
+
 @Controller({
   path:'auth/read',
   version:'1'

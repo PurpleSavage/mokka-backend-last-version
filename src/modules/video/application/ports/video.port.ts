@@ -1,5 +1,5 @@
 import { VideoEntity } from "../../domain/entities/video.entity";
 
 export abstract class VideoPort{
-    abstract listVideos():Promise<VideoEntity[]>
+    abstract listVideos(user:string):Promise<VideoEntity[]>
 }

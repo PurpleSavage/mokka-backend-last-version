@@ -17,11 +17,11 @@ export class ImageProcessor extends WorkerHost {
   ) {
     super();
   }
-  async process(job: Job<GenerateImageDto>) {
+  async process(job: Job<GenerateImageDto>):Promise<void> {
     try {
       const generateImageDto = job.data;
       const result = await this.generateImageUseCase.execute(generateImageDto);
-      this.imageNotifierService.notifyImageReady(generateImageDto.userId, {
+      this.imageNotifierService.notifyImageReady(generateImageDto.user, {
         jobId: job.id as string,
         entity: result,
         status: StatusQueue.COMPLETED,
@@ -32,7 +32,7 @@ export class ImageProcessor extends WorkerHost {
       this.logger.error(
         {
           jobId: job.id,
-          userId: generateImageDto.userId,
+          userId: generateImageDto.user,
           errorType:
             error instanceof AppBaseError ? error.errorType : 'UNKNOWN_ERROR',
           errorMessage:
@@ -44,13 +44,13 @@ export class ImageProcessor extends WorkerHost {
           stack: error instanceof Error ? error.stack : undefined,
         },
         'Error generating audio',
-      );
+      )
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-      this.imageNotifierService.notifyAudioError(
-        generateImageDto.userId,
+      this.imageNotifierService.notifyImageError(
+        generateImageDto.user,
         errorInfo,
-      );
-      throw error;
+      )
+      throw error
     }
   }
 }

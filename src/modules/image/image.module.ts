@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { ImageQueryController } from "./image-query.controller";
-import { ImageCommandController } from "./image-command.controller";
+
+
 import { SharedModule } from "src/shared/shared.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { BullModule } from "@nestjs/bullmq";
@@ -18,6 +18,8 @@ import { ShareImageUseCase } from "./application/use-cases/shared-image.use-case
 import { CreateRemixImageUseCase } from "./application/use-cases/create-remix-image.use-case";
 import { RemixImageSchema } from "./infrastructure/schemas/remix-image.schema";
 import { GenerateImageUseCase } from "./application/use-cases/generate-image.use-case";
+import { ImageCommandController } from "./infrastructure/controllers/image-command.controller";
+import { ImageQueryController } from "./infrastructure/controllers/image-query.controller";
 
 
 @Module({

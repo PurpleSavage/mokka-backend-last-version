@@ -1,17 +1,20 @@
 import { Body, Controller, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { UpdateDownloadsSharedImageUseCase } from "./application/use-cases/update-downloads-shared-image.use-case";
+
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
-import { UpdateDownloadsSharedImageDto } from "./application/dtos/update-downloads-image.dto";
-import { ShareImageUseCase } from "./application/use-cases/shared-image.use-case";
-import { ShareImageDto } from "./application/dtos/share-image.dto";
-import { CreateRemixImageDto } from "./application/dtos/create-remix-image.dto";
+
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
-import { GenerateImageDto } from "./application/dtos/generate-image.dto";
+
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { ShareImageUseCase } from "../../application/use-cases/shared-image.use-case";
+import { UpdateDownloadsSharedImageUseCase } from "../../application/use-cases/update-downloads-shared-image.use-case";
+import { UpdateDownloadsSharedImageDto } from "../../application/dtos/update-downloads-image.dto";
+import { ShareImageDto } from "../../application/dtos/share-image.dto";
+import { CreateRemixImageDto } from "../../application/dtos/create-remix-image.dto";
+import { GenerateImageDto } from "../../application/dtos/generate-image.dto";
 
 @Controller({
     path:'image/read',
