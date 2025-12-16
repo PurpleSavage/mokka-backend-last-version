@@ -13,6 +13,7 @@ import { VideoPort } from "./application/ports/video.port";
 import { GenerateVideoUseCase } from "./application/use-cases/generate-video.use-case";
 import { ListVideosUseCase } from "./application/use-cases/list-video.use-case";
 import { VideoCommandController } from "./infrastructure/controllers/video-command.controller";
+import { GenerateRemixVideoUseCase } from "./application/use-cases/generate-remix-video.use-case";
 
 
 @Module({
@@ -33,6 +34,7 @@ import { VideoCommandController } from "./infrastructure/controllers/video-comma
     providers:[
         GenerateVideoUseCase,
         ListVideosUseCase,
+        GenerateRemixVideoUseCase,
         {
             useClass:VideoCommandService,
             provide:VideoRepository

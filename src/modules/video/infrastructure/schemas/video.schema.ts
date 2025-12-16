@@ -31,6 +31,14 @@ export class Video{
 
     @Prop({required:true,enum:VideoAspectRatio})
     aspectRatio:VideoAspectRatio
+
+
+    @Prop({required:false})
+    referenceImages?:string[]
+
+
+    @Prop({required:true})
+    audio:boolean
     
 }
 

@@ -7,7 +7,9 @@ export class GeneratedVideoVO{
         readonly width: number,
         readonly height: number,
         readonly videoUrl:string,
-        readonly aspectRatio:VideoAspectRatio
+        readonly aspectRatio:VideoAspectRatio,
+        readonly audio:boolean,
+        readonly referenceImages?:string[]
     ){}
 
     static create(props:{
@@ -16,7 +18,9 @@ export class GeneratedVideoVO{
         width: number,
         height: number,
         videoUrl:string,
-        aspectRatio:VideoAspectRatio
+        aspectRatio:VideoAspectRatio,
+        audio:boolean
+        referenceImages?:string[]
     }):GeneratedVideoVO{
         return new GeneratedVideoVO(
             props.user,
@@ -24,7 +28,9 @@ export class GeneratedVideoVO{
             props.width,
             props.height,
             props.videoUrl,
-            props.aspectRatio
+            props.aspectRatio,
+            props.audio,
+            props.referenceImages
         )
     }
 

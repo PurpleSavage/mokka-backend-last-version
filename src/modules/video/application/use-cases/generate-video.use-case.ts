@@ -15,7 +15,7 @@ export class GenerateVideoUseCase{
         private readonly videoCommandService:VideoRepository
     ){}
     async execute(dto:GenerateVideoDto){
-        const video = await this.multimediaService.createVideo(dto.aspectRatio,dto.prompt,dto.audio)
+        const video = await this.multimediaService.createVideo(dto.aspectRatio,dto.prompt,dto.audio,dto.referenceImages)
         const buffer = await this.downloadService.downloadUrl(video)
         const urlStorage = await this.storageService.saveVideo(dto.user,buffer)
         const vo = GeneratedVideoVO.create({
@@ -24,7 +24,9 @@ export class GenerateVideoUseCase{
             width: dto.width,
             height: dto.height,
             videoUrl:urlStorage.url,
-            aspectRatio:dto.aspectRatio
+            aspectRatio:dto.aspectRatio,
+            audio:dto.audio,
+            referenceImages:dto.referenceImages
         })
         return this.videoCommandService.saveGeneratedVideo(vo)
     }

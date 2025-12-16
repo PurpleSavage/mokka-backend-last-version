@@ -8,7 +8,7 @@ import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 import { GenerateVideoDto } from "../../application/dtos/generate-video.dto";
-import { GenerateRemixVideoDto } from "../../application/dtos/generate-remix-video.dto";
+
 
 @Controller({
     path:'video/write',
@@ -42,28 +42,4 @@ export class VideoCommandController{
         }
     }
 
-
-
-    @Throttle({ default: { limit: 10, ttl: 60000 } })
-    @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
-    @RequiresCredits(30)
-    @Post('remix/:videoShared')
-    @HttpCode(HttpStatus.OK)
-    async generateVideoRemix(
-        @Body() generateRemixVideoDto:GenerateRemixVideoDto
-    ){
-        const job = await this.imageQueue.add('generate-video', 
-            generateRemixVideoDto,
-            {
-                removeOnComplete: false, // o true si también quieres limpiar los completados
-                removeOnFail: true,      // 🔹 elimina el job de Redis si falla
-            },
-        )
-        return{
-            jobId:job.id,
-            status:StatusQueue.PROCESSING,
-            message:'Video generation started'
-        }
-    }
 }
