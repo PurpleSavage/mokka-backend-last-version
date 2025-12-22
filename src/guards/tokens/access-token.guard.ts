@@ -27,7 +27,7 @@ export class AccesstokenGuard implements CanActivate {
       return null;
     }
 
-    if (!authorization.startsWith('Bearer ')) {
+    if (!authorization.startsWith('Bearer')) {
       return null;
     }
     

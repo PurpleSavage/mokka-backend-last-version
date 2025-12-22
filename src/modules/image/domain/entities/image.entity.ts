@@ -1,4 +1,4 @@
-import { AspectRatio } from "../enums/image-aspect-ratio"
+import {  AspectRatioImage } from "../enums/image-aspect-ratio"
 import { TypeStyle } from "../enums/image-styles"
 import { TypeSubStyle } from "../enums/image-substyle"
 
@@ -9,7 +9,7 @@ export class ImageEntity {
   public width: number
   public height: number
   public imageUrl: string
-  public aspectRatio: AspectRatio
+  public aspectRatio: AspectRatioImage
   public size: string
   public style: TypeStyle
   public subStyle: TypeSubStyle
@@ -46,7 +46,7 @@ export class ImageEntity {
     return this
   }
   
-  setAspectRatio(aspectRatio: AspectRatio) {
+  setAspectRatio(aspectRatio: AspectRatioImage) {
     this.aspectRatio = aspectRatio
     return this
   }

@@ -1,4 +1,4 @@
-import { AspectRatio } from "../enums/image-aspect-ratio"
+import { AspectRatioImage } from "../enums/image-aspect-ratio"
 
 export class RemixImageEntity{
     public id: string
@@ -7,7 +7,7 @@ export class RemixImageEntity{
     public width: number
     public height: number
     public imageUrl: string
-    public aspectRatio: AspectRatio
+    public aspectRatio: AspectRatioImage 
     public size: string
     public prevImageUrl:string
     public imageBase:string
@@ -43,7 +43,7 @@ export class RemixImageEntity{
         return this
     }
       
-    setAspectRatio(aspectRatio: AspectRatio) {
+    setAspectRatio(aspectRatio: AspectRatioImage ) {
         this.aspectRatio = aspectRatio
         return this
     }
