@@ -5,23 +5,23 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: ${BUILD_TARGET:-production}
+      target: ${BUILD_TARGET:-development}
     container_name: mokka-backend-v2
     ports:
-      - "${PORT:-3001}:${PORT:-3000}"
+      - "4000:4000" 
     environment:
-      - NODE_ENV=${NODE_ENV:-production}
-      - PORT=${PORT:-3000}
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=${PORT:-4000} 
       - MONGODB_URI=${MONGODB_URI}
       - JWT_SECRET=${JWT_SECRET}
-      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}           # ← Agrega esta línea
-      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}               # ← Agrega esta línea
-      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}                   # ← Agrega esta línea
-      - ELEVEN_LABS_API_KEY=${ELEVEN_LABS_API_KEY}           # ← Agrega esta línea
-      - SUPABASE_URL=${SUPABASE_URL}                         # ← Agrega esta línea
-      - SUPABASE_API_KEY=${SUPABASE_API_KEY}                 # ← Agrega esta línea
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}                 # ← Agrega esta línea
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET} 
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
+      - ELEVEN_LABS_API_KEY=${ELEVEN_LABS_API_KEY}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_API_KEY=${SUPABASE_API_KEY}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
     env_file:
       - .env
     depends_on:
@@ -66,7 +66,7 @@ services:
     ports:
       - "6382:6379"
     volumes:
-      - redis_bull_data_v2:/data 
+      - redis_bull_data_v2:/data
     networks:
       - mokka-network-v2
     restart: unless-stopped
@@ -75,7 +75,7 @@ services:
 volumes:
   mongodb_data_v2:
   redis_data_v2:
-  redis_bull_data_v2: 
+  redis_bull_data_v2:
 
 networks:
   mokka-network-v2:

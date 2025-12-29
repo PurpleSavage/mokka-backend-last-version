@@ -8,7 +8,7 @@ ENV NODE_ENV=development
 COPY package*.json ./
 RUN npm ci
 COPY . .
-EXPOSE 3000
+EXPOSE 4000
 CMD ["npm", "run", "start:dev"]
 
 # Etapa de construcción
@@ -37,6 +37,6 @@ COPY --from=build --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=build --chown=nestjs:nodejs /app/package*.json ./
 
 USER nestjs
-EXPOSE 3000
+EXPOSE 4000
 
 CMD ["dumb-init", "node", "dist/main"]

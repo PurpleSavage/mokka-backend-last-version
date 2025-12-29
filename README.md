@@ -96,3 +96,41 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+
+
+
+## Up Application with docker
+
+
+# Crear archivo .env con las variables necesarias primero
+# Luego ejecutar:
+
+docker-compose up --build
+
+# O en segundo plano (detached):
+docker-compose up -d --build
+
+
+
+# Ver logs en tiempo real
+docker-compose logs -f
+
+# Ver logs solo del backend
+docker-compose logs -f app
+
+# Detener todos los servicios
+docker-compose down
+
+# Detener y eliminar volúmenes (limpia la DB)
+docker-compose down -v
+
+# Reiniciar solo el backend
+docker-compose restart app
+
+# Reconstruir sin cache
+docker-compose build --no-cache
+
+# Ver estado de los contenedores
+docker-compose ps

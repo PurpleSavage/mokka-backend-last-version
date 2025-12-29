@@ -11,7 +11,7 @@ import { GeneratedVideoVO } from "../../domain/value-objects/generated-video.vo"
 
 export class VideoCommandService implements VideoRepository{
     constructor(
-        @InjectModel('Image') private readonly videoModel: Model<VideoDocument>,
+        @InjectModel('Video') private readonly videoModel: Model<VideoDocument>,
         private readonly logger: PinoLogger
     ){}
     async saveGeneratedVideo(vo:GeneratedVideoVO): Promise<VideoEntity> {

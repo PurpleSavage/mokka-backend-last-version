@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
-import { AspectRatio } from "../../domain/enums/image-aspect-ratio";
+import { AspectRatioImage } from "../../domain/enums/image-aspect-ratio";
 
 
 export type RemixImageDocument = HydratedDocument<RemixImage>;
@@ -31,8 +31,8 @@ export class RemixImage{
     @Prop({required:true})
     prevImageUrl:string;
 
-    @Prop({required:true,enum:AspectRatio})
-    aspectRatio:AspectRatio
+    @Prop({required:true,enum:AspectRatioImage})
+    aspectRatio:AspectRatioImage
 
     @Prop({required:true})  //peso de la imagen
     size:string

@@ -3,11 +3,11 @@ import { TextGeneratorPort } from "../../application/ports/text-generator.port";
 import OpenAI from "openai";
 import {  ResponseTextGeneratorDto } from "../../application/dtos/responses/response-text-generator.dto";
 import { OpenAIErrorResponse, TextGeneratorError } from "src/shared/errors/text-generator.error";
-import { HttpException, HttpStatus } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { OpenAIErrorTypes } from "src/shared/infrastructure/enums/error-detail-types";
 import { PinoLogger } from "nestjs-pino";
 
-
+@Injectable()
 export class TextGeneratorService implements TextGeneratorPort{
     private llmClient: OpenAI;
     constructor(

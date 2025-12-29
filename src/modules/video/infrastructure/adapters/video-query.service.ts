@@ -11,7 +11,7 @@ import { InjectModel } from "@nestjs/mongoose";
 @Injectable()
 export class VideoQueryService implements VideoPort{
     constructor(
-        @InjectModel('Image') private readonly videoModel: Model<VideoDocument>,
+        @InjectModel('Video') private readonly videoModel: Model<VideoDocument>,
         private readonly logger: PinoLogger
     ){}
     async listVideos(user: string): Promise<VideoEntity[]> {
