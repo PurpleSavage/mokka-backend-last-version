@@ -12,6 +12,9 @@ import { InfluencerSnapshotDocument } from '../schemas/influencer-snapshot.schem
 import { SaveSnapshotVo } from '../../domain/value-objects/save-snapshot.vo';
 import { InfluencerSnapshotEntity } from '../../domain/entities/influencer-snapshot.entity';
 import { normalizeId } from 'src/shared/application/helpers/normalized-obj';
+import { InfluencerSceneEntity } from '../../domain/entities/influencer-scene.entity';
+import { SaveSceneInfluencerVo } from '../../domain/value-objects/save-scene.vo';
+import { InfluencerScenaDocument } from '../schemas/influencer-scena.schema';
 
 @Injectable()
 export class InfluencerCommandService implements InfluencerRepository {
@@ -19,6 +22,7 @@ export class InfluencerCommandService implements InfluencerRepository {
     @InjectModel('Influencer')
     private readonly influencerModel: Model<InfluencerDocument>,
     private readonly influencerSnapshotModel: Model<InfluencerSnapshotDocument>,
+    private readonly influencerScene:Model<InfluencerScenaDocument>,
     private readonly logger: PinoLogger,
   ) {}
 
@@ -39,6 +43,7 @@ export class InfluencerCommandService implements InfluencerRepository {
            hairColor: vo.hairColor,
            height: vo.height,
            influencerUrlImage: vo.influencerUrlImage,
+           sizeImage:vo.size
         });
         const influencerSaved=await influencer.save();
 
@@ -57,7 +62,8 @@ export class InfluencerCommandService implements InfluencerRepository {
         .setHairColor(influencerSaved.hairColor)
         .setHeight(influencerSaved.height)
         .setInfluencerUrlImage(influencerSaved.influencerUrlImage) 
-        .setCreateDate(influencerSaved.createdAt)  
+        .setCreateDate(influencerSaved.createdAt) 
+        .setSizeIamge(influencerSaved.sizeImage) 
         .build()
         
     } catch (error) {
@@ -114,5 +120,40 @@ export class InfluencerCommandService implements InfluencerRepository {
             details: 'Database operation failed',
         });
       }
+  }
+  async saveSceneInfluencer(vo:SaveSceneInfluencerVo): Promise<InfluencerSceneEntity> {
+    try {
+      const influencerScene = await this.influencerScene.create({
+         urlScene:vo.urlScene,
+         prompt:vo.prompt,
+         user:vo.user,
+         influencer:vo.influencer,
+         volume:vo.volume,
+         duration:vo.duration,
+      })
+      const influencerSceneSaved = await influencerScene.save()
+      return new InfluencerSceneEntity()
+      .setDuration(influencerSceneSaved.duration)
+      .setId(influencerSceneSaved._id.toString())
+      .setInfluencer(normalizeId(influencerSceneSaved.influencer))
+      .setPrompt(influencerSceneSaved.prompt)
+      .setUrlScene(influencerScene.urlScene)
+      .setVolume(influencerSceneSaved.volume)
+      .build()
+    } catch (error) {
+       this.logger.error(
+            {
+            stack: error instanceof Error ? error.stack : undefined,
+            message: 'Error to save scene influencer',
+            },
+            'Error saving scene influencer',
+        );
+        throw new MokkaError({
+            message: 'Failed to save scene influencer generated',
+            errorType: ErrorPlatformMokka.DATABASE_FAILED,
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            details: 'Database operation failed',
+        });
+    }
   }
 }

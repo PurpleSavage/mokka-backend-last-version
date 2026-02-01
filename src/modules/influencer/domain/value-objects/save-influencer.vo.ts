@@ -23,7 +23,8 @@ export class SaveInfluencerVo {
     public readonly lipsType: LipsType,
     public readonly hairColor: HairColor,
     public readonly height: number,
-    public readonly influencerUrlImage:string  
+    public readonly influencerUrlImage:string ,
+    public readonly size:string
   ) {
 
     Object.freeze(this); //  asegura inmutabilidad total en tiempo de ejecución
@@ -48,6 +49,7 @@ export class SaveInfluencerVo {
     hairColor: HairColor;
     height: number;
     influencerUrlImage: string;
+    size:string
   }): SaveInfluencerVo {
     return new SaveInfluencerVo(
       props.user,
@@ -63,7 +65,8 @@ export class SaveInfluencerVo {
       props.lipsType,
       props.hairColor,
       props.height,
-      props.influencerUrlImage
+      props.influencerUrlImage,
+      props.size
     );
   }
 }

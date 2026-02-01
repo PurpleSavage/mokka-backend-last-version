@@ -3,6 +3,7 @@ import { StorageRepository } from "src/shared/domain/repositories/storage.reposi
 import { createClient} from "@supabase/supabase-js";
 import { ConfigService } from "@nestjs/config";
 import { SupabaseImageResponse, SupabaseResponse, SupabaseVideoResponse } from "src/shared/domain/types/supabase-types";
+import { PathStorage } from "src/shared/domain/enums/path-storage";
 @Injectable()
 export class StorageService implements StorageRepository{
     private clientSupabase:ReturnType<typeof createClient>
@@ -69,13 +70,13 @@ export class StorageService implements StorageRepository{
         }
     }
     
-    async saveImage(bufferImage:Buffer<ArrayBufferLike>,userId:string):Promise<SupabaseImageResponse>{
+    async saveImage(bufferImage:Buffer<ArrayBufferLike>,userId:string,path:PathStorage):Promise<SupabaseImageResponse>{
         
         const filename = `${userId}-${this.generateId()}.png`
 
         const size = this.calculateSizeFile(bufferImage.length)
 
-        const filePath = `images-generated/${filename}`
+        const filePath = `${path}/${filename}`
 
         const {error} = await this.clientSupabase.storage
         .from('mokkastorage')

@@ -23,10 +23,14 @@ export class InfluencerEntity {
   private height: number;
   private influencerUrlImage:string
   public createDate: Date
+  public sizeImage:string
   constructor() {}
 
   getInfluencerUrlImage(): string {
     return this.influencerUrlImage;
+  }
+  getSizeImage():string{
+    return this.sizeImage
   }
   getCreteDate(): Date {
     return this.createDate;
@@ -74,6 +78,10 @@ export class InfluencerEntity {
   setId(id: string): this {
     this.id = id;
     return this;
+  }
+  setSizeIamge(size:string):this{
+    this.sizeImage = size
+    return this
   }
   setCreateDate(date:Date):this{
     this.createDate=date;

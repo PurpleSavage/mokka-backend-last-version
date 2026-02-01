@@ -67,6 +67,9 @@ export class Influencer{
     @Prop({ default: Date.now })
     createdAt: Date;
 
+    @Prop({ required: true})
+    sizeImage:string
+
 }
 
 export const InfluencerSchema = SchemaFactory.createForClass(Influencer);

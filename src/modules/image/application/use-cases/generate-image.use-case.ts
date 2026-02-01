@@ -6,6 +6,7 @@ import { StorageRepository } from "src/shared/domain/repositories/storage.reposi
 import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
 import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
 import { SavedGenerateImageVO } from "../../domain/value-objects/saved-generate-image.vo";
+import { PathStorage } from "src/shared/domain/enums/path-storage";
 
 @Injectable()
 export class GenerateImageUseCase{
@@ -18,11 +19,11 @@ export class GenerateImageUseCase{
     ){}
     async execute(generateImageDto:GenerateImageDto){
         const {aspectRatio} = generateImageDto
-        const pormptmd = await this.mdReaderService.loadPrompt('generator_image','aiimage')
+        const pormptmd = await this.mdReaderService.loadPrompt('generator_image','image')
         const templateFill = this.mdReaderService.fillTemplate(pormptmd,generateImageDto)
         const imageUrl = await this.multimediaService.createImage(aspectRatio,templateFill)
         const buffer = await this.downloadService.downloadUrl(imageUrl)
-        const storageResponse = await this.storageService.saveImage(buffer,generateImageDto.user)
+        const storageResponse = await this.storageService.saveImage(buffer,generateImageDto.user,PathStorage.PATH_IMAGE)
 
         const imageGenerated = SavedGenerateImageVO.create({
             user: generateImageDto.user,

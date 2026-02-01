@@ -6,11 +6,20 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "contexts/aitext/prompts/**/*.md",
+        "include": "contexts/text/prompts/**/*.md",
         "outDir": "dist"
       },
       {
-        "include": "contexts/aiimage/prompts/**/*.md", 
+        "include": "contexts/image/prompts/**/*.md", 
+        "outDir": "dist"
+      },
+      {
+        "include": "contexts/video/prompts/**/*.md", 
+        "outDir": "dist"
+      }
+      ,
+      {
+        "include": "contexts/influencer/prompts/**/*.md", 
         "outDir": "dist"
       }
     ]

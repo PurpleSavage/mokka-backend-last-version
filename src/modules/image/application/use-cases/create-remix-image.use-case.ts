@@ -5,6 +5,7 @@ import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia
 import { RemixImageVo } from "../../domain/value-objects/remix-image.vo";
 import { StorageRepository } from "src/shared/domain/repositories/storage.repository";
 import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
+import { PathStorage } from "src/shared/domain/enums/path-storage";
 
 
 @Injectable()
@@ -18,7 +19,7 @@ export class CreateRemixImageUseCase{
     async execute(createRemixImageDto:CreateRemixImageDto){
         const urlRemixImage= await this.multimediaService.createRemixBasedImage(createRemixImageDto.prevImageUrl,createRemixImageDto.prompt)
         const imagebuffer = await this.downloadService.downloadUrl(urlRemixImage)
-        const imageUrlStorage = await this.storageService.saveImage(imagebuffer,createRemixImageDto.user)
+        const imageUrlStorage = await this.storageService.saveImage(imagebuffer,createRemixImageDto.user,PathStorage.PATH_IMAGE_REMIXES)
         const imageSharedId =await this.imageCommandService.updateRemixes(createRemixImageDto.imageShared)
         const vo = RemixImageVo.create({
             user:createRemixImageDto.user,

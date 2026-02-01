@@ -58,9 +58,10 @@ jest.config.js
 # Documentation
 README.md
 *.md
-!contexts/aitext/prompts/**/*.md
-!contexts/aiimage/prompts/**/*.md
-!contexts/aivideo/prompts/**/*.md
+!contexts/text/prompts/**/*.md
+!contexts/image/prompts/**/*.md
+!contexts/video/prompts/**/*.md
+!contexts/influencer/prompts/**/*.md
 # Temporary files
 tmp
 temp
