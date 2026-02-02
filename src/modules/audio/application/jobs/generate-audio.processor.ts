@@ -12,7 +12,7 @@ import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractError
 export class AudioProcessor extends WorkerHost {
   constructor(
     private readonly generateAudioUseCase: GenerateAudioUseCase,
-    private readonly audioNotifierService: NotifierService,
+    private readonly notifierService: NotifierService,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -20,19 +20,19 @@ export class AudioProcessor extends WorkerHost {
   async process(job: Job<GenerateAudioDto>): Promise<any> {
     try {
       const generateAudioDto = job.data;
-      const result = await this.generateAudioUseCase.execute(generateAudioDto);
-      this.audioNotifierService.notifyAudioReady(generateAudioDto.userId, {
-        jobId: job.id as string,
-        entity: result,
-        status: StatusQueue.COMPLETED,
-        message: 'Image generated',
-      });
+      const result = await this.generateAudioUseCase.execute(generateAudioDto)
+      this.notifierService.notifyReady(generateAudioDto.user,'audio',{
+          jobId: job.id as string,
+          entity: result,
+          status: StatusQueue.COMPLETED,
+          message: 'Audio generated',
+        })
     } catch (error) {
       const generateAudioDto = job.data;
       this.logger.error(
         {
           jobId: job.id,
-          userId: generateAudioDto.userId,
+          userId: generateAudioDto.user,
           errorType:
             error instanceof AppBaseError ? error.errorType : 'UNKNOWN_ERROR',
           errorMessage:
@@ -45,12 +45,9 @@ export class AudioProcessor extends WorkerHost {
         },
         'Error generating audio',
       );
-      const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-      this.audioNotifierService.notifyAudioError(
-        generateAudioDto.userId,
-        errorInfo,
-      );
-      throw error;
+      const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
+      this.notifierService.notifyError( generateAudioDto.user,'audio',errorInfo)
+      throw error
     }
   }
 }

@@ -43,7 +43,7 @@ export class AudioGeneratorService implements AudioGeneratorPort{
                 {
                     stack: error instanceof Error ? error.stack : undefined,
                     message:'Failed to generate audio record',
-                    userId:generateAudioDto.userId
+                    userId:generateAudioDto.user
                 },
                 'Failed to generate audio record'
             )

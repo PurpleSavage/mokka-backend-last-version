@@ -14,7 +14,7 @@ import { ExtractErrorInfo } from "src/shared/infrastructure/helpers/ExtractError
 export class GenerateTextProcessor extends WorkerHost{
     constructor(
         private readonly generateTextUseCase:GenerateTextUseCase,
-        private readonly textNotifierService: NotifierService,
+        private readonly notifierService: NotifierService,
             private readonly logger: PinoLogger,
     ){
         super()
@@ -22,19 +22,20 @@ export class GenerateTextProcessor extends WorkerHost{
     async process(job: Job<GenerateTextDto>) {
         try {
           const generateTextDto = job.data;
-          const result = await this.generateTextUseCase.execute(generateTextDto);
-          this.textNotifierService.notifyTextReady(generateTextDto.user, {
+          const result = await this.generateTextUseCase.execute(generateTextDto)
+          this.notifierService.notifyReady(generateTextDto.user,'text',{
             jobId: job.id as string,
             entity: result,
             status: StatusQueue.COMPLETED,
             message: 'Text generated',
-          });
+        })
+          
         } catch (error) {
-          const createRemixImageDto = job.data;
+          const textDto = job.data;
           this.logger.error(
             {
               jobId: job.id,
-              userId: createRemixImageDto.user,
+              userId: textDto.user,
               errorType:
                 error instanceof AppBaseError ? error.errorType : 'UNKNOWN_ERROR',
               errorMessage:
@@ -47,11 +48,9 @@ export class GenerateTextProcessor extends WorkerHost{
             },
             'Error generating text',
           );
-          const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-          this.textNotifierService.notifyTextError(
-            createRemixImageDto.user,
-            errorInfo,
-          );
+          const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
+          this.notifierService.notifyError( textDto.user,'text',errorInfo)
+          
           throw error;
         }
     }

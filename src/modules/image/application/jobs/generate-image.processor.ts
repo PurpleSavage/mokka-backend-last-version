@@ -12,7 +12,7 @@ import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractError
 export class ImageProcessor extends WorkerHost {
   constructor(
     private readonly generateImageUseCase: GenerateImageUseCase,
-    private readonly imageNotifierService: NotifierService,
+    private readonly  notifierService: NotifierService,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -21,12 +21,13 @@ export class ImageProcessor extends WorkerHost {
     try {
       const generateImageDto = job.data;
       const result = await this.generateImageUseCase.execute(generateImageDto);
-      this.imageNotifierService.notifyImageReady(generateImageDto.user, {
+      this.notifierService.notifyReady(generateImageDto.user,'image',{
         jobId: job.id as string,
         entity: result,
         status: StatusQueue.COMPLETED,
         message: 'Image generated',
-      });
+      })
+      
     } catch (error) {
       const generateImageDto = job.data;
       this.logger.error(
@@ -46,10 +47,7 @@ export class ImageProcessor extends WorkerHost {
         'Error generating audio',
       )
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-      this.imageNotifierService.notifyImageError(
-        generateImageDto.user,
-        errorInfo,
-      )
+      this.notifierService.notifyError(generateImageDto.user,'image',errorInfo)
       throw error
     }
   }

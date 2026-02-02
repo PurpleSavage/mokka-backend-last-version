@@ -15,10 +15,10 @@ export class GenerateAudioUseCase{
     ){}
     async execute(dto:GenerateAudioDto){
         const audioBuffer = await this.audioGeneratorService.generateVoice(dto)
-        const {url} = await this.storageService.saveAudio(dto.userId,audioBuffer)
+        const {url} = await this.storageService.saveAudio(dto.user,audioBuffer)
         const vo = GenerateAudioVO.create({
             prompt: dto.prompt,
-            user: dto.userId,
+            user: dto.user,
             idModel: dto.idModel,
             nameModelAudio: dto.nameModelAudio,
             urlAudio: url,

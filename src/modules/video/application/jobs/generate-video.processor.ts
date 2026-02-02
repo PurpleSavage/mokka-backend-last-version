@@ -12,7 +12,7 @@ import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 export class GenerateVideoProcessor extends WorkerHost{
     constructor(
         private readonly generateVideoUseCase:GenerateVideoUseCase,
-        private readonly imageNotifierService: NotifierService,
+        private readonly notifierService: NotifierService,
         private readonly logger: PinoLogger,
     ){
         super()
@@ -21,12 +21,12 @@ export class GenerateVideoProcessor extends WorkerHost{
         try {
             const generateVideoDto = job.data
             const result =await this.generateVideoUseCase.execute(generateVideoDto )
-            this.imageNotifierService.notifyVideoReady(generateVideoDto.user, {
+            this.notifierService.notifyReady(generateVideoDto.user,'video',{
                 jobId: job.id as string,
                 entity: result,
                 status: StatusQueue.COMPLETED,
-                message: 'Image generated',
-            });
+                message: 'Video generated',
+            })
         } catch (error) {
             const generateVideoDto = job.data
             this.logger.error(
@@ -45,11 +45,8 @@ export class GenerateVideoProcessor extends WorkerHost{
             },
             'Error generating audio',
             )
-            const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-                this.imageNotifierService.notifyVideoError(
-                    generateVideoDto.user,
-                    errorInfo,
-                )
+            const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
+            this.notifierService.notifyError( generateVideoDto.user,'video',errorInfo)
             throw error
         }
     }
