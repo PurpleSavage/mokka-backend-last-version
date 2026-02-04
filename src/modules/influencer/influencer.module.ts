@@ -7,6 +7,7 @@ import { InfluencerRepository } from "./domain/repository/influencer.repository"
 import { InfluencerSnapshotSchema } from "./infrastructure/schemas/influencer-snapshot.schema";
 import { BullModule } from "@nestjs/bullmq";
 import { CreateInfluencerUseCase } from "./application/use-cases/create-influencer.use-case";
+import { InfluencerCommandController } from "./infrastructure/controllers/influencer-command.controller";
 
 @Module({
     imports:[
@@ -35,7 +36,9 @@ import { CreateInfluencerUseCase } from "./application/use-cases/create-influenc
             provide:InfluencerRepository
         }
     ],
-    controllers:[],
+    controllers:[
+        InfluencerCommandController
+    ],
     exports:[
         InfluencerRepository
     ]

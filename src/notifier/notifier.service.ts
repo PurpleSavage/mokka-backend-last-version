@@ -18,7 +18,7 @@ export class NotifierService implements OnModuleInit {
     // Métodos genéricos
     notifyReady<T>(
         userId: string, 
-        type: 'image' | 'video' | 'audio' | 'text' | 'image-remix'|'influencer',
+        type: 'image' | 'video' | 'audio' | 'text' | 'image-remix'|'influencer'|'influencer-snapshot',
         data: {
             jobId: string | number,
             entity: T,
@@ -32,7 +32,7 @@ export class NotifierService implements OnModuleInit {
 
     notifyError(
         userId: string,
-        type: 'image' | 'video' | 'audio' | 'text' | 'image-remix'|'influencer',
+        type: 'image' | 'video' | 'audio' | 'text' | 'image-remix'|'influencer'|'influencer-snapshot',
         data: ErrorNotification
     ) {
         this.gateway.emitToUser(userId, `${type}-error`, data);

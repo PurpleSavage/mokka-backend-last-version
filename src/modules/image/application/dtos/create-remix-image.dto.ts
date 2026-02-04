@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString, IsUrl } from "class-validator";
-import {AspectRatioImage } from "../../domain/enums/image-aspect-ratio";
+import {AspectRatioImage } from "../../../../shared/infrastructure/enums/image-aspect-ratio";
 
 export class CreateRemixImageDto{
     

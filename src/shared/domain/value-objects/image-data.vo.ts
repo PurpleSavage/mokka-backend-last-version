@@ -1,4 +1,4 @@
-import { AspectRatioImage } from "src/modules/image/domain/enums/image-aspect-ratio"
+import { AspectRatioImage } from "src/shared/infrastructure/enums/image-aspect-ratio"
 import { TypeStyle } from "src/modules/image/domain/enums/image-styles"
 import { TypeSubStyle } from "src/modules/image/domain/enums/image-substyle"
 

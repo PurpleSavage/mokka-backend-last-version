@@ -22,7 +22,11 @@ export class CreateInfluencerUseCase{
         const defaultAspectRatio="1:1"
         const promptmd = await this.mdReaderService.loadPrompt('generator_influencer','influencer')
         const templateFill = this.mdReaderService.fillTemplate(promptmd,dto)
-        const imageUrl= await this.multimediaService.createImage(defaultAspectRatio,templateFill)
+        const config={
+            aspectRatio: defaultAspectRatio, 
+            prompt: templateFill,
+        }
+        const imageUrl= await this.multimediaService.generateImage(config)
         const buffer = await this.downloadService.downloadUrl(imageUrl)
         const response = await this.storageService.saveImage(buffer,dto.user,PathStorage.PATH_INFLUENCER)
         const vo =SaveInfluencerVo.create(

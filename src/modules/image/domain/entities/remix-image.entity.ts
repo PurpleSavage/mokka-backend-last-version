@@ -1,4 +1,4 @@
-import { AspectRatioImage } from "../enums/image-aspect-ratio"
+import { AspectRatioImage } from "../../../../shared/infrastructure/enums/image-aspect-ratio"
 
 export class RemixImageEntity{
     public id: string

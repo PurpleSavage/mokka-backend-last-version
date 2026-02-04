@@ -25,7 +25,7 @@ export class CreateInfluencerProcessor extends WorkerHost {
           jobId: job.id as string,
           entity: result,
           status: StatusQueue.COMPLETED,
-          message: 'influencer generated',
+          message: 'Influencer generated',
         })
     } catch (error) {
       const createinfluencerDto = job.data

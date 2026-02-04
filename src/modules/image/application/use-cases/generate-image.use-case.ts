@@ -18,10 +18,14 @@ export class GenerateImageUseCase{
         private readonly multimediaService:MultimediaGeneratorPort
     ){}
     async execute(generateImageDto:GenerateImageDto){
-        const {aspectRatio} = generateImageDto
-        const pormptmd = await this.mdReaderService.loadPrompt('generator_image','image')
+        
+        const pormptmd = await this.mdReaderService.loadPrompt('generator-image','image')
         const templateFill = this.mdReaderService.fillTemplate(pormptmd,generateImageDto)
-        const imageUrl = await this.multimediaService.createImage(aspectRatio,templateFill)
+        const config = {
+            aspectRatio: generateImageDto.aspectRatio, 
+            prompt: templateFill,
+        }
+        const imageUrl = await this.multimediaService.generateImage(config)
         const buffer = await this.downloadService.downloadUrl(imageUrl)
         const storageResponse = await this.storageService.saveImage(buffer,generateImageDto.user,PathStorage.PATH_IMAGE)
 

@@ -14,6 +14,7 @@ import { AudioModule } from './modules/audio/audio.module';
 import { ImageModule } from './modules/image/image.module';
 import { VideoModule } from './modules/video/video.module';
 import { TextModule } from './modules/text/text.module';
+import { InfluencerModule } from './modules/influencer/influencer.module';
 
 
 
@@ -58,7 +59,8 @@ import { TextModule } from './modules/text/text.module';
     AudioModule,
     ImageModule,
     VideoModule,
-    TextModule
+    TextModule,
+    InfluencerModule
   ],
   controllers: [],
   providers: [

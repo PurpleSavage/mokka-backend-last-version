@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { AspectRatioImage } from "../../domain/enums/image-aspect-ratio";
+import { AspectRatioImage } from "../../../../shared/infrastructure/enums/image-aspect-ratio";
 import { TypeStyle } from "../../domain/enums/image-styles";
 import { TypeSubStyle } from "../../domain/enums/image-substyle";
 

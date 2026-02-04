@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
-import { AspectRatioImage } from "../../domain/enums/image-aspect-ratio";
+import { AspectRatioImage } from "../../../../shared/infrastructure/enums/image-aspect-ratio";
 
 
 export type RemixImageDocument = HydratedDocument<RemixImage>;

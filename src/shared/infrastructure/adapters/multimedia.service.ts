@@ -6,7 +6,7 @@ import { MultimediaGeneratorError } from "src/shared/errors/multimedia-generator
 import { MultimediaErrorTypes } from "../enums/error-detail-types";
 import { MultimediaResponseDto } from "../dtos/multimedia-response.dt";
 import Replicate, { Prediction } from "replicate";
-import { AspectRatioImage } from "src/modules/image/domain/enums/image-aspect-ratio";
+import { AspectRatioImage } from "src/shared/infrastructure/enums/image-aspect-ratio";
 import { VideoAspectRatio } from "src/modules/video/domain/enums/video-aspectratio";
 
 
@@ -14,7 +14,6 @@ import { VideoAspectRatio } from "src/modules/video/domain/enums/video-aspectrat
 export class MultimediaService implements MultimediaGeneratorPort{
     private videoModel = "google/veo-3"
     private imageModel="google/nano-banana-pro"
-    private imageRemixModel = "black-forest-labs/flux-kontext-pro" 
     private readonly multimediaClient: Replicate
     
     
@@ -105,10 +104,15 @@ export class MultimediaService implements MultimediaGeneratorPort{
             )
         }
     }
-    async createImage(aspectRatio: string, prompt: string): Promise<string> {
+    
+    async generateImage(config:{
+        aspectRatio: string, 
+        prompt: string,
+        urls?:string[],
+    }):Promise<string>{
         try {
-            const isValid = Object.values(AspectRatioImage).includes(aspectRatio as AspectRatioImage)
-            if (!isValid) {
+            const isValid = Object.values(AspectRatioImage).includes(config.aspectRatio as AspectRatioImage)
+             if (!isValid) {
                 throw new HttpException({
                     status: HttpStatus.BAD_REQUEST,
                     error: `Invalid aspect ratio. Valid options: ${Object.keys(AspectRatioImage).join(', ')}`,
@@ -118,9 +122,9 @@ export class MultimediaService implements MultimediaGeneratorPort{
 
             const input = {
                 prompt,
-                aspect_ratio: aspectRatio,
+                aspect_ratio: config.aspectRatio,
                 output_format: "webp",
-        
+                image_input:config.urls
             }
 
             let prediction = await this.multimediaClient.predictions.create({
@@ -151,79 +155,16 @@ export class MultimediaService implements MultimediaGeneratorPort{
             
             return imageUrl
         } catch (error) {
-             this.logger.error(
-                {
-                    stack: error instanceof Error ? error.stack : undefined,
-                    message:"Error updating the number of image downloads"
-                },
-                'Error updating the number of image downloads'
-            )
-            if (error instanceof MultimediaGeneratorError) {
-                throw error;
-            }
-            if (typeof error === 'object' && error !== null && 'error' in error) {
-                throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto)
-            }
-            if (error instanceof HttpException) {
-                throw error;
-            }
-
-            // Si no sabemos qué es, lanzamos error genérico
-            throw new MultimediaGeneratorError(
-                'Unexpected error when generating image',
-                MultimediaErrorTypes.PREDICTION_FAILED,
-                HttpStatus.INTERNAL_SERVER_ERROR
-            )
-        }
-    }
-    async createRemixBasedImage(imageUrl: string, prompt: string): Promise<string> {
-        try {
-            const input = {
-                image_url: imageUrl, // URL pública de tu imagen
-                prompt: prompt,
-                guidance_scale: 7.5, // Controla qué tan fuerte sigue el prompt
-                num_inference_steps: 28, 
-                output_format: "webp"
-            }
-            let prediction = await this.multimediaClient.predictions.create({
-                model: this.imageRemixModel,
-                input
-            })
-            
-            prediction = await this.multimediaClient.wait(prediction);
-            
-            if (prediction.status !== 'succeeded') {
-                throw new MultimediaGeneratorError(
-                    'Unexpected error when generating image',
-                    MultimediaErrorTypes.PREDICTION_FAILED,
-                    HttpStatus.INTERNAL_SERVER_ERROR
-                )
-            }
-            
-            const outputArray = prediction.output as string[];
-            const remixedImageUrl: string | undefined = Array.isArray(outputArray) ? outputArray[0] : undefined
-            
-            if (!remixedImageUrl) {
-                throw new MultimediaGeneratorError(
-                    'Unexpected error when generating url image',
-                    MultimediaErrorTypes.MISSING_OUTPUT,
-                    HttpStatus.INTERNAL_SERVER_ERROR
-                )
-            }
-            
-            return remixedImageUrl
-        } catch (error:unknown) {
             this.logger.error(
                 {
                     stack: error instanceof Error ? error.stack : undefined,
-                    message:"Error updating the number of image downloads"
+                    message:"Error generating image"
                 },
-                'Error updating the number of image downloads'
+                'Error generating image'
             )
             if (error instanceof MultimediaGeneratorError) {
                 throw error;
             }
-            
             if (typeof error === 'object' && error !== null && 'error' in error) {
                 throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto)
             }
@@ -239,4 +180,5 @@ export class MultimediaService implements MultimediaGeneratorPort{
             )
         }
     }
+    
 }
