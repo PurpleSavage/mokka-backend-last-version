@@ -1,4 +1,4 @@
-import { WorkerHost } from "@nestjs/bullmq";
+import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { PinoLogger } from "nestjs-pino";
 import { NotifierService } from "src/notifier/notifier.service";
 import { CreateInfluencerSnapshotUseCase } from "../use-cases/create-influencer-snapshot.use-case";
@@ -7,7 +7,7 @@ import { CreateInfluencerSnapshotDto } from "../dtos/create-influencer-snapshot.
 import { ExtractErrorInfo } from "src/shared/infrastructure/helpers/ExtractErrorInfo";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
-
+@Processor('influencer-snapshot-queue')
 export class CreateInfluencerSnapshotProcessor extends WorkerHost{
     constructor(
         private readonly createInfluencerSnapshotUseCase: CreateInfluencerSnapshotUseCase,

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
 import { Schema as MongooseSchema } from 'mongoose';
+import { VideoAspectRatio } from "src/shared/domain/enums/video-aspectratio";
 
 export type InfluencerScenaDocument = HydratedDocument<InfluencerScena>
 @Schema()
@@ -21,8 +22,10 @@ export class InfluencerScena{
     volume:boolean
 
     @Prop({required:true})
-    duration:number
+    imageBaseUrls:string[]
 
+    @Prop({required:true,enum:VideoAspectRatio})
+    aspectRatio:VideoAspectRatio
 }
 
 export const InfluencerScenaSchema= SchemaFactory.createForClass(InfluencerScena)

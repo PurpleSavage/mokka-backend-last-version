@@ -14,11 +14,11 @@ export class CreateInfluencerSnapshotUseCase{
         private readonly influencerCommandService:InfluencerRepository,
         private readonly storageService:StorageRepository,
         private readonly downloadService:DownloadFilePort,
-        public readonly multimediaService:MultimediaGeneratorPort,
+        private readonly multimediaService:MultimediaGeneratorPort,
         private readonly mdReaderService:MdReaderPort,
     ){}
     async execute(dto:CreateInfluencerSnapshotDto){
-        const promptmd = await this.mdReaderService.loadPrompt('generator_influencer','influencer')
+        const promptmd = await this.mdReaderService.loadPrompt('snapshot-influencer','influencer')
         const templateFill = this.mdReaderService.fillTemplate(promptmd,dto)
         const config = {
             aspectRatio: dto.aspectRatio, 
@@ -37,6 +37,6 @@ export class CreateInfluencerSnapshotUseCase{
             enviroment:dto.enviroment,
             outfitStyle:dto.outfitStyle,
         })
-        return this.influencerCommandService.saveSnapshotInfluencer(vo)
+        return await this.influencerCommandService.saveSnapshotInfluencer(vo)
     }
 }

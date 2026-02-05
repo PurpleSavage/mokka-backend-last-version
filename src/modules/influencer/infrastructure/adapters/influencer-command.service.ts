@@ -91,7 +91,7 @@ export class InfluencerCommandService implements InfluencerRepository {
             snapshotUrl:vo.snapshotUrl,
             prompt:vo.prompt,
             enviroment:vo.enviroment,
-            outfitStyle:vo.outfitStyle
+            outfitStyle:vo.outfitStyle,
         })
         const influencerSnapshotSaved = await influencerSnapshot.save()
       
@@ -129,16 +129,18 @@ export class InfluencerCommandService implements InfluencerRepository {
          user:vo.user,
          influencer:vo.influencer,
          volume:vo.volume,
-         duration:vo.duration,
+         imageBaseUrls:vo.imageBaseUrls,
+         aspectRatio:vo.aspectRatio
       })
       const influencerSceneSaved = await influencerScene.save()
       return new InfluencerSceneEntity()
-      .setDuration(influencerSceneSaved.duration)
+      .setImageBseUrls(influencerSceneSaved.imageBaseUrls)
       .setId(influencerSceneSaved._id.toString())
       .setInfluencer(normalizeId(influencerSceneSaved.influencer))
       .setPrompt(influencerSceneSaved.prompt)
       .setUrlScene(influencerScene.urlScene)
       .setVolume(influencerSceneSaved.volume)
+      .setAspectRatio(influencerSceneSaved.aspectRatio)
       .build()
     } catch (error) {
        this.logger.error(

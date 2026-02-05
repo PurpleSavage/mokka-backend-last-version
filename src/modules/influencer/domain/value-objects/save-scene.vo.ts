@@ -1,3 +1,5 @@
+import { VideoAspectRatio } from "src/shared/domain/enums/video-aspectratio";
+
 
 
 export class SaveSceneInfluencerVo{
@@ -7,17 +9,20 @@ export class SaveSceneInfluencerVo{
         public readonly user:string,
         public readonly influencer:string,
         public readonly volume:boolean,
-        public readonly duration:number,
+        public readonly imageBaseUrls:string[],
+        public readonly aspectRatio:VideoAspectRatio
+        
     ){
-         Object.freeze(this);
+        Object.freeze(this);
     }
-    create(props:{
+    static create(props:{
         urlScene:string,
         prompt:string,
         influencer:string,
         volume:boolean,
-        duration:number,
-        user:string
+        user:string,
+        imageBaseUrls:string[],
+        aspectRatio:VideoAspectRatio
     }): SaveSceneInfluencerVo{
         return new SaveSceneInfluencerVo(
             props.urlScene,
@@ -25,7 +30,8 @@ export class SaveSceneInfluencerVo{
             props.user,
             props.influencer,
             props.volume,
-            props.duration
+            props.imageBaseUrls,
+            props.aspectRatio
         )
     }
 }

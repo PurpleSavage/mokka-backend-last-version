@@ -1,3 +1,4 @@
+import { VideoAspectRatio } from "src/shared/domain/enums/video-aspectratio"
 import { InfluencerEntity } from "./influecer.entity"
 
 export class InfluencerSceneEntity{
@@ -6,11 +7,17 @@ export class InfluencerSceneEntity{
     private prompt:string
     private influencer:InfluencerEntity | string
     private volume:boolean
-    private duration:number
-
+    private imageBaseUrls:string[]
+    private aspectRatio:VideoAspectRatio
 
     getId(){
         return this.id
+    }
+    getAspectRatio(){
+        return this.aspectRatio
+    }
+    getImageBAseUrls(){
+        return this.imageBaseUrls
     }
     getUrlScene(){
         return this.urlScene
@@ -24,9 +31,7 @@ export class InfluencerSceneEntity{
     getVolume(){
         return this.volume
     }
-    getDuration(){
-        return this.duration
-    }
+    
     setId(id:string): this{
         this.id =id
         return this
@@ -47,8 +52,12 @@ export class InfluencerSceneEntity{
         this.volume= volume
         return this
     }
-    setDuration(duration:number):this{
-        this.duration=duration
+    setImageBseUrls(urls:string[]){
+        this.imageBaseUrls= urls
+        return this
+    }
+    setAspectRatio(aspectRatio:VideoAspectRatio){
+        this.aspectRatio=aspectRatio
         return this
     }
     build(){

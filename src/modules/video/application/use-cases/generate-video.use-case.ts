@@ -5,6 +5,7 @@ import { StorageRepository } from "src/shared/domain/repositories/storage.reposi
 import { GenerateVideoDto } from "../dtos/generate-video.dto";
 import { VideoRepository } from "../../domain/repositories/video.repository";
 import { GeneratedVideoVO } from "../../domain/value-objects/generated-video.vo";
+import { PathStorage } from "src/shared/domain/enums/path-storage";
 
 @Injectable()
 export class GenerateVideoUseCase{
@@ -17,7 +18,7 @@ export class GenerateVideoUseCase{
     async execute(dto:GenerateVideoDto){
         const video = await this.multimediaService.createVideo(dto.aspectRatio,dto.prompt,dto.audio,dto.referenceImages)
         const buffer = await this.downloadService.downloadUrl(video)
-        const urlStorage = await this.storageService.saveVideo(dto.user,buffer)
+        const urlStorage = await this.storageService.saveVideo(dto.user,buffer,PathStorage.PATH_VIDEOS)
         const vo = GeneratedVideoVO.create({
             user: dto.user,
             prompt: dto.prompt,

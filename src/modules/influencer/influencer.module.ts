@@ -27,6 +27,9 @@ import { InfluencerCommandController } from "./infrastructure/controllers/influe
         BullModule.registerQueue({  
             name: 'influencer-queue',
                     
+        }),
+        BullModule.registerQueue({
+            name:'influencer-snapshot-queue'
         })
     ],
     providers:[

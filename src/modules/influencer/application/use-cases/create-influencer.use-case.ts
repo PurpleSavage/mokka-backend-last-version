@@ -20,7 +20,7 @@ export class CreateInfluencerUseCase{
     ){}
     async execute(dto:CreateInfluencerDto){
         const defaultAspectRatio="1:1"
-        const promptmd = await this.mdReaderService.loadPrompt('generator_influencer','influencer')
+        const promptmd = await this.mdReaderService.loadPrompt('generator-influencer','influencer')
         const templateFill = this.mdReaderService.fillTemplate(promptmd,dto)
         const config={
             aspectRatio: defaultAspectRatio, 

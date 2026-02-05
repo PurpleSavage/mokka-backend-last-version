@@ -7,6 +7,7 @@ import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { CreateInfluencerDto } from "../../application/dtos/create-influencer.dto";
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { CreateInfluencerSnapshotDto } from "../../application/dtos/create-influencer-snapshot.dto";
 
 
 @Controller({
@@ -15,18 +16,43 @@ import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 })
 export class InfluencerCommandController{
     constructor(
-        @InjectQueue('influencer-queue') private audioQueue: Queue,
+        @InjectQueue('influencer-queue') private influencerQueue: Queue,
+        @InjectQueue('influencer-snapshot-queue') private influencerSnapshotQueue:Queue
     ){}
+
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
     @UseGuards(CreditsGuard)
     @RequiresCredits(30)
-    @Post('generations')
+    @Post('model')
     @HttpCode(HttpStatus.OK)
     async influencerGenerator(
         @Body() dto:CreateInfluencerDto
     ){
-        const job = await this.audioQueue.add('influencer-queue',
+        const job = await this.influencerQueue.add('influencer-queue',
+            dto,
+            {
+                removeOnComplete: false, 
+                removeOnFail: true,      
+            },
+        )
+         return{
+            jobId:job.id,
+            status:StatusQueue.PROCESSING,
+            message:'Influencer generation started'
+        }
+    }
+
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
+    @UseGuards(AccesstokenGuard)
+    @UseGuards(CreditsGuard)
+    @RequiresCredits(30)
+    @Post('snapshot')
+    @HttpCode(HttpStatus.OK)
+    async influencerSnapshotGenerator(
+        @Body() dto:CreateInfluencerSnapshotDto
+    ){
+        const job = await this.influencerQueue.add('influencer-snapshot-queue',
             dto,
             {
                 removeOnComplete: false, 

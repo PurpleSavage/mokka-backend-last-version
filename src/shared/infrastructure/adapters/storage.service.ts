@@ -109,9 +109,9 @@ export class StorageService implements StorageRepository{
             size
         }
     }
-    async saveVideo(idUser: string, bufferVideo: Buffer<ArrayBuffer>): Promise<SupabaseVideoResponse> {
+    async saveVideo(idUser: string, bufferVideo: Buffer<ArrayBuffer>,path:PathStorage): Promise<SupabaseVideoResponse> {
         const filename = `${idUser}-${this.generateId()}.mp4`
-        const filePath = `videos-generated/${filename}`
+        const filePath = `${path}/${filename}`
         const {error} = await this.clientSupabase.storage
         .from('mokkastorage')
         .upload(filePath,bufferVideo,{

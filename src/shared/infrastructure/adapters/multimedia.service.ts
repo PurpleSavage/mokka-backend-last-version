@@ -7,7 +7,7 @@ import { MultimediaErrorTypes } from "../enums/error-detail-types";
 import { MultimediaResponseDto } from "../dtos/multimedia-response.dt";
 import Replicate, { Prediction } from "replicate";
 import { AspectRatioImage } from "src/shared/infrastructure/enums/image-aspect-ratio";
-import { VideoAspectRatio } from "src/modules/video/domain/enums/video-aspectratio";
+import { VideoAspectRatio } from "src/shared/domain/enums/video-aspectratio";
 
 
 @Injectable()
