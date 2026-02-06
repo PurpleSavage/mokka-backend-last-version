@@ -2,9 +2,9 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import {  HydratedDocument, Schema as MongooseSchema } from "mongoose";
 
 
-export type ImageSharedDocument = HydratedDocument<ImageShared>
+export type SharedImageDocument = HydratedDocument<SharedImage>
 @Schema()
-export class ImageShared{
+export class SharedImage{
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Image', required: true,unique: true })
     image: MongooseSchema.Types.ObjectId; // referencia a la imagen
 
@@ -18,6 +18,6 @@ export class ImageShared{
     downloads:number
 }
 
-export const ImageSharedSchema = SchemaFactory.createForClass(ImageShared)
+export const SharedImageSchema = SchemaFactory.createForClass(SharedImage)
 
-ImageSharedSchema.set('timestamps', true)
+SharedImageSchema.set('timestamps', true)

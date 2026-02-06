@@ -6,7 +6,6 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { BullModule } from "@nestjs/bullmq";
 import { NotifierModule } from "src/notifier/notifier.module";
 import { ImageSchema } from "./infrastructure/schemas/image.schema";
-import { ImageSharedSchema } from "./infrastructure/schemas/image-shared.schema";
 import { ImageQueryService } from "./infrastructure/adapters/image-query.service";
 import { ImagePort } from "./application/ports/image.port";
 import { ListSharedImageUseCase } from "./application/use-cases/list-shared-image.use-case";
@@ -20,6 +19,7 @@ import { RemixImageSchema } from "./infrastructure/schemas/remix-image.schema";
 import { GenerateImageUseCase } from "./application/use-cases/generate-image.use-case";
 import { ImageCommandController } from "./infrastructure/controllers/image-command.controller";
 import { ImageQueryController } from "./infrastructure/controllers/image-query.controller";
+import { SharedImageSchema } from "./infrastructure/schemas/image-shared.schema";
 
 
 @Module({
@@ -27,7 +27,7 @@ import { ImageQueryController } from "./infrastructure/controllers/image-query.c
         SharedModule,
         MongooseModule.forFeature([
             { name: 'Image', schema: ImageSchema},
-            {name:'ImageShared',schema:ImageSharedSchema},
+            {name:'ImageShared',schema:SharedImageSchema}, 
             {name:'RemixImage',schema:RemixImageSchema}
         ]),
         BullModule.registerQueue({  // registrar cola

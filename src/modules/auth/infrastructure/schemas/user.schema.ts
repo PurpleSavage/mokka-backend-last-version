@@ -34,23 +34,50 @@ export const UserSchema = SchemaFactory.createForClass(User)
 UserSchema.virtual('audios', {
   ref: 'Audio',             
   localField: '_id',        
-  foreignField: 'idUser',   
+  foreignField: 'user',   
   justOne: false,           
 });
 
 UserSchema.virtual('texts',{
   ref:'Text',
   localField:'_id',
-  foreignField:'idUser',
+  foreignField:'user',
   justOne:false
 })
 
 UserSchema.virtual('images',{
   ref:'Image',
   localField:'_id',
-  foreignField:'idUser',
+  foreignField:'user',
   justOne:false
 })
+
+UserSchema.virtual('videos',{
+  ref:'Video',
+  localField:'_id',
+  foreignField:'user',
+  justOne:false
+})
+UserSchema.virtual('remixImages',{
+  ref:'RemixImage',
+  localField:'_id',
+  foreignField:'user',
+  justOne:false
+})
+
+UserSchema.virtual('sharedImages',{
+  ref:'ImageShared',
+  localField:'_id',
+  foreignField:'user',
+  justOne:false
+})
+UserSchema.virtual('influencers',{
+  ref:'Influencers',
+  localField:'_id',
+  foreignField:'user',
+  justOne:false
+})
+
 
 // Para que el virtual aparezca en JSON y en objetos normales
 UserSchema.set('toObject', { virtuals: true })

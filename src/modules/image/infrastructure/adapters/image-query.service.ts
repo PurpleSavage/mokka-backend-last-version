@@ -7,16 +7,17 @@ import { ImageDocument } from "../schemas/image.schema";
 import { MokkaError } from "src/shared/errors/mokka.error";
 import { PinoLogger } from "nestjs-pino";
 import { SharedImageEntity } from "../../domain/entities/shared-image.entity";
-import { ImageSharedDocument } from "../schemas/image-shared.schema";
+
 import { UserDocument } from "src/modules/auth/infrastructure/schemas/user.schema";
 import { SharedByEntity } from "../../domain/entities/shared-by.entity";
 import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { SharedImageDocument } from "../schemas/image-shared.schema";
 
 @Injectable()
 export class ImageQueryService implements ImagePort{
     constructor(
         @InjectModel('Image') private readonly imageModel: Model<ImageDocument>,
-        @InjectModel('ImageShared') private readonly sharedImageModel: Model<ImageSharedDocument>,
+        @InjectModel('ImageShared') private readonly sharedImageModel: Model<SharedImageDocument>,
         private readonly logger: PinoLogger 
     ){}
     async listImagesByUserId(userId: string): Promise<ImageEntity[]> {

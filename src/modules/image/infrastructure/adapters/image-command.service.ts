@@ -7,7 +7,7 @@ import { SharedImageEntity } from "../../domain/entities/shared-image.entity";
 import { PinoLogger } from "nestjs-pino";
 import { InjectModel } from "@nestjs/mongoose";
 import { ImageDocument } from "../schemas/image.schema";
-import { ImageSharedDocument } from "../schemas/image-shared.schema";
+
 import { Model } from "mongoose";
 import { MokkaError } from "src/shared/errors/mokka.error";
 import { ObjectId } from 'mongodb';
@@ -16,13 +16,14 @@ import { RemixImageVo } from "../../domain/value-objects/remix-image.vo";
 import { RemixImageEntity } from "../../domain/entities/remix-image.entity";
 import { RemixImageDocument } from "../schemas/remix-image.schema";
 import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { SharedImageDocument } from "../schemas/image-shared.schema";
 
 
 @Injectable()
 export class ImageCommandService implements ImageRepository{
     constructor(
         @InjectModel('Image') private readonly imageModel: Model<ImageDocument>,
-        @InjectModel('ImageShared') private readonly sharedImageModel: Model<ImageSharedDocument>,
+        @InjectModel('ImageShared') private readonly sharedImageModel: Model<SharedImageDocument>,
         @InjectModel('RemixImage') private readonly remixImageModel:Model<RemixImageDocument>,
         private readonly logger: PinoLogger
     ){}
