@@ -11,6 +11,15 @@ import { InfluencerCommandController } from "./infrastructure/controllers/influe
 import { CreateInFluencerSceneUseCase } from "./application/use-cases/create-influencer-scene.use-case";
 import { CreateInfluencerSnapshotUseCase } from "./application/use-cases/create-influencer-snapshot.use-case";
 import { InfluencerScenaSchema } from "./infrastructure/schemas/influencer-scena.schema";
+import { InfluencerQueryService } from "./infrastructure/adapters/influencer-query.service";
+import { InfluencerPort } from "./application/ports/influencer.port";
+import { GetInfluencerByIdUseCase } from "./application/use-cases/get-influencer-by-id.use-case";
+import { GetSnapshotByIdUseCase } from "./application/use-cases/get-snapshot-by-id.use-case";
+import { ListHistoryScenesLastWeek } from "./application/use-cases/list-history-scenes-last-week.use-case";
+import { ListHistoryScenesUseCase } from "./application/use-cases/list-history-scenes.use-case";
+import { ListHistorySnapshotsUseCase } from "./application/use-cases/list-history-snapshots.use-case";
+import { ListSnapshotLastWeekUseCase } from "./application/use-cases/list-snapshot-last-week.use-case";
+import { InfluencerQueryController } from "./infrastructure/controllers/influencer-query.controller";
 
 @Module({
     imports:[
@@ -40,16 +49,28 @@ import { InfluencerScenaSchema } from "./infrastructure/schemas/influencer-scena
         CreateInfluencerUseCase,
         CreateInFluencerSceneUseCase,
         CreateInfluencerSnapshotUseCase,
+        GetInfluencerByIdUseCase,
+        GetSnapshotByIdUseCase,
+        ListHistoryScenesLastWeek,
+        ListHistoryScenesUseCase,
+        ListHistorySnapshotsUseCase,
+        ListSnapshotLastWeekUseCase,
         {
             useClass:InfluencerCommandService,
             provide:InfluencerRepository
+        },
+        {
+            useClass:InfluencerQueryService,
+            provide:InfluencerPort
         }
     ],
     controllers:[
-        InfluencerCommandController
+        InfluencerCommandController,
+        InfluencerQueryController
     ],
     exports:[
-        InfluencerRepository
+        InfluencerRepository,
+        InfluencerPort
     ]
 })
 export class InfluencerModule {}
