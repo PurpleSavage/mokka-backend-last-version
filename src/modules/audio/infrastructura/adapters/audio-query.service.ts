@@ -48,7 +48,7 @@ export class AudioQueryService implements AudioPort{
             throw new MokkaError({
                 message: 'Database operation failed',
                 errorType: ErrorPlatformMokka.DATABASE_FAILED,
-                status: HttpStatus.PAYLOAD_TOO_LARGE,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
                 details: 'Failed to list audios'
             })
         }

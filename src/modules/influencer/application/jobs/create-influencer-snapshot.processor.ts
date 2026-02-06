@@ -44,9 +44,9 @@ export class CreateInfluencerSnapshotProcessor extends WorkerHost{
                 },
                 'Error generating infleuncer snapshot',
             );
-                  const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-                  this.notifierService.notifyError(createinfluencerDto.user,'influencer',errorInfo)
-                  throw error;
+            const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
+            this.notifierService.notifyError(createinfluencerDto.user,'influencer',errorInfo)
+            throw error
         }
     }   
 }

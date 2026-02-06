@@ -8,6 +8,9 @@ import { InfluencerSnapshotSchema } from "./infrastructure/schemas/influencer-sn
 import { BullModule } from "@nestjs/bullmq";
 import { CreateInfluencerUseCase } from "./application/use-cases/create-influencer.use-case";
 import { InfluencerCommandController } from "./infrastructure/controllers/influencer-command.controller";
+import { CreateInFluencerSceneUseCase } from "./application/use-cases/create-influencer-scene.use-case";
+import { CreateInfluencerSnapshotUseCase } from "./application/use-cases/create-influencer-snapshot.use-case";
+import { InfluencerScenaSchema } from "./infrastructure/schemas/influencer-scena.schema";
 
 @Module({
     imports:[
@@ -15,6 +18,7 @@ import { InfluencerCommandController } from "./infrastructure/controllers/influe
         MongooseModule.forFeature([
             { name: 'Influencer', schema: InfluencerSchema},
             { name: 'InfluencerSnapshot', schema: InfluencerSnapshotSchema},
+            { name: 'InfluencerScene', schema: InfluencerScenaSchema},
         ]),
         BullModule.registerQueue({  
             name: 'influencer-snapshot-queue',
@@ -34,6 +38,8 @@ import { InfluencerCommandController } from "./infrastructure/controllers/influe
     ],
     providers:[
         CreateInfluencerUseCase,
+        CreateInFluencerSceneUseCase,
+        CreateInfluencerSnapshotUseCase,
         {
             useClass:InfluencerCommandService,
             provide:InfluencerRepository

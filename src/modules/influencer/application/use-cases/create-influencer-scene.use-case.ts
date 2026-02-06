@@ -6,7 +6,9 @@ import { InfluencerRepository } from "../../domain/repository/influencer.reposit
 import { CreateInfluencerSceneDto } from "../dtos/create-influencer-scene.dto";
 import { PathStorage } from "src/shared/domain/enums/path-storage";
 import { SaveSceneInfluencerVo } from "../../domain/value-objects/save-scene.vo";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class CreateInFluencerSceneUseCase{
     constructor(
         private readonly influencerCommandService:InfluencerRepository,

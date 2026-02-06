@@ -79,7 +79,7 @@ export class InfluencerEntity {
     this.id = id;
     return this;
   }
-  setSizeIamge(size:string):this{
+  setSizeImage(size:string):this{
     this.sizeImage = size
     return this
   }

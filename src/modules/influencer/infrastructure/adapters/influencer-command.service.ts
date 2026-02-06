@@ -63,7 +63,7 @@ export class InfluencerCommandService implements InfluencerRepository {
         .setHeight(influencerSaved.height)
         .setInfluencerUrlImage(influencerSaved.influencerUrlImage) 
         .setCreateDate(influencerSaved.createdAt) 
-        .setSizeIamge(influencerSaved.sizeImage) 
+        .setSizeImage(influencerSaved.sizeImage) 
         .build()
         
     } catch (error) {

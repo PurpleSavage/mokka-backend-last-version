@@ -52,7 +52,7 @@ export class InfluencerSceneEntity{
         this.volume= volume
         return this
     }
-    setImageBseUrls(urls:string[]){
+    setImageBaseUrls(urls:string[]){
         this.imageBaseUrls= urls
         return this
     }
