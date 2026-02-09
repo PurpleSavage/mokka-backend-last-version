@@ -4,9 +4,12 @@ import { UserEntity } from "../../domain/entities/user.entity";
 import { InjectModel } from "@nestjs/mongoose";
 import { HashPort } from "../../application/ports/hash.port";
 import { JwtPort } from "src/shared/application/ports/jwt.port";
-import { UserDocument } from "../schemas/user.schema";
+import { UserDocument } from "src/shared/infrastructure/schemas/user.schema";
 import { Model } from "mongoose";
-import { TypeAuth } from "../../domain/enums/type-auth";
+import { TypeAuth } from "../../../../shared/domain/enums/type-auth";
+import { PinoLogger } from "nestjs-pino";
+import { MokkaError } from "src/shared/errors/mokka.error";
+import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
 
 
 @Injectable()
@@ -14,7 +17,8 @@ export class AuthCommandService implements AuthRepository{
     constructor(
         @InjectModel('User') private readonly userModel: Model<UserDocument>,
         private readonly jwtAuthService: JwtPort,
-        @Inject(HashPort) private readonly argonService: HashPort
+        @Inject(HashPort) private readonly argonService: HashPort,
+        private readonly logger: PinoLogger
     ){}
     async createAccount(email: string, password: string): Promise<UserEntity> {
         try {
@@ -47,12 +51,20 @@ export class AuthCommandService implements AuthRepository{
 
             return newUser
         } catch (error) {
-            console.log(error)
-            throw new HttpException({
-                status: HttpStatus.CONFLICT,
-                error:'Invalid credentials',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.CONFLICT)
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:"Error creating account"
+                },
+                'Error creating account'
+            )
+            throw new MokkaError({
+                message: 'Error creating account',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Database operation failed'
+            })
+                
         }
     }
     async googleAuthCreateAccount(email:string): Promise<UserEntity> {
@@ -83,12 +95,19 @@ export class AuthCommandService implements AuthRepository{
 
             return newUser
         } catch (error) {
-            console.log(error)
-            throw new HttpException({
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message:"An error occurred while creating the account, please try again later."
+                },
+                'An error occurred while creating the account'
+            )
+            throw new MokkaError({
+                message: 'An error occurred while creating the account, please try again later.',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: 'An error occurred while creating the account, please try again later.',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.INTERNAL_SERVER_ERROR)
+                details: 'Database operation failed'
+            })
         }
     }
 }

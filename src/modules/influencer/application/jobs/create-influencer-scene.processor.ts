@@ -7,12 +7,15 @@ import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
+import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
+
 
 @Processor('influencer-scene-queue')
 export class CreateInfluencerSceneProcessor extends WorkerHost {
   constructor(
     private readonly createInfluencerSceneUseCase: CreateInFluencerSceneUseCase,
     private readonly notifierService: NotifierService,
+     private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -22,7 +25,11 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
       const createInfluencerSceneDto = job.data;
       const result = await this.createInfluencerSceneUseCase.execute(
         createInfluencerSceneDto,
-      );
+      )
+      
+      const creditsUpdated= await this.creditsService.decreaseCredits(30,createInfluencerSceneDto.user) 
+      console.log(creditsUpdated)   
+         
       this.notifierService.notifyReady(
         createInfluencerSceneDto.user,
         'influencer-snapshot',
@@ -32,9 +39,10 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
           status: StatusQueue.COMPLETED,
           message: 'Influencer snapshot generated',
         },
-      );
+      )
     } catch (error) {
-      const createinfluencerDto = job.data;
+      const createinfluencerDto = job.data
+
       this.logger.error(
         {
           jobId: job.id,
@@ -50,14 +58,16 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
           stack: error instanceof Error ? error.stack : undefined,
         },
         'Error generating infleuncer scene',
-      );
-      const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
+      )
+      const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
+
       this.notifierService.notifyError(
         createinfluencerDto.user,
         'influencer',
         errorInfo,
-      );
-      throw error;
+      )
+
+      throw error
     }
   }
 }

@@ -1,7 +1,7 @@
 import { JwtPort } from "src/shared/application/ports/jwt.port";
 import { AuthPort } from "../../application/ports/auth.port";
 import { UserEntity } from "../../domain/entities/user.entity";
-import { UserDocument } from "../schemas/user.schema";
+import { UserDocument } from "src/shared/infrastructure/schemas/user.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";

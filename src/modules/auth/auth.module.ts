@@ -1,7 +1,5 @@
 import { Global, Module } from "@nestjs/common";
-import { MongooseModule } from "@nestjs/mongoose";
 import { SharedModule } from "src/shared/shared.module";
-import { UserSchema } from "./infrastructure/schemas/user.schema";
 import { AuthRepository } from "./domain/repositories/auth.repository";
 import { AuthPort } from "./application/ports/auth.port";
 import { GooglePort } from "./application/ports/google.port";
@@ -22,7 +20,6 @@ import { AuthQueryController } from "./infrastructure/controllers/auth-query.con
 @Module({
     imports:[
         SharedModule,
-        MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     ],
     providers:[
         LoginWithCredentialsUseCase,

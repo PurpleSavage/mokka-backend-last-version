@@ -15,6 +15,10 @@ import { CacheManagerService } from "./infrastructure/adapters/cache-manager.ser
 import { CacheManagerPort } from "./application/ports/cache-manager.port";
 import { JwtModule } from "@nestjs/jwt";
 import { HttpModule } from "@nestjs/axios";
+import { MongooseModule } from "@nestjs/mongoose";
+import { UserSchema } from "./infrastructure/schemas/user.schema";
+import { CreditLogicCommandService } from "./infrastructure/adapters/credits-logic.service";
+import { CreditLogicRepository } from "./domain/repositories/credits-logic.repository";
 
 @Global() 
 @Module({
@@ -23,6 +27,7 @@ import { HttpModule } from "@nestjs/axios";
         secret: process.env.JWT_SECRET,
         }),
         HttpModule,
+        MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     ],
     providers:[
         {
@@ -50,6 +55,10 @@ import { HttpModule } from "@nestjs/axios";
             provide:CacheManagerPort
         },
         {
+            useClass:CreditLogicCommandService,
+            provide:CreditLogicRepository,
+        },
+        {
             provide: 'REDIS_CLIENT',
             useFactory:(configService: ConfigService) => {
                 const client = new Redis({
@@ -68,7 +77,7 @@ import { HttpModule } from "@nestjs/axios";
                 return client;
             },
             inject: [ConfigService]
-        }
+        },
     ],
     exports:[
         MdReaderPort,
@@ -77,7 +86,8 @@ import { HttpModule } from "@nestjs/axios";
         StorageRepository,
         DownloadFilePort,
         CacheManagerPort,
-        'REDIS_CLIENT'
+        'REDIS_CLIENT',
+        CreditLogicRepository
     ]
 })
 export class SharedModule{}

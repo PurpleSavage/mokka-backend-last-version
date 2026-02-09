@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, HydratedDocument } from 'mongoose';
-import { TypeAuth } from '../../domain/enums/type-auth';
+import { HydratedDocument } from 'mongoose';
+import { TypeAuth } from 'src/shared/domain/enums/type-auth';
 
 export type UserDocument = HydratedDocument<User>
 
