@@ -20,6 +20,9 @@ import { ListHistoryScenesUseCase } from "./application/use-cases/list-history-s
 import { ListHistorySnapshotsUseCase } from "./application/use-cases/list-history-snapshots.use-case";
 import { ListSnapshotLastWeekUseCase } from "./application/use-cases/list-snapshot-last-week.use-case";
 import { InfluencerQueryController } from "./infrastructure/controllers/influencer-query.controller";
+import { SharedSnapshotSchema } from "./infrastructure/schemas/snapshot-shared.schema";
+import { SharedSceneSchema } from "./infrastructure/schemas/scene-shared.schema";
+import { SharedInfluencerSchema } from "./infrastructure/schemas/influencer-shared.schema";
 
 @Module({
     imports:[
@@ -28,6 +31,9 @@ import { InfluencerQueryController } from "./infrastructure/controllers/influenc
             { name: 'Influencer', schema: InfluencerSchema},
             { name: 'InfluencerSnapshot', schema: InfluencerSnapshotSchema},
             { name: 'InfluencerScene', schema: InfluencerScenaSchema},
+            {name:'SharedSnapshot',schema:SharedSnapshotSchema},
+            {name:'SharedScene',schema:SharedSceneSchema},
+            {name:'SharedInfluencer',schema:SharedInfluencerSchema}
         ]),
         BullModule.registerQueue({  
             name: 'influencer-snapshot-queue',

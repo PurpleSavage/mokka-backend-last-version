@@ -25,13 +25,12 @@ import { SharedSceneEntity } from '../../domain/entities/shared-scene.entity';
 @Injectable()
 export class InfluencerCommandService implements InfluencerRepository {
   constructor(
-    @InjectModel('Influencer')
-    private readonly influencerModel: Model<InfluencerDocument>,
-    private readonly influencerSnapshotModel: Model<InfluencerSnapshotDocument>,
-    private readonly influencerScene:Model<InfluencerScenaDocument>,
-    private readonly influencerSharedModel:Model<SharedInfluencerDocument>,
-    private readonly snapshotSharedModel: Model<SharedSnapshotDocument>,
-    private readonly sceneSharedModel:Model<SharedSceneDocument>,
+    @InjectModel('Influencer') private readonly influencerModel: Model<InfluencerDocument>,
+    @InjectModel('InfluencerSnapshot') private readonly influencerSnapshotModel: Model<InfluencerSnapshotDocument>,
+    @InjectModel('InfluencerScene') private readonly influencerScene:Model<InfluencerScenaDocument>,
+    @InjectModel('SharedInfluencer') private readonly influencerSharedModel:Model<SharedInfluencerDocument>,
+    @InjectModel('SharedSnapshot') private readonly snapshotSharedModel: Model<SharedSnapshotDocument>,
+    @InjectModel('SharedScene') private readonly sceneSharedModel:Model<SharedSceneDocument>,
     private readonly logger: PinoLogger,
   ) {}
 
@@ -150,6 +149,7 @@ export class InfluencerCommandService implements InfluencerRepository {
       .setUrlScene(influencerScene.urlScene)
       .setVolume(influencerSceneSaved.volume)
       .setAspectRatio(influencerSceneSaved.aspectRatio)
+      .setCreateDate(influencerScene.createdAt)
       .build()
     } catch (error) {
        this.logger.error(
@@ -220,12 +220,12 @@ export class InfluencerCommandService implements InfluencerRepository {
       this.logger.error(
             {
             stack: error instanceof Error ? error.stack : undefined,
-            message: 'Error to share influencer',
+            message: 'Failed to shared scene',
             },
-            'Error to share influencer',
+            'Failed to shared scene',
         );
         throw new MokkaError({
-            message: 'Failed to share influencer generated',
+            message: 'Failed to shared scene',
             errorType: ErrorPlatformMokka.DATABASE_FAILED,
             status: HttpStatus.INTERNAL_SERVER_ERROR,
             details: 'Database operation failed',
@@ -253,12 +253,12 @@ export class InfluencerCommandService implements InfluencerRepository {
       this.logger.error(
             {
             stack: error instanceof Error ? error.stack : undefined,
-            message: 'Error to share influencer',
+            message: 'Failed to shared snpashot',
             },
-            'Error to share influencer',
+            'Failed to shared snpashot',
         );
         throw new MokkaError({
-            message: 'Failed to share influencer generated',
+            message: 'Failed to shared snpashot',
             errorType: ErrorPlatformMokka.DATABASE_FAILED,
             status: HttpStatus.INTERNAL_SERVER_ERROR,
             details: 'Database operation failed',

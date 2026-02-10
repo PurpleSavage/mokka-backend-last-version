@@ -11,9 +11,11 @@ export class InfluencerSnapshotEntity{
     private createdAt:Date
     private id:string   
 
+
     getId(){
         return this.id
     }
+   
     getInfluencer(){
         return this.influencer
     }

@@ -26,6 +26,9 @@ export class InfluencerScena{
 
     @Prop({required:true,enum:VideoAspectRatio})
     aspectRatio:VideoAspectRatio
+
+    @Prop({ default: Date.now })
+    createdAt: Date;
 }
 
 export const InfluencerScenaSchema= SchemaFactory.createForClass(InfluencerScena)

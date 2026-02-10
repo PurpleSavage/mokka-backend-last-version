@@ -9,9 +9,13 @@ export class InfluencerSceneEntity{
     private volume:boolean
     private imageBaseUrls:string[]
     private aspectRatio:VideoAspectRatio
+    private createdAt:Date
 
     getId(){
         return this.id
+    }
+    getCreateDate(){
+        return this.createdAt
     }
     getAspectRatio(){
         return this.aspectRatio
@@ -34,6 +38,10 @@ export class InfluencerSceneEntity{
     
     setId(id:string): this{
         this.id =id
+        return this
+    }
+    setCreateDate(createdAt:Date){
+        this.createdAt=createdAt
         return this
     }
     setUrlScene(url:string):this{

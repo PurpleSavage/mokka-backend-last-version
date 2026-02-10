@@ -1,36 +1,18 @@
 
+import { BaseSharedEntity } from "src/shared/domain/entities/base-shared.entity";
 import { ImageEntity } from "./image.entity"
-import { SharedByEntity } from "../../../../shared/domain/entities/shared-by.entity"
 
-export class SharedImageEntity{
-    public id: string               
-    public remixes: number
-    public downloads: number           
+
+export class SharedImageEntity extends BaseSharedEntity{
+        
     public image: ImageEntity | string     
-    public sharedBy: SharedByEntity | string
-    constructor(){}
 
-    setId(id:string){   
-        this.id = id
-        return this
-    }
-    setRemixes(remixes:number){
-        this.remixes = remixes
-        return this
-    }
-    setDownloads(downloads:number){
-        this.downloads=downloads
-        return this
-    }
-    setImage(image:ImageEntity| string){
+   
+public getScene(): ImageEntity | string { return this.image; }
+    
+    public setImage(image:ImageEntity| string){
         this.image = image
         return this
     }
-    setSharedBy(sharedBy:SharedByEntity | string){
-        this.sharedBy=sharedBy
-        return this
-    }
-    build(){
-        return this
-    }
+    
 }
