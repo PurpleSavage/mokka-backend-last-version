@@ -15,6 +15,12 @@ import { normalizeId } from 'src/shared/application/helpers/normalized-obj';
 import { InfluencerSceneEntity } from '../../domain/entities/influencer-scene.entity';
 import { SaveSceneInfluencerVo } from '../../domain/value-objects/save-scene.vo';
 import { InfluencerScenaDocument } from '../schemas/influencer-scena.schema';
+import { SharedInfluencerDocument } from '../schemas/influencer-shared.schema';
+import { SharedSnapshotDocument } from '../schemas/snapshot-shared.schema';
+import { SharedSceneDocument } from '../schemas/scene-shared.schema';
+import { SharedInfluencerEntity } from '../../domain/entities/shared-influencer.entity';
+import { SharedSnapshotEntity } from '../../domain/entities/shared-snapshot.entity';
+import { SharedSceneEntity } from '../../domain/entities/shared-scene.entity';
 
 @Injectable()
 export class InfluencerCommandService implements InfluencerRepository {
@@ -23,6 +29,9 @@ export class InfluencerCommandService implements InfluencerRepository {
     private readonly influencerModel: Model<InfluencerDocument>,
     private readonly influencerSnapshotModel: Model<InfluencerSnapshotDocument>,
     private readonly influencerScene:Model<InfluencerScenaDocument>,
+    private readonly influencerSharedModel:Model<SharedInfluencerDocument>,
+    private readonly snapshotSharedModel: Model<SharedSnapshotDocument>,
+    private readonly sceneSharedModel:Model<SharedSceneDocument>,
     private readonly logger: PinoLogger,
   ) {}
 
@@ -134,7 +143,7 @@ export class InfluencerCommandService implements InfluencerRepository {
       })
       const influencerSceneSaved = await influencerScene.save()
       return new InfluencerSceneEntity()
-      .setImageBseUrls(influencerSceneSaved.imageBaseUrls)
+      .setImageBaseUrls(influencerSceneSaved.imageBaseUrls)
       .setId(influencerSceneSaved._id.toString())
       .setInfluencer(normalizeId(influencerSceneSaved.influencer))
       .setPrompt(influencerSceneSaved.prompt)
@@ -156,6 +165,104 @@ export class InfluencerCommandService implements InfluencerRepository {
             status: HttpStatus.INTERNAL_SERVER_ERROR,
             details: 'Database operation failed',
         });
+    }
+  }
+
+  async sharedInfluencer(influencerId: string, sharedBy: string): Promise<SharedInfluencerEntity> {
+    try {
+      const response = new this.influencerSharedModel({
+        sharedBy,
+        downloads:0,
+        remixes: 0,
+        influencer:influencerId
+      })
+      const sharedImage = await response.save()
+      return new SharedInfluencerEntity()
+      .setId(sharedImage._id.toString())
+      .setDownloads(sharedImage.downloads)
+      .setRemixes(sharedImage.remixes)
+      .setSharedBy(normalizeId(sharedImage.sharedBy))
+      .setInfluencer(normalizeId(sharedImage.influencer))
+      .build()
+    } catch (error) {
+      this.logger.error(
+            {
+            stack: error instanceof Error ? error.stack : undefined,
+            message: 'Error to share influencer',
+            },
+            'Error to share influencer',
+        );
+        throw new MokkaError({
+            message: 'Failed to share influencer generated',
+            errorType: ErrorPlatformMokka.DATABASE_FAILED,
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            details: 'Database operation failed',
+        })
+    }
+  }
+  async sharedScene(sceneId:string, sharedBy: string): Promise<SharedSceneEntity> {
+    try {
+      const response  = new this.sceneSharedModel({
+        sharedBy,
+        downloads:0,
+        remixes: 0,
+        scene:sceneId
+      })
+      const sharedScene = await response.save()
+      return new SharedSceneEntity()
+      .setSharedBy(normalizeId(sharedScene.sharedBy))
+      .setDownloads(sharedScene.downloads)
+      .setId(sharedScene._id.toString())
+      .setRemixes(sharedScene.remixes)
+      .setScene(normalizeId(sharedScene.scene))
+      .build()
+    } catch (error) {
+      this.logger.error(
+            {
+            stack: error instanceof Error ? error.stack : undefined,
+            message: 'Error to share influencer',
+            },
+            'Error to share influencer',
+        );
+        throw new MokkaError({
+            message: 'Failed to share influencer generated',
+            errorType: ErrorPlatformMokka.DATABASE_FAILED,
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            details: 'Database operation failed',
+        })
+    }
+  }
+  async sharedSnapshot(snapshotId:string, sharedBy: string): Promise<SharedSnapshotEntity> {
+    try {
+      const response = new this.snapshotSharedModel({
+        sharedBy,
+        downloads:0,
+        remixes: 0,
+        snapshot:snapshotId
+      })
+      const sharedSnapshot = await response.save()
+      return new SharedSnapshotEntity()
+      .setSharedBy(normalizeId(sharedSnapshot.sharedBy))
+      .setDownloads(sharedSnapshot.downloads)
+      .setId(sharedSnapshot._id.toString())
+      .setRemixes(sharedSnapshot.remixes)
+      .setSnapshot(normalizeId(sharedSnapshot.snapshot))
+      .build()
+
+    } catch (error) {
+      this.logger.error(
+            {
+            stack: error instanceof Error ? error.stack : undefined,
+            message: 'Error to share influencer',
+            },
+            'Error to share influencer',
+        );
+        throw new MokkaError({
+            message: 'Failed to share influencer generated',
+            errorType: ErrorPlatformMokka.DATABASE_FAILED,
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            details: 'Database operation failed',
+        })
     }
   }
 }

@@ -9,7 +9,7 @@ import { PinoLogger } from "nestjs-pino";
 import { SharedImageEntity } from "../../domain/entities/shared-image.entity";
 
 import { UserDocument } from "src/modules/auth/infrastructure/schemas/user.schema";
-import { SharedByEntity } from "../../domain/entities/shared-by.entity";
+import { SharedByEntity } from "../../../../shared/domain/entities/shared-by.entity";
 import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
 import { SharedImageDocument } from "../schemas/image-shared.schema";
 

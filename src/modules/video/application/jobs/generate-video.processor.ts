@@ -4,15 +4,17 @@ import { Job } from "bullmq";
 import { GenerateVideoDto } from "../dtos/generate-video.dto";
 import { PinoLogger } from "nestjs-pino";
 import { AppBaseError } from "src/shared/errors/base.error";
-import { NotifierService } from "src/notifier/notifier.service";
+import { JobsType, NotifierService } from "src/notifier/notifier.service";
 import { ExtractErrorInfo } from "src/shared/infrastructure/helpers/ExtractErrorInfo";
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { CreditLogicRepository } from "src/shared/domain/repositories/credits-logic.repository";
 
 @Processor('video-queue')
 export class GenerateVideoProcessor extends WorkerHost{
     constructor(
         private readonly generateVideoUseCase:GenerateVideoUseCase,
         private readonly notifierService: NotifierService,
+        private readonly creditsService: CreditLogicRepository,
         private readonly logger: PinoLogger,
     ){
         super()
@@ -21,11 +23,13 @@ export class GenerateVideoProcessor extends WorkerHost{
         try {
             const generateVideoDto = job.data
             const result =await this.generateVideoUseCase.execute(generateVideoDto )
-            this.notifierService.notifyReady(generateVideoDto.user,'video',{
+            const creditsUpdated= await this.creditsService.decreaseCredits(30,generateVideoDto.user) 
+            this.notifierService.notifyReady(generateVideoDto.user,JobsType.VIDEO,{
                 jobId: job.id as string,
                 entity: result,
                 status: StatusQueue.COMPLETED,
                 message: 'Video generated',
+                creditsUpdate:creditsUpdated
             })
         } catch (error) {
             const generateVideoDto = job.data
@@ -46,7 +50,7 @@ export class GenerateVideoProcessor extends WorkerHost{
             'Error generating audio',
             )
             const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
-            this.notifierService.notifyError( generateVideoDto.user,'video',errorInfo)
+            this.notifierService.notifyError( generateVideoDto.user,JobsType.VIDEO,errorInfo)
             throw error
         }
     }

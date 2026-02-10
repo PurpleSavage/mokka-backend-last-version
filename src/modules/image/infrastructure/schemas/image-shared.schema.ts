@@ -1,21 +1,15 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import {  HydratedDocument, Schema as MongooseSchema } from "mongoose";
+import { SharedBase } from "src/shared/infrastructure/schemas/base-shared-document.schema";
 
 
 export type SharedImageDocument = HydratedDocument<SharedImage>
 @Schema()
-export class SharedImage{
+export class SharedImage extends SharedBase{
+
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Image', required: true,unique: true })
-    image: MongooseSchema.Types.ObjectId; // referencia a la imagen
-
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
-    sharedBy: MongooseSchema.Types.ObjectId; // referencia al usuario
-
-    @Prop({ default: 0 })
-    remixes: number;
-
-    @Prop({default:0})
-    downloads:number
+    image: MongooseSchema.Types.ObjectId;
+    
 }
 
 export const SharedImageSchema = SchemaFactory.createForClass(SharedImage)

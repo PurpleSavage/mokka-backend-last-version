@@ -1,6 +1,6 @@
 
 import { ImageEntity } from "./image.entity"
-import { SharedByEntity } from "./shared-by.entity"
+import { SharedByEntity } from "../../../../shared/domain/entities/shared-by.entity"
 
 export class SharedImageEntity{
     public id: string               
