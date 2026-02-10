@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/notifier.service';
 
 import { PinoLogger } from 'nestjs-pino';
 import { AppBaseError } from 'src/shared/errors/base.error';
@@ -8,12 +8,14 @@ import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
 import { CreateRemixImageUseCase } from '../use-cases/create-remix-image.use-case';
 import { CreateRemixImageDto } from '../dtos/create-remix-image.dto';
+import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
 
 @Processor('remix-image-queue')
 export class RemixImageProcessor extends WorkerHost {
   constructor(
     private readonly createRemixImageUseCase: CreateRemixImageUseCase,
     private readonly notifierService: NotifierService,
+    private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -21,12 +23,14 @@ export class RemixImageProcessor extends WorkerHost {
   async process(job: Job<CreateRemixImageDto>) {
     try {
       const createRemixImageDto = job.data;
-      const result = await this.createRemixImageUseCase.execute(createRemixImageDto);
-      this.notifierService.notifyReady(createRemixImageDto.user,'image-remix',{
+      const result = await this.createRemixImageUseCase.execute(createRemixImageDto)
+      const creditsUpdated= await this.creditsService.decreaseCredits(30,createRemixImageDto.user) 
+      this.notifierService.notifyReady(createRemixImageDto.user,JobsType.IMAGE_REMIX,{
           jobId: job.id as string,
           entity: result,
           status: StatusQueue.COMPLETED,
           message: 'Image remix generated',
+          creditsUpdate:creditsUpdated
         })
     } catch (error) {
       const createRemixImageDto = job.data;
@@ -47,7 +51,7 @@ export class RemixImageProcessor extends WorkerHost {
         'Error generating remix',
       );
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-      this.notifierService.notifyError(createRemixImageDto.user,'image-remix',errorInfo)
+      this.notifierService.notifyError(createRemixImageDto.user,JobsType.IMAGE_REMIX,errorInfo)
       throw error;
     }
   }

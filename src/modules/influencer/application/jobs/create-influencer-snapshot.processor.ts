@@ -1,17 +1,19 @@
 import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { PinoLogger } from "nestjs-pino";
-import { NotifierService } from "src/notifier/notifier.service";
+import { JobsType, NotifierService } from "src/notifier/notifier.service";
 import { CreateInfluencerSnapshotUseCase } from "../use-cases/create-influencer-snapshot.use-case";
 import { Job } from "bullmq";
 import { CreateInfluencerSnapshotDto } from "../dtos/create-influencer-snapshot.dto";
 import { ExtractErrorInfo } from "src/shared/infrastructure/helpers/ExtractErrorInfo";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { CreditLogicRepository } from "src/shared/domain/repositories/credits-logic.repository";
 @Processor('influencer-snapshot-queue')
 export class CreateInfluencerSnapshotProcessor extends WorkerHost{
     constructor(
         private readonly createInfluencerSnapshotUseCase: CreateInfluencerSnapshotUseCase,
         private readonly notifierService: NotifierService,
+        private readonly creditsService: CreditLogicRepository,
         private readonly logger: PinoLogger,
     ) {
         super();
@@ -20,11 +22,13 @@ export class CreateInfluencerSnapshotProcessor extends WorkerHost{
         try {
             const createInfluencerSnapshotDto = job.data
             const result = await this.createInfluencerSnapshotUseCase.execute(createInfluencerSnapshotDto)
-            this.notifierService.notifyReady(createInfluencerSnapshotDto.user,'influencer-snapshot',{
+            const creditsUpate = await this.creditsService.decreaseCredits(30,createInfluencerSnapshotDto.user)
+            this.notifierService.notifyReady(createInfluencerSnapshotDto.user,JobsType.INFLUENCER_SNAPSHOT,{
                 jobId: job.id as string,
                 entity: result,
                 status: StatusQueue.COMPLETED,
                 message: 'Influencer snapshot generated',
+                creditsUpdate:creditsUpate
             })
         } catch (error) {
             const createinfluencerDto = job.data
@@ -45,7 +49,7 @@ export class CreateInfluencerSnapshotProcessor extends WorkerHost{
                 'Error generating infleuncer snapshot',
             );
             const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-            this.notifierService.notifyError(createinfluencerDto.user,'influencer',errorInfo)
+            this.notifierService.notifyError(createinfluencerDto.user,JobsType.INFLUENCER_SNAPSHOT,errorInfo)
             throw error
         }
     }   

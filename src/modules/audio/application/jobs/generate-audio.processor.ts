@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/notifier.service';
 import { GenerateAudioUseCase } from '../use-cases/generate-audio.use-case';
 import { GenerateAudioDto } from '../dtos/generate-audio.dto';
 import { Job } from 'bullmq';
@@ -7,12 +7,14 @@ import { AppBaseError } from 'src/shared/errors/base.error';
 import { PinoLogger } from 'nestjs-pino';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
+import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
 
 @Processor('audio-queue')
 export class AudioProcessor extends WorkerHost {
   constructor(
     private readonly generateAudioUseCase: GenerateAudioUseCase,
     private readonly notifierService: NotifierService,
+    private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -21,11 +23,13 @@ export class AudioProcessor extends WorkerHost {
     try {
       const generateAudioDto = job.data;
       const result = await this.generateAudioUseCase.execute(generateAudioDto)
-      this.notifierService.notifyReady(generateAudioDto.user,'audio',{
+      const creditsUpdated= await this.creditsService.decreaseCredits(30,generateAudioDto.user) 
+      this.notifierService.notifyReady(generateAudioDto.user,JobsType.AUDIO,{
           jobId: job.id as string,
           entity: result,
           status: StatusQueue.COMPLETED,
           message: 'Audio generated',
+          creditsUpdate:creditsUpdated
         })
     } catch (error) {
       const generateAudioDto = job.data;
@@ -46,7 +50,7 @@ export class AudioProcessor extends WorkerHost {
         'Error generating audio',
       );
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
-      this.notifierService.notifyError( generateAudioDto.user,'audio',errorInfo)
+      this.notifierService.notifyError( generateAudioDto.user,JobsType.AUDIO,errorInfo)
       throw error
     }
   }

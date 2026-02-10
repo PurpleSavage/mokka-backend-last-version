@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/notifier.service';
 import { GenerateImageUseCase } from '../use-cases/generate-image.use-case';
 import { GenerateImageDto } from '../dtos/generate-image.dto';
 import { PinoLogger } from 'nestjs-pino';
@@ -7,12 +7,14 @@ import { AppBaseError } from 'src/shared/errors/base.error';
 import { Job } from 'bullmq';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
+import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
 
 @Processor('image-queue')
 export class ImageProcessor extends WorkerHost {
   constructor(
     private readonly generateImageUseCase: GenerateImageUseCase,
     private readonly  notifierService: NotifierService,
+    private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -20,13 +22,15 @@ export class ImageProcessor extends WorkerHost {
   async process(job: Job<GenerateImageDto>):Promise<void> {
     try {
       const generateImageDto = job.data;
-      const result = await this.generateImageUseCase.execute(generateImageDto);
-      this.notifierService.notifyReady(generateImageDto.user,'image',{
-        jobId: job.id as string,
-        entity: result,
-        status: StatusQueue.COMPLETED,
-        message: 'Image generated',
-      })
+      const result = await this.generateImageUseCase.execute(generateImageDto)
+      const creditsUpdated= await this.creditsService.decreaseCredits(30,generateImageDto.user) 
+      this.notifierService.notifyReady(generateImageDto.user,JobsType.IMAGE,{
+                jobId: job.id as string,
+                entity: result,
+                status: StatusQueue.COMPLETED,
+                message: 'Image remix generated',
+                creditsUpdate:creditsUpdated
+        })
       
     } catch (error) {
       const generateImageDto = job.data;
@@ -47,7 +51,7 @@ export class ImageProcessor extends WorkerHost {
         'Error generating audio',
       )
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-      this.notifierService.notifyError(generateImageDto.user,'image',errorInfo)
+      this.notifierService.notifyError(generateImageDto.user,JobsType.IMAGE,errorInfo)
       throw error
     }
   }

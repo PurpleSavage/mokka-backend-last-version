@@ -1,6 +1,6 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { PinoLogger } from 'nestjs-pino';
-import { NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/notifier.service';
 import { CreateInFluencerSceneUseCase } from '../use-cases/create-influencer-scene.use-case';
 import { Job } from 'bullmq';
 import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';
@@ -15,7 +15,7 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
   constructor(
     private readonly createInfluencerSceneUseCase: CreateInFluencerSceneUseCase,
     private readonly notifierService: NotifierService,
-     private readonly creditsService: CreditLogicRepository,
+    private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -28,16 +28,16 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
       )
       
       const creditsUpdated= await this.creditsService.decreaseCredits(30,createInfluencerSceneDto.user) 
-      console.log(creditsUpdated)   
          
       this.notifierService.notifyReady(
         createInfluencerSceneDto.user,
-        'influencer-snapshot',
+        JobsType.INFLUENCER_SCENE,
         {
           jobId: job.id as string,
           entity: result,
           status: StatusQueue.COMPLETED,
           message: 'Influencer snapshot generated',
+          creditsUpdate:creditsUpdated
         },
       )
     } catch (error) {
@@ -63,7 +63,7 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
 
       this.notifierService.notifyError(
         createinfluencerDto.user,
-        'influencer',
+        JobsType.INFLUENCER_SCENE,
         errorInfo,
       )
 

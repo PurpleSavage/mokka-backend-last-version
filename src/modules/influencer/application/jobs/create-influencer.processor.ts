@@ -1,18 +1,20 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
-import { NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/notifier.service';
 import { CreateInfluencerUseCase } from '../use-cases/create-influencer.use-case';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
 import { CreateInfluencerDto } from '../dtos/create-influencer.dto';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
+import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
 
 @Processor('influencer-queue')
 export class CreateInfluencerProcessor extends WorkerHost {
   constructor(
     private readonly createInfluencerUseCase: CreateInfluencerUseCase,
     private readonly notifierService: NotifierService,
+    private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -21,11 +23,13 @@ export class CreateInfluencerProcessor extends WorkerHost {
     try {
         const createInfluencerDto = job.data
         const result = await this.createInfluencerUseCase.execute(createInfluencerDto)
-        this.notifierService.notifyReady(createInfluencerDto.user,'influencer',{
+        const creditsUpate = await this.creditsService.decreaseCredits(30,createInfluencerDto.user)
+        this.notifierService.notifyReady(createInfluencerDto.user,JobsType.INFLUENCER,{
           jobId: job.id as string,
           entity: result,
           status: StatusQueue.COMPLETED,
           message: 'Influencer generated',
+          creditsUpdate:creditsUpate
         })
     } catch (error) {
       const createinfluencerDto = job.data
@@ -46,7 +50,7 @@ export class CreateInfluencerProcessor extends WorkerHost {
         'Error generating infleuncer',
       );
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
-      this.notifierService.notifyError(createinfluencerDto.user,'influencer',errorInfo)
+      this.notifierService.notifyError(createinfluencerDto.user,JobsType.INFLUENCER,errorInfo)
       throw error;
     }
   }

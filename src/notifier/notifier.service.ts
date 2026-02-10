@@ -6,7 +6,16 @@ import { ErrorNotification } from "src/shared/infrastructure/helpers/ExtractErro
 
 
 
-
+export enum JobsType {
+    IMAGE = 'image',
+    VIDEO = 'video',
+    AUDIO = 'audio',
+    TEXT = 'text',
+    IMAGE_REMIX = 'image-remix',
+    INFLUENCER = 'influencer',
+    INFLUENCER_SNAPSHOT = 'influencer-snapshot',
+    INFLUENCER_SCENE = 'influencer-scene'
+}
 @Injectable()
 export class NotifierService implements OnModuleInit {
     constructor(private readonly gateway: NotifierGateway) {}
@@ -18,13 +27,13 @@ export class NotifierService implements OnModuleInit {
     // Métodos genéricos
     notifyReady<T>(
         userId: string, 
-        type: 'image' | 'video' | 'audio' | 'text' | 'image-remix'|'influencer'|'influencer-snapshot',
+        type: JobsType,
         data: {
             jobId: string | number,
             entity: T,
             status: StatusQueue,
             message?: string,
-            
+            creditsUpdate:number
         }
     ) {
         this.gateway.emitToUser(userId, `${type}-ready`, data);
@@ -32,7 +41,7 @@ export class NotifierService implements OnModuleInit {
 
     notifyError(
         userId: string,
-        type: 'image' | 'video' | 'audio' | 'text' | 'image-remix'|'influencer'|'influencer-snapshot',
+        type: JobsType,
         data: ErrorNotification
     ) {
         this.gateway.emitToUser(userId, `${type}-error`, data);
