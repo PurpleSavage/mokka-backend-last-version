@@ -23,14 +23,17 @@ import { InfluencerQueryController } from "./infrastructure/controllers/influenc
 import { SharedSnapshotSchema } from "./infrastructure/schemas/snapshot-shared.schema";
 import { SharedSceneSchema } from "./infrastructure/schemas/scene-shared.schema";
 import { SharedInfluencerSchema } from "./infrastructure/schemas/influencer-shared.schema";
+import { ListSharedInfluencerUseCase } from "./application/use-cases/list-shared-influencer.use-csase";
+import { ListSharedSnapshotsUseCase } from "./application/use-cases/list-shared-snapshots.use-case";
+import { ListSharedScenesUseCase } from "./application/use-cases/list-shared-scenes.use-case";
 
 @Module({
     imports:[
         SharedModule,
         MongooseModule.forFeature([
-            { name: 'Influencer', schema: InfluencerSchema},
-            { name: 'InfluencerSnapshot', schema: InfluencerSnapshotSchema},
-            { name: 'InfluencerScene', schema: InfluencerScenaSchema},
+            { name:'Influencer', schema: InfluencerSchema},
+            { name:'InfluencerSnapshot', schema: InfluencerSnapshotSchema},
+            { name:'InfluencerScene', schema: InfluencerScenaSchema},
             {name:'SharedSnapshot',schema:SharedSnapshotSchema},
             {name:'SharedScene',schema:SharedSceneSchema},
             {name:'SharedInfluencer',schema:SharedInfluencerSchema}
@@ -61,6 +64,9 @@ import { SharedInfluencerSchema } from "./infrastructure/schemas/influencer-shar
         ListHistoryScenesUseCase,
         ListHistorySnapshotsUseCase,
         ListSnapshotLastWeekUseCase,
+        ListSharedSnapshotsUseCase,
+        ListSharedScenesUseCase,
+        ListSharedInfluencerUseCase,
         {
             useClass:InfluencerCommandService,
             provide:InfluencerRepository

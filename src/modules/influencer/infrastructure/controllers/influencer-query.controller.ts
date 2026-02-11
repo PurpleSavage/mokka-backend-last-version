@@ -1,7 +1,6 @@
-import { Controller, HttpCode, HttpStatus, Param, Post, UseGuards } from "@nestjs/common";
+import { Controller, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { GetInfluencerByIdUseCase } from "../../application/use-cases/get-influencer-by-id.use-case";
 import { Throttle } from "@nestjs/throttler";
-import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { GetInfluencerByIdDto } from "../../application/dtos/get-influencer-by-id.dto";
@@ -17,6 +16,10 @@ import { ListHistorySnapshotsDto } from "../../application/dtos/list-history-sna
 import { ListSnpashotsLastWeekDto } from "../../application/dtos/list-snapshots-last-week.dto";
 import { ListInfluencersUseCase } from "../../application/use-cases/list-influencers.use-case";
 import { ListInfluencersDto } from "../../application/dtos/list-influencers.dto";
+import { ListSharedDto } from "../../application/dtos/list-shared.dto";
+import { ListSharedInfluencerUseCase } from "../../application/use-cases/list-shared-influencer.use-csase";
+import { ListSharedSnapshotsUseCase } from "../../application/use-cases/list-shared-snapshots.use-case";
+import { ListSharedScenesUseCase } from "../../application/use-cases/list-shared-scenes.use-case";
 
 @Controller({
     path:'influencer/read',
@@ -30,13 +33,14 @@ export class InfluencerQueryController{
         private readonly listHistoryScenesUseCase:ListHistoryScenesUseCase,
         private readonly listHistorySnapshotsUseCase:ListHistorySnapshotsUseCase,
         private readonly listHistorySnapshotsLastWeekUseCase:ListSnapshotLastWeekUseCase,
-        private readonly listInfluencersUseCase:ListInfluencersUseCase
+        private readonly listInfluencersUseCase:ListInfluencersUseCase,
+        private readonly listSharedInfluencersUseCase:ListSharedInfluencerUseCase,
+        private readonly listSharedSnapshotsUseCase:ListSharedSnapshotsUseCase,
+        private readonly listSharedScenesUseCase:ListSharedScenesUseCase
     ){}
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
-    @RequiresCredits(30)
     @Post('model/:userId')
     @HttpCode(HttpStatus.OK)
     listInfluencers(
@@ -47,8 +51,6 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
-    @RequiresCredits(30)
     @Post('model/:influencerId')
     @HttpCode(HttpStatus.OK)
     getInfluencer(
@@ -59,8 +61,6 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
-    @RequiresCredits(30)
     @Post('snapshot/:snapshotId')
     @HttpCode(HttpStatus.OK)
     getSnapshot(
@@ -71,8 +71,6 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
-    @RequiresCredits(30)
     @Post('last-scenes/:userId')
     @HttpCode(HttpStatus.OK)
     historySceneslastWeek(
@@ -84,8 +82,6 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
-    @RequiresCredits(30)
     @Post('scenes/:userId')
     @HttpCode(HttpStatus.OK)
     historyScenes(
@@ -96,8 +92,6 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
-    @RequiresCredits(30)
     @Post('snapshots/:userId')
     @HttpCode(HttpStatus.OK)
     historySnapshots(
@@ -109,7 +103,6 @@ export class InfluencerQueryController{
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
     @UseGuards(CreditsGuard)
-    @RequiresCredits(30)
     @Post('last-snapshots/:userId')
     @HttpCode(HttpStatus.OK)
     historySnapshotslastWeek(
@@ -118,4 +111,35 @@ export class InfluencerQueryController{
         return this.listHistorySnapshotsLastWeekUseCase.execute(dto)
     }
 
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
+    @UseGuards(AccesstokenGuard)
+    @Post('shared-influencers')
+    @HttpCode(HttpStatus.OK)
+    listSharedInfluencer(
+        @Query() dto:ListSharedDto
+    ){
+        return this.listSharedInfluencersUseCase.execute(dto)
+    }
+
+
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
+    @UseGuards(AccesstokenGuard)
+    @Post('shared-snapshots')
+    @HttpCode(HttpStatus.OK)
+    listSharedSnapshots(
+        @Query() dto:ListSharedDto
+    ){
+        return this.listSharedSnapshotsUseCase.execute(dto)
+    }
+
+
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
+    @UseGuards(AccesstokenGuard)
+    @Post('shared-snapshots')
+    @HttpCode(HttpStatus.OK)
+    listSharedScenes(
+        @Query() dto:ListSharedDto
+    ){
+        return this.listSharedScenesUseCase.execute(dto)
+    }
 }
