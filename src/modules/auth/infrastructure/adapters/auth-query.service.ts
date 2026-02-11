@@ -5,6 +5,8 @@ import { UserDocument } from "src/shared/infrastructure/schemas/user.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { MokkaError } from "src/shared/errors/mokka.error";
+import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
 
 @Injectable()
 export class AuthQueryService implements AuthPort{
@@ -18,11 +20,12 @@ export class AuthQueryService implements AuthPort{
             if(!userExist) return null
             const newRefreshToken = await this.jwtAuthService.generateToken({email},'48h')
             if(!newRefreshToken){
-                throw new HttpException({
+                throw new MokkaError({
+                    message: 'An error occurred while generating the session, please try again later.',
+                    errorType: ErrorPlatformMokka.UNKNOWN_ERROR,
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'An error occurred while generating the session, please try again later.',
-                    errorType:'Mokka_ERROR'
-                },HttpStatus.INTERNAL_SERVER_ERROR)
+                    details: 'failed server to generate token'
+                })
             }
             const updatedUser = await this.userModel.findOneAndUpdate(
                 { email }, 

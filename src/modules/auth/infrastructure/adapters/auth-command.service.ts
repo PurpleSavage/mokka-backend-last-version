@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
+import { HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { InjectModel } from "@nestjs/mongoose";
@@ -25,11 +25,12 @@ export class AuthCommandService implements AuthRepository{
             const hashedPassword = await this.argonService.hash(password)
             const refreshtoken = await this.jwtAuthService.generateToken({email},'48h')
             if(!refreshtoken) {
-                throw new HttpException({
+                throw new MokkaError({
+                    message: 'failed server',
+                    errorType: ErrorPlatformMokka.UNKNOWN_ERROR,
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error:'failed server to generate token',
-                    errorType:'Mokka_ERROR'
-                },HttpStatus.INTERNAL_SERVER_ERROR)
+                    details: 'failed server to generate token'
+                })
             }
             const userInstance = new this.userModel({
                 email,
@@ -71,11 +72,13 @@ export class AuthCommandService implements AuthRepository{
         try {
             const refreshtoken = await this.jwtAuthService.generateToken({ email }, '48h')
             if(!refreshtoken) {
-                throw new HttpException({
+                throw new MokkaError({
+                    message: 'failed server',
+                    errorType: ErrorPlatformMokka.UNKNOWN_ERROR,
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error:'failed server to generate token',
-                    errorType:'Mokka_ERROR'
-                },HttpStatus.INTERNAL_SERVER_ERROR)
+                    details: 'failed server to generate token'
+                })
+            
             }
              const userInstance = new this.userModel({
                 email,

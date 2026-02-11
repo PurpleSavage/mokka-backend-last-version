@@ -1,10 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import {  HttpStatus, Injectable } from "@nestjs/common";
 import { AuthPort } from "../ports/auth.port";
 import { JwtPort } from "src/shared/application/ports/jwt.port";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 import { GooglePort } from "../ports/google.port";
 import { LoginWithGoogleDto } from "../dtos/login-with-google.dto";
 import { Session } from "../types/session-response";
+import { MokkaError } from "src/shared/errors/mokka.error";
+import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
 
 @Injectable()
 export class LoginWithGoogleUseCase{
@@ -19,11 +21,13 @@ export class LoginWithGoogleUseCase{
         const userExist = await this.authQueryService.findUserByEmail(userAuthenticated.email)
         const token = await this.jwtService.generateToken({ email:userAuthenticated.email },'15m')
         if(!token){
-            throw new HttpException({
+            throw new MokkaError({
+                message: 'failed server',
+                errorType: ErrorPlatformMokka.UNKNOWN_ERROR,
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error:'An error occurred while creating the account, please try again later.',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.INTERNAL_SERVER_ERROR)
+                details: 'An error occurred while creating the account, please try again later.'
+            })
+            
         }
         if(userExist){
             return {
