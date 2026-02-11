@@ -15,11 +15,14 @@ import { GetProfileUseCase } from "./application/use-cases/get-profile.use-case"
 import { HashService } from "./infrastructure/adapters/hash.service";
 import { AuthCommandController } from "./infrastructure/controllers/auth-command.controller";
 import { AuthQueryController } from "./infrastructure/controllers/auth-query.controller";
+import { MongooseModule } from "@nestjs/mongoose";
+import { UserSchema } from "src/shared/infrastructure/schemas/user.schema";
 
 @Global()
 @Module({
     imports:[
         SharedModule,
+        MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     ],
     providers:[
         LoginWithCredentialsUseCase,

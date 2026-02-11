@@ -41,7 +41,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('model/:userId')
+    @Post('models/:userId')
     @HttpCode(HttpStatus.OK)
     listInfluencers(
         @Param() dto:ListInfluencersDto
@@ -135,7 +135,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('shared-snapshots')
+    @Post('shared-scenes')
     @HttpCode(HttpStatus.OK)
     listSharedScenes(
         @Query() dto:ListSharedDto

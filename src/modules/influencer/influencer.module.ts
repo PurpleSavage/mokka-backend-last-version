@@ -26,6 +26,7 @@ import { SharedInfluencerSchema } from "./infrastructure/schemas/influencer-shar
 import { ListSharedInfluencerUseCase } from "./application/use-cases/list-shared-influencer.use-csase";
 import { ListSharedSnapshotsUseCase } from "./application/use-cases/list-shared-snapshots.use-case";
 import { ListSharedScenesUseCase } from "./application/use-cases/list-shared-scenes.use-case";
+import { ListInfluencersUseCase } from "./application/use-cases/list-influencers.use-case";
 
 @Module({
     imports:[
@@ -67,6 +68,7 @@ import { ListSharedScenesUseCase } from "./application/use-cases/list-shared-sce
         ListSharedSnapshotsUseCase,
         ListSharedScenesUseCase,
         ListSharedInfluencerUseCase,
+        ListInfluencersUseCase,
         {
             useClass:InfluencerCommandService,
             provide:InfluencerRepository
