@@ -26,7 +26,7 @@ export class CreateAccountWithCredentialsUseCase{
         if(!token){
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error:'An error occurred while creating the account, please try again later.',
+                error:'An error occurred while creating the account token, please try again later.',
                 errorType:'Mokka_ERROR'
             },HttpStatus.INTERNAL_SERVER_ERROR)
         }

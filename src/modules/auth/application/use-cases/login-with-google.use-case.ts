@@ -25,7 +25,7 @@ export class LoginWithGoogleUseCase{
                 message: 'failed server',
                 errorType: ErrorPlatformMokka.UNKNOWN_ERROR,
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                details: 'An error occurred while creating the account, please try again later.'
+                details: 'An error occurred while creating the account token, please try again later.'
             })
             
         }

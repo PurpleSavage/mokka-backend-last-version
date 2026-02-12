@@ -37,7 +37,7 @@ export class AuthCommandService implements AuthRepository{
                 password: hashedPassword,
                 refreshtoken, 
                 typeAuth: TypeAuth.CREDENTIALS,
-                credits:300 
+                credits:300,
             })
             const savedUser = await userInstance.save();
             const newUser = new UserEntity()
@@ -84,7 +84,7 @@ export class AuthCommandService implements AuthRepository{
                 email,
                 typeAuth: TypeAuth.GOOGLE,
                 refreshtoken,  
-                typePlan: 'FREE', 
+                credits:300 
             })
             const savedUser = await userInstance.save()
             const newUser = new UserEntity()
@@ -101,7 +101,8 @@ export class AuthCommandService implements AuthRepository{
             this.logger.error(
                 {
                     stack: error instanceof Error ? error.stack : undefined,
-                    message:"An error occurred while creating the account, please try again later."
+                    message:"An error occurred while creating the account, please try again later.",
+                    details:error instanceof Error ? error.message : undefined,
                 },
                 'An error occurred while creating the account'
             )
