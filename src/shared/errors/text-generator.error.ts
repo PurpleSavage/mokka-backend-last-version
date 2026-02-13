@@ -19,9 +19,9 @@ export class TextGeneratorError extends AppBaseError {
   ) {
     super(
       message,
-      ErrorPlatformMokka.OPENAI_ERROR, // ✅ Usar la plataforma correcta
+      ErrorPlatformMokka.OPENAI_ERROR, 
       status,
-      details // ✅ Pasar el tipo de error como details
+      details 
     );
   }
 
