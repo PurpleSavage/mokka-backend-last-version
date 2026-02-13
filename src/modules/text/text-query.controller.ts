@@ -1,8 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, UseGuards } from "@nestjs/common";
 import { ListTextHistoryUseCase } from "./application/use-cases/list-history-text.use-case";
-import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { Throttle } from "@nestjs/throttler";
-import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { ListHistoryTextDto } from "./application/dtos/request/list-history-text.dto";
 
@@ -18,8 +16,6 @@ export class TextQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
-    @RequiresCredits(20)
     @Get('history/:user')
     @HttpCode(HttpStatus.OK)
     listextHistory(
