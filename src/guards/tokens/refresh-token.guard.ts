@@ -25,12 +25,11 @@ export class RefreshtokenGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<RequestWithUser>();
     const token = this.extractToken(request);
-    
     if (!token) {
       throw new UnauthorizedException({
-        message:'No token provided or invalid bearer token',
-        statusCode:401,
-        credentials:false
+        message: 'Session expired, please login again',
+        statusCode: 401,
+        renovate: false, 
       });
     }
 
@@ -38,6 +37,7 @@ export class RefreshtokenGuard implements CanActivate {
       const payload = await this.jwtAuthService.validateToken<{ email: string }>(token);
       
       if (!payload) {
+      
         throw new UnauthorizedException({
           message:'Invalid or expired token',
           statusCode:401,

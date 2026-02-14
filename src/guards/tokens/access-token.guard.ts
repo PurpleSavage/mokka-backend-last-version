@@ -41,9 +41,9 @@ export class AccesstokenGuard implements CanActivate {
     
     if (!token) {
       throw new UnauthorizedException({
-        message:'No token provided or invalid bearer token',
-        statusCode:401,
-        credentials:false
+        message: 'Access token missing',
+        statusCode: 401,
+        renovate: true, 
       });
     }
 
