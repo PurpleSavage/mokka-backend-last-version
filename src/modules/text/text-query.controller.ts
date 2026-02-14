@@ -21,6 +21,7 @@ export class TextQueryController{
     listextHistory(
         @Param() listTextHistoryDto:ListHistoryTextDto
     ){
+        
         return this.listTextHistoryUseCase.execute(listTextHistoryDto)
     }
 }

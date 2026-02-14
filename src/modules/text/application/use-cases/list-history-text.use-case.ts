@@ -3,12 +3,13 @@ import { ListHistoryTextDto } from "../dtos/request/list-history-text.dto";
 import { TextPort } from "../ports/text.port";
 import { TextEntity } from "../../domain/entities/text.entity";
 
-Injectable()
+@Injectable()
 export class ListTextHistoryUseCase{
     constructor(
         private readonly textQueryService:TextPort
     ){}
-    execute(dto:ListHistoryTextDto):Promise<TextEntity[]>{
-        return this.textQueryService.listTexts(dto.user)
+    async execute(dto:ListHistoryTextDto):Promise<TextEntity[]>{
+        const textos= await this.textQueryService.listTexts(dto.user)
+        return textos
     }
 }

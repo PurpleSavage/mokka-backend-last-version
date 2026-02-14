@@ -47,7 +47,7 @@ export class RefreshtokenGuard implements CanActivate {
 
       // Agregar el payload al request
       request.userEmail = payload;
-       console.log('guard del refresh-token',request.userEmail)
+      
       return true;
     } catch (error) {
       if (error instanceof UnauthorizedException) {

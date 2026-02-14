@@ -15,11 +15,12 @@ export class TextQueryService implements TextPort{
         private readonly logger: PinoLogger
     ){}
     async listTexts(user: string): Promise<TextEntity[]> {
+       
         try {
             const texts = await this.textModel.find({
                 user
             }).exec()
-
+            console.log('textos',texts)
             return texts.map((text)=>{
                 return new TextEntity()
                 .setId(text._id.toString())
