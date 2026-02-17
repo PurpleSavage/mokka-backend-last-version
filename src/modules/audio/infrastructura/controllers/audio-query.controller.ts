@@ -17,7 +17,7 @@ export class AudioQueryController{
  
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Get('audios/:idUser')
+    @Get('audios/:user')
     @HttpCode(HttpStatus.OK)
     async listAudios(
         @Param() listAudiosDto:ListAudiosDto
