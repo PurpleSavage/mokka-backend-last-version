@@ -1,4 +1,4 @@
-import { Gender } from '@elevenlabs/elevenlabs-js/api';
+
 import { AgeRange } from '../enums/valid-ramge-age';
 import { BodyShape } from '../enums/valid-body-shape';
 import { SkinColor } from '../enums/valid-skin-color';
@@ -6,6 +6,7 @@ import { EyeColor } from '../enums/valid-eye-color';
 import { HairType } from '../enums/valid-hair-type';
 import { FaceType } from '../enums/valid-face-type';
 import { LipsType } from '../enums/valid-lips-type';
+import { Gender } from '../enums/valid-gender';
 
 export class InfluencerEntity {
   private id: string;

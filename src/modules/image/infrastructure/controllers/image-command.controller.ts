@@ -17,7 +17,7 @@ import { CreateRemixImageDto } from "../../application/dtos/create-remix-image.d
 import { GenerateImageDto } from "../../application/dtos/generate-image.dto";
 
 @Controller({
-    path:'image/read',
+    path:'image/write',
     version:"1"
 })
 export class ImageCommandController{

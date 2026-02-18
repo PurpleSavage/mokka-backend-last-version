@@ -8,7 +8,7 @@ export class SharedImageEntity extends BaseSharedEntity{
     public image: ImageEntity | string     
 
    
-public getScene(): ImageEntity | string { return this.image; }
+    public getScene(): ImageEntity | string { return this.image; }
     
     public setImage(image:ImageEntity| string){
         this.image = image

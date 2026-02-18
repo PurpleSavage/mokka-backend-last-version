@@ -1,4 +1,4 @@
-import { Controller, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { GetInfluencerByIdUseCase } from "../../application/use-cases/get-influencer-by-id.use-case";
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
@@ -41,7 +41,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('models/:userId')
+    @Get('models/:userId')
     @HttpCode(HttpStatus.OK)
     listInfluencers(
         @Param() dto:ListInfluencersDto

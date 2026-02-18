@@ -29,11 +29,11 @@ import { AudioQueryController } from "./infrastructura/controllers/audio-query.c
         ListAudiosUseCase,
         {
             useClass:AudioCommandService,
-            provide:AudioPort
+            provide:AudioRepository
         },
         {
             useClass:AudioQueryService,
-            provide:AudioRepository
+            provide:AudioPort
         },
         {
             useClass:AudioGeneratorService,

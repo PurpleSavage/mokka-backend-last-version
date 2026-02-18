@@ -9,7 +9,7 @@ import { ListSharedImageDto } from "../../application/dtos/list-shared-image.dto
 
 
 @Controller({
-    path:'image/write',
+    path:'image/read',
     version:"1"
 })
 export class ImageQueryController{
