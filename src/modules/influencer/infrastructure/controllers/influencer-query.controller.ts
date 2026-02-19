@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, HttpCode, HttpStatus, Param, Query, UseGuards } from "@nestjs/common";
 import { GetInfluencerByIdUseCase } from "../../application/use-cases/get-influencer-by-id.use-case";
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
@@ -51,7 +51,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('model/:influencerId')
+    @Get('model/:influencerId')
     @HttpCode(HttpStatus.OK)
     getInfluencer(
         @Param() dto:GetInfluencerByIdDto
@@ -61,7 +61,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('snapshot/:snapshotId')
+    @Get('snapshot/:snapshotId')
     @HttpCode(HttpStatus.OK)
     getSnapshot(
         @Param() dto:getSnapshotByIdDto
@@ -71,7 +71,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('last-scenes/:userId')
+    @Get('last-scenes/:userId')
     @HttpCode(HttpStatus.OK)
     historySceneslastWeek(
         @Param() dto:ListScenesLastWeekDto
@@ -82,7 +82,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('scenes/:userId')
+    @Get('scenes/:userId')
     @HttpCode(HttpStatus.OK)
     historyScenes(
         @Param() dto:ListHistoryScenesDto
@@ -92,7 +92,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('snapshots/:userId')
+    @Get('snapshots/:userId')
     @HttpCode(HttpStatus.OK)
     historySnapshots(
         @Param() dto:ListHistorySnapshotsDto
@@ -103,7 +103,7 @@ export class InfluencerQueryController{
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
     @UseGuards(CreditsGuard)
-    @Post('last-snapshots/:userId')
+    @Get('last-snapshots/:userId')
     @HttpCode(HttpStatus.OK)
     historySnapshotslastWeek(
         @Param() dto:ListSnpashotsLastWeekDto
@@ -113,7 +113,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('shared-influencers')
+    @Get('shared-influencers')
     @HttpCode(HttpStatus.OK)
     listSharedInfluencer(
         @Query() dto:ListSharedDto
@@ -124,7 +124,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('shared-snapshots')
+    @Get('shared-snapshots')
     @HttpCode(HttpStatus.OK)
     listSharedSnapshots(
         @Query() dto:ListSharedDto
@@ -135,7 +135,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Post('shared-scenes')
+    @Get('shared-scenes')
     @HttpCode(HttpStatus.OK)
     listSharedScenes(
         @Query() dto:ListSharedDto
