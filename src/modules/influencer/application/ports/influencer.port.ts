@@ -6,7 +6,7 @@ import { SharedSceneEntity } from "../../domain/entities/shared-scene.entity";
 import { SharedSnapshotEntity } from "../../domain/entities/shared-snapshot.entity";
 
 export abstract class InfluencerPort {
-    abstract historyInfluencerSnapshot(userId:string):Promise<InfluencerSnapshotEntity[]>
+    abstract historyInfluencerSnapshot(userId:string,page?:number):Promise<InfluencerSnapshotEntity[]>
     abstract getSnapshotById(snapshotID:string):Promise<InfluencerSnapshotEntity>
     abstract influencersSnapshotLastWeek(userId:string):Promise<InfluencerSnapshotEntity[]>
 
@@ -14,7 +14,7 @@ export abstract class InfluencerPort {
     abstract listInfluencers(userId:string): Promise<InfluencerEntity[]>
     abstract getInfluencerById(id: string): Promise<InfluencerEntity>
 
-    abstract historyInfluencerScenes(userId:string):Promise<InfluencerSceneEntity[]>
+    abstract historyInfluencerScenes(userId:string,page?:number):Promise<InfluencerSceneEntity[]>
     abstract influencerScenesLastWeek(userId:string):Promise<InfluencerSceneEntity[]>
     abstract getInfluencerSceneById(sceneId:string):Promise<InfluencerSceneEntity>
 

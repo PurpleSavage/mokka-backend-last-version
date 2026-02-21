@@ -8,6 +8,6 @@ export class ListHistorySnapshotsUseCase{
         private readonly influencerQueryService: InfluencerPort
     ){}
     execute(dto:ListHistorySnapshotsDto){
-        return this.influencerQueryService.historyInfluencerSnapshot(dto.userId)
+        return this.influencerQueryService.historyInfluencerSnapshot(dto.userId,dto.page)
     }
 }

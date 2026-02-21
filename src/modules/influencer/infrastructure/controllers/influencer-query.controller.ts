@@ -82,10 +82,10 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Get('scenes/:userId')
+    @Get('scenes')
     @HttpCode(HttpStatus.OK)
     historyScenes(
-        @Param() dto:ListHistoryScenesDto
+        @Query() dto:ListHistoryScenesDto
     ){
         return this.listHistoryScenesUseCase.execute(dto)
     }
@@ -95,7 +95,7 @@ export class InfluencerQueryController{
     @Get('snapshots/:userId')
     @HttpCode(HttpStatus.OK)
     historySnapshots(
-        @Param() dto:ListHistorySnapshotsDto
+        @Query() dto:ListHistorySnapshotsDto
     ){
         return this.listHistorySnapshotsUseCase.execute(dto)
     }

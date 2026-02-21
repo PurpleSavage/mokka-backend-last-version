@@ -130,13 +130,18 @@ export class InfluencerQueryService implements InfluencerPort {
 
   async historyInfluencerSnapshot(
     userId: string,
+    page:number = 1
   ): Promise<InfluencerSnapshotEntity[]> {
     try {
+      const limit = 20;
+      const skip = (page - 1) * limit
       const historyInfluencers = await this.influencerSnapshotModel
         .find({
           user: userId,
         })
         .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
         .exec();
       return historyInfluencers.map((influencer) => {
         return new InfluencerSnapshotEntity()
@@ -250,14 +255,19 @@ export class InfluencerQueryService implements InfluencerPort {
     }
   }
   async historyInfluencerScenes(
-    userId: string,
+    userId: string, 
+    page:number = 1
   ): Promise<InfluencerSceneEntity[]> {
     try {
+      const limit = 20;
+      const skip = (page - 1) * limit
       const scenes = await this.influencerSceneModel
         .find({
           user: userId,
         })
         .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
         .exec();
       return scenes.map((scene) => {
         return new InfluencerSceneEntity()
