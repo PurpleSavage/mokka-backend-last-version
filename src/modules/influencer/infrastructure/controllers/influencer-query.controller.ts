@@ -92,7 +92,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Get('snapshots/:userId')
+    @Get('snapshots')
     @HttpCode(HttpStatus.OK)
     historySnapshots(
         @Query() dto:ListHistorySnapshotsDto
