@@ -1,3 +1,4 @@
+import { AspectRatioImage } from "src/shared/infrastructure/enums/image-aspect-ratio";
 import { Environment } from "../enums/valid-eviroments";
 import { OutfitType } from "../enums/valid-outfits";
 
@@ -9,7 +10,7 @@ export class SaveSnapshotVo{
         public readonly prompt:string,
         public readonly enviroment:Environment,
         public readonly outfitStyle:OutfitType,
-      
+        public readonly aspectRatio:AspectRatioImage
     ){
         Object.freeze(this);
     }
@@ -20,7 +21,7 @@ export class SaveSnapshotVo{
         prompt:string,
         enviroment:Environment,
         outfitStyle:OutfitType,
-        
+        aspectRatio:AspectRatioImage
     }):SaveSnapshotVo{
         return new SaveSnapshotVo(
             props.user,
@@ -29,6 +30,7 @@ export class SaveSnapshotVo{
             props.prompt,
             props.enviroment,
             props.outfitStyle,
+            props.aspectRatio
         )
     }
 }

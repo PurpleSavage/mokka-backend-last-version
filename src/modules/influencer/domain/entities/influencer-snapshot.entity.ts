@@ -1,3 +1,4 @@
+import { AspectRatioImage } from "src/shared/infrastructure/enums/image-aspect-ratio"
 import { Environment } from "../enums/valid-eviroments"
 import { OutfitType } from "../enums/valid-outfits"
 import { InfluencerEntity } from "./influecer.entity"
@@ -10,8 +11,7 @@ export class InfluencerSnapshotEntity{
     private outfitStyle:OutfitType
     private createdAt:Date
     private id:string   
-
-
+    private aspectRatio:AspectRatioImage
     getId(){
         return this.id
     }
@@ -22,6 +22,9 @@ export class InfluencerSnapshotEntity{
 
     getsnapshotUrl(){
         return this.snapshotUrl
+    }
+    getAspectRatio(){
+        return this.aspectRatio
     }
     getPrompt(){
         return this.prompt
@@ -39,6 +42,10 @@ export class InfluencerSnapshotEntity{
 
     setId(id:string){
         this.id=id
+        return this
+    }
+    setAspectRatio(aspectRatio:AspectRatioImage){
+        this.aspectRatio=aspectRatio
         return this
     }
     setInfluencer(influencer:InfluencerEntity | string){

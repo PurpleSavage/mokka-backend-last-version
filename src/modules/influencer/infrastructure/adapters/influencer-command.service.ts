@@ -100,6 +100,7 @@ export class InfluencerCommandService implements InfluencerRepository {
             prompt:vo.prompt,
             enviroment:vo.enviroment,
             outfitStyle:vo.outfitStyle,
+            aspectRatio:vo.aspectRatio
         })
         const influencerSnapshotSaved = await influencerSnapshot.save()
       

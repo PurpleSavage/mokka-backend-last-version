@@ -36,6 +36,7 @@ export class CreateInfluencerSnapshotUseCase{
             prompt:dto.prompt,
             enviroment:dto.enviroment,
             outfitStyle:dto.outfitStyle,
+            aspectRatio:dto.aspectRatio
         })
         return await this.influencerCommandService.saveSnapshotInfluencer(vo)
     }

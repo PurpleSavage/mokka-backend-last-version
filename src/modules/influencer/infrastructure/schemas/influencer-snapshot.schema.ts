@@ -3,6 +3,7 @@ import {  HydratedDocument} from 'mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
 import { Environment } from '../../domain/enums/valid-eviroments';
 import { OutfitType } from '../../domain/enums/valid-outfits';
+import { AspectRatioImage } from 'src/shared/infrastructure/enums/image-aspect-ratio';
 
 
 
@@ -32,6 +33,9 @@ export class InfluencerSnapshot{
 
     @Prop({ default: Date.now })
     createdAt: Date;
+
+    @Prop({required:true,enum:AspectRatioImage})
+    aspectRatio:AspectRatioImage
 
 }
 
