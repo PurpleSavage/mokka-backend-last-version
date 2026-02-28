@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer"
-import { ArrayMaxSize, IsArray, IsBoolean, IsEnum, IsIn, IsNotEmpty, IsNumber,IsOptional,IsString, MaxLength } from "class-validator"
+import { ArrayMaxSize, IsArray, IsBoolean, IsEnum, IsNotEmpty,IsOptional,IsString, MaxLength } from "class-validator"
 import { VideoAspectRatio } from "../../../../shared/domain/enums/video-aspectratio"
 
 export class GenerateVideoDto{
@@ -14,15 +14,6 @@ export class GenerateVideoDto{
     prompt:string
 
 
-    @IsNotEmpty()
-    @IsNumber()
-    @IsIn([1280,720,960,1104,1584])
-    height:number
-
-    @IsNotEmpty()
-    @IsNumber()
-    @IsIn([720,1280,960,832,672])
-    width:number
 
 
     @IsEnum(VideoAspectRatio)

@@ -22,8 +22,6 @@ export class GenerateVideoUseCase{
         const vo = GeneratedVideoVO.create({
             user: dto.user,
             prompt: dto.prompt,
-            width: dto.width,
-            height: dto.height,
             videoUrl:urlStorage.url,
             aspectRatio:dto.aspectRatio,
             audio:dto.audio,

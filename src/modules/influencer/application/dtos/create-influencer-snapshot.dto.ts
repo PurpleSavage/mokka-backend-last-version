@@ -7,7 +7,7 @@ export class CreateInfluencerSnapshotDto{
     @IsNotEmpty()
     @IsString({ each: true }) 
     @IsUrl({}, { each: true })
-    urls:string[]
+    url:string[]
 
     @IsNotEmpty()
     @IsString()

@@ -23,7 +23,7 @@ export class CreateInfluencerSnapshotUseCase{
         const config = {
             aspectRatio: dto.aspectRatio, 
             prompt:templateFill,
-            urls:dto.urls,
+            urls:dto.url,
         }
          
         const imageUrl = await this.multimediaService.generateImage(config)

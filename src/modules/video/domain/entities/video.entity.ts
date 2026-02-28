@@ -4,8 +4,7 @@ export class VideoEntity{
     private id: string
     private videoUrl:string
     private prompt:string
-    private height:number
-    private width:number
+    
     private createDate:Date
     private aspectRatio:VideoAspectRatio
     private audio:boolean
@@ -31,15 +30,7 @@ export class VideoEntity{
         return this
     }
     
-    setHeight(height: number){
-        this.height = height
-        return this
-    }
-    
-    setWidth(width: number){
-        this.width = width
-        return this
-    }
+  
     
     setCreateDate(createDate: Date){
         this.createDate = createDate
@@ -72,13 +63,7 @@ export class VideoEntity{
     getAudio(){
         return this.audio
     }
-    getHeight(): number {
-        return this.height
-    }
-    
-    getWidth(): number {
-        return this.width
-    }
+   
     
     getCreateDate(): Date {
         return this.createDate

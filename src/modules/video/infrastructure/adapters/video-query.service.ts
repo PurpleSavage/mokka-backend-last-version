@@ -26,13 +26,13 @@ export class VideoQueryService implements VideoPort{
 
             return listVideos.map((video)=>{
                 return new VideoEntity()
-                .setAspectRatio(video.aspectRatio)
-                .setCreateDate(video.createdAt)
-                .setHeight(video.height)
                 .setId(video._id.toString())
                 .setPrompt(video.prompt)
                 .setVideoUrl(video.videoUrl)
-                .setWidth(video.width)
+                .setAspectRatio(video.aspectRatio)
+                .setCreateDate(video.createdAt)
+                .setAudio(video.audio)
+                .setReferenceImages(video.referenceImages)
                 .build()
             })
         } catch (error) {

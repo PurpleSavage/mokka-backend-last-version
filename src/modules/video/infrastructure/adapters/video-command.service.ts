@@ -20,8 +20,6 @@ export class VideoCommandService implements VideoRepository{
                 user:vo.user,
                 prompt:vo.prompt,
                 videoUrl:vo.videoUrl,
-                height:vo.height,
-                width:vo.width,
                 aspectRatio:vo.aspectRatio,
                 audio:vo.audio,
                 referenceImages:vo.referenceImages
@@ -32,8 +30,6 @@ export class VideoCommandService implements VideoRepository{
             .setPrompt(savedVideo.prompt)
             .setVideoUrl(savedVideo.videoUrl)
             .setAspectRatio(savedVideo.aspectRatio)
-            .setHeight(savedVideo.height)
-            .setWidth(savedVideo.width)
             .setCreateDate(savedVideo.createdAt)
             .setAudio(savedVideo.audio)
             .setReferenceImages(savedVideo.referenceImages)
