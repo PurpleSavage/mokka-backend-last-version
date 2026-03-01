@@ -3,12 +3,11 @@ import { VideoAspectRatio } from "../../../../shared/domain/enums/video-aspectra
 export class VideoEntity{
     private id: string
     private videoUrl:string
-    private prompt:string
-    
+    private prompt:string 
     private createDate:Date
     private aspectRatio:VideoAspectRatio
     private audio:boolean
-    private referenceImages:string[]
+
     
     constructor(){}
     
@@ -41,14 +40,7 @@ export class VideoEntity{
         this.aspectRatio = aspectRatio
         return this
     }
-    setReferenceImages(referenceImages?:string[]){
-        if(referenceImages){
-            this.referenceImages = referenceImages
-        }else{
-            this.referenceImages=[]
-        }
-        return this
-    }
+   
     getId(): string {
         return this.id
     }
@@ -72,9 +64,7 @@ export class VideoEntity{
     getAspectRatio(): VideoAspectRatio {
         return this.aspectRatio
     }
-    getReferenceImages(){
-        return this.referenceImages
-    }
+    
 
     build(){
         return this

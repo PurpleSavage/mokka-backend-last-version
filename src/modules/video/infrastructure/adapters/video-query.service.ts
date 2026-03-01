@@ -32,7 +32,6 @@ export class VideoQueryService implements VideoPort{
                 .setAspectRatio(video.aspectRatio)
                 .setCreateDate(video.createdAt)
                 .setAudio(video.audio)
-                .setReferenceImages(video.referenceImages)
                 .build()
             })
         } catch (error) {

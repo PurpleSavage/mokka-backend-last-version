@@ -22,7 +22,6 @@ export class VideoCommandService implements VideoRepository{
                 videoUrl:vo.videoUrl,
                 aspectRatio:vo.aspectRatio,
                 audio:vo.audio,
-                referenceImages:vo.referenceImages
             })
             const savedVideo = await video.save()
             return new VideoEntity()
@@ -32,7 +31,6 @@ export class VideoCommandService implements VideoRepository{
             .setAspectRatio(savedVideo.aspectRatio)
             .setCreateDate(savedVideo.createdAt)
             .setAudio(savedVideo.audio)
-            .setReferenceImages(savedVideo.referenceImages)
             .build()
         } catch (error) {
             this.logger.error(

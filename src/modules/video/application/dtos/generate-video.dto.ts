@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer"
-import { ArrayMaxSize, IsArray, IsBoolean, IsEnum, IsNotEmpty,IsOptional,IsString, MaxLength } from "class-validator"
+import {  IsBoolean, IsEnum, IsNotEmpty,IsString, MaxLength } from "class-validator"
 import { VideoAspectRatio } from "../../../../shared/domain/enums/video-aspectratio"
 
 export class GenerateVideoDto{
@@ -23,9 +23,5 @@ export class GenerateVideoDto{
     @IsBoolean()
     audio:boolean
 
-    @IsOptional()
-    @IsArray()
-    @IsString({ each: true })
-    @ArrayMaxSize(2)
-    referenceImages?:string[]
+    
 }
