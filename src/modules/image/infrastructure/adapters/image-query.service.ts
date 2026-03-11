@@ -60,6 +60,7 @@ export class ImageQueryService implements ImagePort{
             const sharedImages= await this.sharedImageModel.find()
             .populate<{ image: ImageDocument}>('image')
             .populate<{ sharedBy: UserDocument}>('sharedBy')
+            .sort({ createAt: -1 })
             .skip(skip)
             .limit(limit)
             .exec()

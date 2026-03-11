@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { JobsType, NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/infrastructure/sockets/notifier.service';
 
 import { PinoLogger } from 'nestjs-pino';
 import { AppBaseError } from 'src/shared/errors/base.error';

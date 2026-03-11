@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { JobsType, NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/infrastructure/sockets/notifier.service';
 import { GenerateAudioUseCase } from '../use-cases/generate-audio.use-case';
 import { GenerateAudioDto } from '../dtos/generate-audio.dto';
 import { Job } from 'bullmq';

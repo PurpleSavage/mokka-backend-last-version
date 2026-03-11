@@ -1,6 +1,6 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { PinoLogger } from 'nestjs-pino';
-import { JobsType, NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/infrastructure/sockets/notifier.service';
 import { CreateInFluencerSceneUseCase } from '../use-cases/create-influencer-scene.use-case';
 import { Job } from 'bullmq';
 import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';

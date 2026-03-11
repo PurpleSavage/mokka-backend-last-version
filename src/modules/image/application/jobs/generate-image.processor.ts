@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { JobsType, NotifierService } from 'src/notifier/notifier.service';
+import { JobsType, NotifierService } from 'src/notifier/infrastructure/sockets/notifier.service';
 import { GenerateImageUseCase } from '../use-cases/generate-image.use-case';
 import { GenerateImageDto } from '../dtos/generate-image.dto';
 import { PinoLogger } from 'nestjs-pino';
