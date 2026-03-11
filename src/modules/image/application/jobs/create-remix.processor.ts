@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { JobsType, NotifierService } from 'src/notifier/infrastructure/sockets/notifier.service';
+
 
 import { PinoLogger } from 'nestjs-pino';
 import { AppBaseError } from 'src/shared/errors/base.error';
@@ -9,6 +9,7 @@ import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractError
 import { CreateRemixImageUseCase } from '../use-cases/create-remix-image.use-case';
 import { CreateRemixImageDto } from '../dtos/create-remix-image.dto';
 import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
+import { JobsType, NotifierService } from 'src/modules/notifications/infrastructure/sockets/notifier.service';
 
 @Processor('remix-image-queue')
 export class RemixImageProcessor extends WorkerHost {

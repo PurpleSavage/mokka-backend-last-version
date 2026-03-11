@@ -1,5 +1,5 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { JobsType, NotifierService } from 'src/notifier/infrastructure/sockets/notifier.service';
+
 import { GenerateImageUseCase } from '../use-cases/generate-image.use-case';
 import { GenerateImageDto } from '../dtos/generate-image.dto';
 import { PinoLogger } from 'nestjs-pino';
@@ -8,6 +8,7 @@ import { Job } from 'bullmq';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
 import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
+import { JobsType, NotifierService } from 'src/modules/notifications/infrastructure/sockets/notifier.service';
 
 @Processor('image-queue')
 export class ImageProcessor extends WorkerHost {

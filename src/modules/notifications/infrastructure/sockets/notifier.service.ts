@@ -1,8 +1,9 @@
 // shared/infrastructure/websockets/notification.service.ts
 import { Injectable, OnModuleInit } from "@nestjs/common";
-import { NotifierGateway } from "./notifier.gateway";
+
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 import { ErrorNotification } from "src/shared/infrastructure/helpers/ExtractErrorInfo";
+import { NotifierGateway } from "./notifier.gateway";
 
 
 

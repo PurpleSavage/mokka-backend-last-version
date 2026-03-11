@@ -9,12 +9,13 @@ import { AuthModule } from './modules/auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
 import { LoggerModule } from 'nestjs-pino';
 import { BullModule } from '@nestjs/bullmq';
-import { NotifierModule } from './notifier/notifier.module';
+
 import { AudioModule } from './modules/audio/audio.module';
 import { ImageModule } from './modules/image/image.module';
 import { VideoModule } from './modules/video/video.module';
 import { TextModule } from './modules/text/text.module';
 import { InfluencerModule } from './modules/influencer/influencer.module';
+import { NotifierModule } from './modules/notifications/notifier.module';
 
 
 

@@ -1,13 +1,16 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { NotificationEntity } from 'src/notifier/domain/entities/notification.entity';
-import { NotificationsRepository } from 'src/notifier/domain/repositories/notifications.repository';
-import { NotificationDocument } from '../schemas/notification.schema';
+
+import { NotificationsRepository } from 'src/modules/notifications/domain/repositories/notifications.repository';
+
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { MokkaError } from 'src/shared/errors/mokka.error';
 import { PinoLogger } from 'nestjs-pino';
 import { ErrorPlatformMokka } from 'src/shared/infrastructure/enums/error-detail-types';
-import { SavedNotificationVO } from 'src/notifier/domain/value-objects/saved-notification.vo';
+
+import { NotificationEntity } from '../../domain/entities/notification.entity';
+import { NotificationDocument } from '../schemas/notification.schema';
+import { SavedNotificationVO } from '../../domain/value-objects/saved-notification.vo';
 
 @Injectable()
 export class NotificationsCommandService implements NotificationsRepository {

@@ -2,11 +2,12 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PinoLogger } from 'nestjs-pino';
-import { NotificationsPort } from 'src/notifier/application/ports/notifications.port';
-import { NotificationEntity } from 'src/notifier/domain/entities/notification.entity';
-import { NotificationDocument } from '../schemas/notification.schema';
+import { NotificationsPort } from 'src/modules/notifications/application/ports/notifications.port';
+
 import { ErrorPlatformMokka } from 'src/shared/infrastructure/enums/error-detail-types';
 import { MokkaError } from 'src/shared/errors/mokka.error';
+import { NotificationDocument } from '../schemas/notification.schema';
+import { NotificationEntity } from '../../domain/entities/notification.entity';
 
 @Injectable()
 export class NotificationsQueryService implements NotificationsPort {

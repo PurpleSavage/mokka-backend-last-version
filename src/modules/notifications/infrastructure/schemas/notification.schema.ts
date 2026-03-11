@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {  HydratedDocument} from 'mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
-import { JobsNotificationsType } from 'src/notifier/domain/enums/jons-notifications-type';
+import { JobsNotificationsType } from 'src/modules/notifications/domain/enums/jons-notifications-type';
 import { ErrorPlatformMokka } from 'src/shared/infrastructure/enums/error-detail-types';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 

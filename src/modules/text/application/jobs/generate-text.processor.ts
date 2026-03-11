@@ -1,13 +1,14 @@
 import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { GenerateTextUseCase } from "../use-cases/generate-text.use-case";
 import { PinoLogger } from "nestjs-pino";
-import { JobsType, NotifierService } from "src/notifier/infrastructure/sockets/notifier.service";
+
 import { AppBaseError } from "src/shared/errors/base.error";
 import { GenerateTextDto } from "../dtos/request/generate-text.dto";
 import { Job } from "bullmq";
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 import { ExtractErrorInfo } from "src/shared/infrastructure/helpers/ExtractErrorInfo";
 import { CreditLogicRepository } from "src/shared/domain/repositories/credits-logic.repository";
+import { JobsType, NotifierService } from "src/modules/notifications/infrastructure/sockets/notifier.service";
 
 
 

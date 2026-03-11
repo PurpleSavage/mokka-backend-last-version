@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { NotificationsRepository } from "src/notifier/domain/repositories/notifications.repository";
+import { NotificationsRepository } from "src/modules/notifications/domain/repositories/notifications.repository";
 
 @Injectable()
 export class SaveNotificationUseCase{

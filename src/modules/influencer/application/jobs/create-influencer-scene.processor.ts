@@ -1,6 +1,6 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { PinoLogger } from 'nestjs-pino';
-import { JobsType, NotifierService } from 'src/notifier/infrastructure/sockets/notifier.service';
+
 import { CreateInFluencerSceneUseCase } from '../use-cases/create-influencer-scene.use-case';
 import { Job } from 'bullmq';
 import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';
@@ -8,6 +8,7 @@ import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractError
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
+import { JobsType, NotifierService } from 'src/modules/notifications/infrastructure/sockets/notifier.service';
 
 
 @Processor('influencer-scene-queue')

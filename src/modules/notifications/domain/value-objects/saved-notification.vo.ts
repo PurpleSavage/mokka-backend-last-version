@@ -2,6 +2,7 @@ import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 import { JobsNotificationsType } from "../enums/jons-notifications-type";
 
+
 export class SavedNotificationVO{
     constructor(
         public readonly user: string,

@@ -1,36 +1,32 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { JobsType, NotifierService } from 'src/notifier/infrastructure/sockets/notifier.service';
 import { GenerateAudioUseCase } from '../use-cases/generate-audio.use-case';
 import { GenerateAudioDto } from '../dtos/generate-audio.dto';
 import { Job } from 'bullmq';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { PinoLogger } from 'nestjs-pino';
-import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
 import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
-import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
+import { JobsType, NotifierService } from 'src/modules/notifications/infrastructure/sockets/notifier.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Processor('audio-queue')
 export class AudioProcessor extends WorkerHost {
   constructor(
     private readonly generateAudioUseCase: GenerateAudioUseCase,
     private readonly notifierService: NotifierService,
-    private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
+    private readonly eventEmitter: EventEmitter2
   ) {
     super();
   }
-  async process(job: Job<GenerateAudioDto>): Promise<any> {
+  async process(job: Job<GenerateAudioDto>) {
     try {
       const generateAudioDto = job.data;
       const result = await this.generateAudioUseCase.execute(generateAudioDto)
-      const creditsUpdated= await this.creditsService.decreaseCredits(30,generateAudioDto.user) 
-      this.notifierService.notifyReady(generateAudioDto.user,JobsType.AUDIO,{
-          jobId: job.id as string,
-          entity: result,
-          status: StatusQueue.COMPLETED,
-          message: 'Audio generated',
-          creditsUpdate:creditsUpdated
-        })
+      this.eventEmitter.emit('video.processing.completed', {
+        payload: generateAudioDto,
+        audioBuffer: result, 
+        jobId: job.id
+      });
     } catch (error) {
       const generateAudioDto = job.data;
       this.logger.error(

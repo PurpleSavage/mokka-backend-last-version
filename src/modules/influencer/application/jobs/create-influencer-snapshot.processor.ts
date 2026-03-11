@@ -1,6 +1,6 @@
 import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { PinoLogger } from "nestjs-pino";
-import { JobsType, NotifierService } from "src/notifier/infrastructure/sockets/notifier.service";
+
 import { CreateInfluencerSnapshotUseCase } from "../use-cases/create-influencer-snapshot.use-case";
 import { Job } from "bullmq";
 import { CreateInfluencerSnapshotDto } from "../dtos/create-influencer-snapshot.dto";
@@ -8,6 +8,7 @@ import { ExtractErrorInfo } from "src/shared/infrastructure/helpers/ExtractError
 import { AppBaseError } from "src/shared/errors/base.error";
 import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
 import { CreditLogicRepository } from "src/shared/domain/repositories/credits-logic.repository";
+import { JobsType, NotifierService } from "src/modules/notifications/infrastructure/sockets/notifier.service";
 @Processor('influencer-snapshot-queue')
 export class CreateInfluencerSnapshotProcessor extends WorkerHost{
     constructor(
@@ -18,7 +19,7 @@ export class CreateInfluencerSnapshotProcessor extends WorkerHost{
     ) {
         super();
     }
-    async process(job: Job<CreateInfluencerSnapshotDto>) {
+    async process(job: Job<CreateInfluencerSnapshotDto>):Promise<void> {
         try {
             const createInfluencerSnapshotDto = job.data
             const result = await this.createInfluencerSnapshotUseCase.execute(createInfluencerSnapshotDto)
