@@ -22,7 +22,19 @@ export class AuthQueryController{
     @Req() req: RequestWithUser
   ){
     const email = req.userEmail?.email;
-    return await this.getProfileUseCase.execute(email!)
+    const session = await this.getProfileUseCase.execute(email!)
+    const {access_token,user}=session
+   
+    return {
+      access_token,
+      user:{
+        email: user.email,
+        id: user.id,
+        credits: user.credits,
+        createDate: user.createDate
+
+      }
+    }
   }
 
   @UseGuards(RefreshtokenGuard)
