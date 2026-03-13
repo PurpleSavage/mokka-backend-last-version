@@ -4,12 +4,12 @@ import { InfluencerEntity } from '../../domain/entities/influecer.entity';
 import { InfluencerSnapshotEntity } from '../../domain/entities/influencer-snapshot.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { MokkaError } from 'src/shared/errors/mokka.error';
-import { ErrorPlatformMokka } from 'src/shared/infrastructure/enums/error-detail-types';
+import { ErrorPlatformMokka } from 'src/shared/common/infrastructure/enums/error-detail-types';
 import { PinoLogger } from 'nestjs-pino';
 import { InfluencerDocument } from '../schemas/influencer.schema';
 import { Model } from 'mongoose';
 import { InfluencerSnapshotDocument } from '../schemas/influencer-snapshot.schema';
-import { normalizeId } from 'src/shared/application/helpers/normalized-obj';
+import { normalizeId } from 'src/shared/common/application/helpers/normalized-obj';
 import { InfluencerScenaDocument } from '../schemas/influencer-scena.schema';
 import { InfluencerSceneEntity } from '../../domain/entities/influencer-scene.entity';
 import { SharedInfluencerEntity } from '../../domain/entities/shared-influencer.entity';
@@ -18,8 +18,8 @@ import { SharedSnapshotEntity } from '../../domain/entities/shared-snapshot.enti
 import { SharedInfluencerDocument } from '../schemas/influencer-shared.schema';
 import { SharedSnapshotDocument } from '../schemas/snapshot-shared.schema';
 import { SharedSceneDocument } from '../schemas/scene-shared.schema';
-import { UserDocument } from 'src/shared/infrastructure/schemas/user.schema';
-import { SharedByEntity } from 'src/shared/domain/entities/shared-by.entity';
+import { UserDocument } from 'src/shared/common/infrastructure/schemas/user.schema';
+import { SharedByEntity } from 'src/shared/common/domain/entities/shared-by.entity';
 
 @Injectable()
 export class InfluencerQueryService implements InfluencerPort {

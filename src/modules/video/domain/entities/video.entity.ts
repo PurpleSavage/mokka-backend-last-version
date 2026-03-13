@@ -1,4 +1,4 @@
-import { VideoAspectRatio } from "../../../../shared/domain/enums/video-aspectratio"
+import { VideoAspectRatio } from "../../../../shared/common/domain/enums/video-aspectratio"
 
 export class VideoEntity{
     private id: string

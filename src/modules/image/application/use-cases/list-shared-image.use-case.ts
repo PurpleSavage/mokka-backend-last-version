@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ListSharedImageDto } from "../dtos/list-shared-image.dto";
-import { CacheManagerPort } from "src/shared/application/ports/cache-manager.port";
+import { CacheManagerPort } from "src/shared/common/application/ports/cache-manager.port";
 import { SharedImageEntity } from "../../domain/entities/shared-image.entity";
 import { ImagePort } from "../ports/image.port";
 

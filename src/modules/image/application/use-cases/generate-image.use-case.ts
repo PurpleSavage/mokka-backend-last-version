@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { GenerateImageDto } from "../dtos/generate-image.dto";
-import { MdReaderPort } from "src/shared/application/ports/md-reader.port";
+import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
 import { ImageRepository } from "../../domain/repositories/image.repository";
-import { StorageRepository } from "src/shared/domain/repositories/storage.repository";
-import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
-import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
+import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
+import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
 import { SavedGenerateImageVO } from "../../domain/value-objects/saved-generate-image.vo";
-import { PathStorage } from "src/shared/domain/enums/path-storage";
+import { PathStorage } from "src/shared/common/domain/enums/path-storage";
+import { StorageRepository } from "src/shared/common/domain/repositories/storage.repository";
 
 @Injectable()
 export class GenerateImageUseCase{

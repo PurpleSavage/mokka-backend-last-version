@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { ErrorPlatformMokka } from '../infrastructure/enums/error-detail-types';
+import { ErrorPlatformMokka } from '../common/infrastructure/enums/error-detail-types';
 
 export class AppBaseError extends HttpException {
   public readonly errorType: ErrorPlatformMokka

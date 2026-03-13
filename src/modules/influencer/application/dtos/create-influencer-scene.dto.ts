@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer"
 import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, IsUrl } from "class-validator"
-import { VideoAspectRatio } from "src/shared/domain/enums/video-aspectratio"
+import { VideoAspectRatio } from "src/shared/common/domain/enums/video-aspectratio"
 
 
 export class CreateInfluencerSceneDto{

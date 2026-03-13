@@ -4,9 +4,9 @@ import { GenerateAudioDto } from '../dtos/generate-audio.dto';
 import { Job } from 'bullmq';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { PinoLogger } from 'nestjs-pino';
-import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
-import { JobsType, NotifierService } from 'src/modules/notifications/infrastructure/sockets/notifier.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
+import { JobsType, NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
 
 @Processor('audio-queue')
 export class AudioProcessor extends WorkerHost {

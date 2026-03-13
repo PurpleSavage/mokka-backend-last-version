@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
 import { Schema as MongooseSchema } from 'mongoose';
-import { VideoAspectRatio } from "src/shared/domain/enums/video-aspectratio";
+import { VideoAspectRatio } from "src/shared/common/domain/enums/video-aspectratio";
 
 export type InfluencerScenaDocument = HydratedDocument<InfluencerScena>
 @Schema()

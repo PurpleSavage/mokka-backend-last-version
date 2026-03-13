@@ -1,6 +1,6 @@
 
 import { VideoEntity } from './video.entity';
-import { BaseSharedEntity } from 'src/shared/domain/entities/base-shared.entity';
+import { BaseSharedEntity } from 'src/shared/common/domain/entities/base-shared.entity';
 
 export class VideoSharedEntity extends BaseSharedEntity{
   private video: VideoEntity | string;

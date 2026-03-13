@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { StorageRepository } from "src/shared/domain/repositories/storage.repository";
 import { InfluencerRepository } from "../../domain/repository/influencer.repository";
-import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
-import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
+import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
+import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
 import { CreateInfluencerDto } from "../dtos/create-influencer.dto";
-import { MdReaderPort } from "src/shared/application/ports/md-reader.port";
-import { PathStorage } from "src/shared/domain/enums/path-storage";
+import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
+import { PathStorage } from "src/shared/common/domain/enums/path-storage";
 import { SaveInfluencerVo } from "../../domain/value-objects/save-influencer.vo";
+import { StorageRepository } from "src/shared/common/domain/repositories/storage.repository";
 
 
 @Injectable()

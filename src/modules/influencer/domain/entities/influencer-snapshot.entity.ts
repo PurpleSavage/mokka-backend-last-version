@@ -1,4 +1,4 @@
-import { AspectRatioImage } from "src/shared/infrastructure/enums/image-aspect-ratio"
+import { AspectRatioImage } from "src/shared/common/infrastructure/enums/image-aspect-ratio"
 import { Environment } from "../enums/valid-eviroments"
 import { OutfitType } from "../enums/valid-outfits"
 import { InfluencerEntity } from "./influecer.entity"

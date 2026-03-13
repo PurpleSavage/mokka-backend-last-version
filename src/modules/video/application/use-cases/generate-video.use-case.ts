@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
-import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
-import { StorageRepository } from "src/shared/domain/repositories/storage.repository";
+import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
+import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
 import { GenerateVideoDto } from "../dtos/generate-video.dto";
 import { VideoRepository } from "../../domain/repositories/video.repository";
 import { GeneratedVideoVO } from "../../domain/value-objects/generated-video.vo";
-import { PathStorage } from "src/shared/domain/enums/path-storage";
+import { PathStorage } from "src/shared/common/domain/enums/path-storage";
+import { StorageRepository } from "src/shared/common/domain/repositories/storage.repository";
 
 @Injectable()
 export class GenerateVideoUseCase{

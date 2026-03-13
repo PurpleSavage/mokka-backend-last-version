@@ -6,7 +6,7 @@ import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { CreateInfluencerDto } from "../../application/dtos/create-influencer.dto";
-import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { CreateInfluencerSnapshotDto } from "../../application/dtos/create-influencer-snapshot.dto";
 import { CreateInfluencerSceneDto } from "../../application/dtos/create-influencer-scene.dto";
 

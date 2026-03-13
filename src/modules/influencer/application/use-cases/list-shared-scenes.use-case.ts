@@ -1,4 +1,4 @@
-import { CacheManagerPort } from 'src/shared/application/ports/cache-manager.port';
+import { CacheManagerPort } from 'src/shared/common/application/ports/cache-manager.port';
 import { InfluencerPort } from '../ports/influencer.port';
 import { SharedSceneEntity } from '../../domain/entities/shared-scene.entity';
 import { ListSharedDto } from '../dtos/list-shared.dto';

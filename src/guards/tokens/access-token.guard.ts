@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 
 import { FastifyRequest } from 'fastify';
-import { JwtPort } from 'src/shared/application/ports/jwt.port';
+import { JwtPort } from 'src/shared/common/application/ports/jwt.port';
 
 interface RequestWithUser extends FastifyRequest {
   userEmail?: {

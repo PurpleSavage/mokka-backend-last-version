@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
-import { VideoAspectRatio } from "../../../../shared/domain/enums/video-aspectratio";
+import { VideoAspectRatio } from "../../../../shared/common/domain/enums/video-aspectratio";
 
 
 

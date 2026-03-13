@@ -4,7 +4,7 @@ import { TextEntity } from "../../domain/entities/text.entity";
 import { Model } from "mongoose";
 import { TextDocument } from "../schemas/text.schema";
 import { PinoLogger } from "nestjs-pino";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 import { HttpStatus, Injectable } from "@nestjs/common";
 import { MokkaError } from "src/shared/errors/mokka.error";
 

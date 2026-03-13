@@ -1,4 +1,4 @@
-import { VideoAspectRatio } from "src/shared/domain/enums/video-aspectratio";
+import { VideoAspectRatio } from "src/shared/common/domain/enums/video-aspectratio";
 
 
 

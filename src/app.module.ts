@@ -15,7 +15,7 @@ import { ImageModule } from './modules/image/image.module';
 import { VideoModule } from './modules/video/video.module';
 import { TextModule } from './modules/text/text.module';
 import { InfluencerModule } from './modules/influencer/influencer.module';
-import { NotifierModule } from './modules/notifications/notifier.module';
+
 
 
 
@@ -53,7 +53,6 @@ import { NotifierModule } from './modules/notifications/notifier.module';
           : undefined,
       },
     }),
-    NotifierModule,
     HttpModule,
     SharedModule,
     AuthModule,

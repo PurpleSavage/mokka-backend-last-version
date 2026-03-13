@@ -1,12 +1,12 @@
 import {  HttpStatus, Injectable } from "@nestjs/common";
 import { AuthPort } from "../ports/auth.port";
-import { JwtPort } from "src/shared/application/ports/jwt.port";
+import { JwtPort } from "src/shared/common/application/ports/jwt.port";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 import { GooglePort } from "../ports/google.port";
 import { LoginWithGoogleDto } from "../dtos/login-with-google.dto";
 import { Session } from "../types/session-response";
 import { MokkaError } from "src/shared/errors/mokka.error";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 
 @Injectable()
 export class LoginWithGoogleUseCase{

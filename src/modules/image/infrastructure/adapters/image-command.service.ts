@@ -11,11 +11,11 @@ import { ImageDocument } from "../schemas/image.schema";
 import { Model } from "mongoose";
 import { MokkaError } from "src/shared/errors/mokka.error";
 import { ObjectId } from 'mongodb';
-import { normalizeId } from "src/shared/application/helpers/normalized-obj";
+import { normalizeId } from "src/shared/common/application/helpers/normalized-obj";
 import { RemixImageVo } from "../../domain/value-objects/remix-image.vo";
 import { RemixImageEntity } from "../../domain/entities/remix-image.entity";
 import { RemixImageDocument } from "../schemas/remix-image.schema";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 import { SharedImageDocument } from "../schemas/image-shared.schema";
 
 

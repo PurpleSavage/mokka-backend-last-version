@@ -1,4 +1,4 @@
-import { TypeAuth } from "../../../../shared/domain/enums/type-auth";
+import { TypeAuth } from "../../../../shared/common/domain/enums/type-auth";
 export class UserEntity {
     public id: string
     public email: string

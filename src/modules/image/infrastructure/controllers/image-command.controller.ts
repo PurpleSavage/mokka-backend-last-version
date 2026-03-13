@@ -8,7 +8,7 @@ import { Queue } from "bullmq";
 
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { RequiresCredits } from "src/decorators/requires-credits.decorator";
-import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { ShareImageUseCase } from "../../application/use-cases/shared-image.use-case";
 import { UpdateDownloadsSharedImageUseCase } from "../../application/use-cases/update-downloads-shared-image.use-case";
 import { UpdateDownloadsSharedImageDto } from "../../application/dtos/update-downloads-image.dto";

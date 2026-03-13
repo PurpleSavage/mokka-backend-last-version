@@ -1,15 +1,13 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-
-
 import { PinoLogger } from 'nestjs-pino';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { Job } from 'bullmq';
-import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
-import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
+import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { CreateRemixImageUseCase } from '../use-cases/create-remix-image.use-case';
 import { CreateRemixImageDto } from '../dtos/create-remix-image.dto';
-import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
-import { JobsType, NotifierService } from 'src/modules/notifications/infrastructure/sockets/notifier.service';
+import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
+import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
+import { JobsType, NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
 
 @Processor('remix-image-queue')
 export class RemixImageProcessor extends WorkerHost {

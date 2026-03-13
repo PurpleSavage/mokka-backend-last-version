@@ -1,4 +1,4 @@
-import { MdReaderPort } from "src/shared/application/ports/md-reader.port";
+import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
 import { TextRepository } from "../../domain/repositories/text.repository";
 import { GenerateTextDto } from "../dtos/request/generate-text.dto";
 import { TextGeneratorPort } from "../ports/text-generator.port";

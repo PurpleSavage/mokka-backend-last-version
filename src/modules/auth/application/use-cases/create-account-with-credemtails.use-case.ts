@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 import { AuthPort } from "../ports/auth.port";
 import { LoginWithCredentialsDto } from "../dtos/login-with-credentials.dto";
-import { JwtPort } from "src/shared/application/ports/jwt.port";
+import { JwtPort } from "src/shared/common/application/ports/jwt.port";
 import { Session } from "../types/session-response";
 
 @Injectable()

@@ -3,7 +3,7 @@ import {  HydratedDocument} from 'mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
 import { Environment } from '../../domain/enums/valid-eviroments';
 import { OutfitType } from '../../domain/enums/valid-outfits';
-import { AspectRatioImage } from 'src/shared/infrastructure/enums/image-aspect-ratio';
+import { AspectRatioImage } from 'src/shared/common/infrastructure/enums/image-aspect-ratio';
 
 
 

@@ -5,7 +5,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { VideoDocument } from "../schemas/video.schema";
 import { Model } from "mongoose";
 import { MokkaError } from "src/shared/errors/mokka.error";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 import { HttpStatus } from "@nestjs/common";
 import { GeneratedVideoVO } from "../../domain/value-objects/generated-video.vo";
 

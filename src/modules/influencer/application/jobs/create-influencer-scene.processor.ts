@@ -1,14 +1,13 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { PinoLogger } from 'nestjs-pino';
-
 import { CreateInFluencerSceneUseCase } from '../use-cases/create-influencer-scene.use-case';
 import { Job } from 'bullmq';
 import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';
-import { ExtractErrorInfo } from 'src/shared/infrastructure/helpers/ExtractErrorInfo';
 import { AppBaseError } from 'src/shared/errors/base.error';
-import { StatusQueue } from 'src/shared/infrastructure/enums/status-queue';
-import { CreditLogicRepository } from 'src/shared/domain/repositories/credits-logic.repository';
-import { JobsType, NotifierService } from 'src/modules/notifications/infrastructure/sockets/notifier.service';
+import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
+import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
+import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
+import { JobsType, NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
 
 
 @Processor('influencer-scene-queue')

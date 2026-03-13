@@ -3,11 +3,11 @@ import { AudioEntity } from "../../domain/entities/audio.entity";
 import { AudioDocument } from "../schemas/audio.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { normalizeId } from "src/shared/application/helpers/normalized-obj";
+import { normalizeId } from "src/shared/common/application/helpers/normalized-obj";
 import { AudioPort } from "../../application/ports/audio.port";
 import { MokkaError } from "src/shared/errors/mokka.error";
 import { PinoLogger } from "nestjs-pino";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 
 @Injectable()
 export class AudioQueryService implements AudioPort{

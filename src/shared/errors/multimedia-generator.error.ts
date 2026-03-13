@@ -1,7 +1,7 @@
 import { HttpStatus } from "@nestjs/common";
 import { AppBaseError } from "./base.error"
-import { ErrorPlatformMokka, MultimediaErrorTypes, ReplicateErrorCode } from "../infrastructure/enums/error-detail-types";
-import { MultimediaResponseDto } from "../infrastructure/dtos/multimedia-response.dt";
+import { ErrorPlatformMokka, MultimediaErrorTypes, ReplicateErrorCode } from "../common/infrastructure/enums/error-detail-types";
+import { MultimediaResponseDto } from "../common/infrastructure/dtos/multimedia-response.dt";
 
 
 export class MultimediaGeneratorError extends AppBaseError { 

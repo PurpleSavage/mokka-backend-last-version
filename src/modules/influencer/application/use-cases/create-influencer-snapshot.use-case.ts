@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
-import { MdReaderPort } from "src/shared/application/ports/md-reader.port";
-import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
-import { StorageRepository } from "src/shared/domain/repositories/storage.repository";
+import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
+import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
+import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
 import { InfluencerRepository } from "../../domain/repository/influencer.repository";
 import { CreateInfluencerSnapshotDto } from "../dtos/create-influencer-snapshot.dto";
-import { PathStorage } from "src/shared/domain/enums/path-storage";
+import { PathStorage } from "src/shared/common/domain/enums/path-storage";
 import { SaveSnapshotVo } from "../../domain/value-objects/save-snapshot.vo";
+import { StorageRepository } from "src/shared/common/domain/repositories/storage.repository";
 
 @Injectable()
 export class CreateInfluencerSnapshotUseCase{

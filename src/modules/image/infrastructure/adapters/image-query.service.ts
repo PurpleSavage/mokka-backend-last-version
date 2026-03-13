@@ -7,10 +7,10 @@ import { ImageDocument } from "../schemas/image.schema";
 import { MokkaError } from "src/shared/errors/mokka.error";
 import { PinoLogger } from "nestjs-pino";
 import { SharedImageEntity } from "../../domain/entities/shared-image.entity";
-import { SharedByEntity } from "../../../../shared/domain/entities/shared-by.entity";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { SharedByEntity } from "../../../../shared/common/domain/entities/shared-by.entity";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 import { SharedImageDocument } from "../schemas/image-shared.schema";
-import { UserDocument } from "src/shared/infrastructure/schemas/user.schema";
+import { UserDocument } from "src/shared/common/infrastructure/schemas/user.schema";
 
 @Injectable()
 export class ImageQueryService implements ImagePort{

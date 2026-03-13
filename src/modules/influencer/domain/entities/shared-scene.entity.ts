@@ -1,6 +1,6 @@
 
 import { InfluencerSceneEntity } from "./influencer-scene.entity";
-import { BaseSharedEntity } from "../../../../shared/domain/entities/base-shared.entity";
+import { BaseSharedEntity } from "../../../../shared/common/domain/entities/base-shared.entity";
 
 
 export class SharedSceneEntity extends BaseSharedEntity {

@@ -1,10 +1,7 @@
 import { Module } from "@nestjs/common";
-
-
 import { SharedModule } from "src/shared/shared.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { BullModule } from "@nestjs/bullmq";
-import { NotifierModule } from "src/notifier/notifier.module";
 import { ImageSchema } from "./infrastructure/schemas/image.schema";
 import { ImageQueryService } from "./infrastructure/adapters/image-query.service";
 import { ImagePort } from "./application/ports/image.port";
@@ -37,7 +34,7 @@ import { SharedImageSchema } from "./infrastructure/schemas/image-shared.schema"
         BullModule.registerQueue({              // ← Agrega esta cola
             name: 'remix-image-queue',
         }),
-        NotifierModule
+
     ],
     providers:[
         ListSharedImageUseCase,

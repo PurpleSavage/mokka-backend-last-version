@@ -4,7 +4,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { GooglePort } from "../../application/ports/google.port";
 import { GoogleUserData } from "../types/google-response";
 import { MokkaError } from "src/shared/errors/mokka.error";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 import { PinoLogger } from "nestjs-pino";
 @Injectable()
 export class GoogleAuthService implements GooglePort{

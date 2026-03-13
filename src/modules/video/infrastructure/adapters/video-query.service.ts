@@ -3,7 +3,7 @@ import { VideoPort } from "../../application/ports/video.port";
 import { VideoEntity } from "../../domain/entities/video.entity";
 import { PinoLogger } from "nestjs-pino";
 import { MokkaError } from "src/shared/errors/mokka.error";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 import { VideoDocument } from "../schemas/video.schema";
 import { Model} from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";

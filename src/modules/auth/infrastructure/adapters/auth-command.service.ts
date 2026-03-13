@@ -3,13 +3,13 @@ import { AuthRepository } from "../../domain/repositories/auth.repository";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { InjectModel } from "@nestjs/mongoose";
 import { HashPort } from "../../application/ports/hash.port";
-import { JwtPort } from "src/shared/application/ports/jwt.port";
-import { UserDocument } from "src/shared/infrastructure/schemas/user.schema";
+import { JwtPort } from "src/shared/common/application/ports/jwt.port";
+import { UserDocument } from "src/shared/common/infrastructure/schemas/user.schema";
 import { Model } from "mongoose";
-import { TypeAuth } from "../../../../shared/domain/enums/type-auth";
+import { TypeAuth } from "../../../../shared/common/domain/enums/type-auth";
 import { PinoLogger } from "nestjs-pino";
 import { MokkaError } from "src/shared/errors/mokka.error";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 
 
 @Injectable()

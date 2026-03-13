@@ -11,7 +11,6 @@ import { AudioGeneratorPort } from "./application/ports/audio-generator.port";
 import { GenerateAudioUseCase } from "./application/use-cases/generate-audio.use-case";
 import { ListAudiosUseCase } from "./application/use-cases/list-audios.use-case";
 import { BullModule } from "@nestjs/bullmq";
-import { NotifierModule } from "src/notifier/notifier.module";
 import { AudioCommandController } from "./infrastructura/controllers/audio-command.controller";
 import { AudioQueryController } from "./infrastructura/controllers/audio-query.controller";
 
@@ -22,7 +21,6 @@ import { AudioQueryController } from "./infrastructura/controllers/audio-query.c
         BullModule.registerQueue({  // registrar cola
             name: 'audio-queue',
         }),
-        NotifierModule
     ],
     providers:[
         GenerateAudioUseCase,

@@ -1,4 +1,4 @@
-import { ErrorPlatformMokka } from '../infrastructure/enums/error-detail-types';
+import { ErrorPlatformMokka } from '../common/infrastructure/enums/error-detail-types';
 import { AppBaseError } from './base.error';
 import { HttpStatus } from '@nestjs/common';
 

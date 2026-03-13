@@ -16,7 +16,7 @@ import { HashService } from "./infrastructure/adapters/hash.service";
 import { AuthCommandController } from "./infrastructure/controllers/auth-command.controller";
 import { AuthQueryController } from "./infrastructure/controllers/auth-query.controller";
 import { MongooseModule } from "@nestjs/mongoose";
-import { UserSchema } from "src/shared/infrastructure/schemas/user.schema";
+import { UserSchema } from "src/shared/common/infrastructure/schemas/user.schema";
 
 @Global()
 @Module({

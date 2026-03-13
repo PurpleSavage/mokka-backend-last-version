@@ -1,6 +1,6 @@
 
 import { InfluencerEntity } from "./influecer.entity"
-import { BaseSharedEntity } from "../../../../shared/domain/entities/base-shared.entity";
+import { BaseSharedEntity } from "../../../../shared/common/domain/entities/base-shared.entity";
 
 export class SharedInfluencerEntity extends BaseSharedEntity {
     private influencer: InfluencerEntity | string;

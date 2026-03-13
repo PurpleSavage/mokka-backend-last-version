@@ -4,7 +4,7 @@ import OpenAI from "openai";
 import {  ResponseTextGeneratorDto } from "../../application/dtos/responses/response-text-generator.dto";
 import { OpenAIErrorResponse, TextGeneratorError } from "src/shared/errors/text-generator.error";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { OpenAIErrorTypes } from "src/shared/infrastructure/enums/error-detail-types";
+import { OpenAIErrorTypes } from "src/shared/common/infrastructure/enums/error-detail-types";
 import { PinoLogger } from "nestjs-pino";
 
 @Injectable()

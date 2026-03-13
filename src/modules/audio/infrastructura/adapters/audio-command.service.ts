@@ -4,11 +4,11 @@ import { AudioDocument } from "../schemas/audio.schema";
 import { Model } from "mongoose";
 
 import { AudioEntity } from "../../domain/entities/audio.entity";
-import { normalizeId } from "src/shared/application/helpers/normalized-obj";
+import { normalizeId } from "src/shared/common/application/helpers/normalized-obj";
 import { AudioRepository } from "../../domain/repositories/audio.repository";
 import { GenerateAudioVO } from "../../domain/value-objects/generated-audio.vo";
 import { MokkaError } from "src/shared/errors/mokka.error";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 import { PinoLogger } from "nestjs-pino";
 
 @Injectable()

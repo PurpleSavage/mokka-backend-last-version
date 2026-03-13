@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { CreateRemixImageDto } from "../dtos/create-remix-image.dto";
 import { ImageRepository } from "../../domain/repositories/image.repository";
-import { MultimediaGeneratorPort } from "src/shared/application/ports/multimedia-generator.port";
+import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
 import { RemixImageVo } from "../../domain/value-objects/remix-image.vo";
-import { StorageRepository } from "src/shared/domain/repositories/storage.repository";
-import { DownloadFilePort } from "src/shared/application/ports/downlaod-file.port";
-import { PathStorage } from "src/shared/domain/enums/path-storage";
-import { MdReaderPort } from "src/shared/application/ports/md-reader.port";
+import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
+import { PathStorage } from "src/shared/common/domain/enums/path-storage";
+import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
+import { StorageRepository } from "src/shared/common/domain/repositories/storage.repository";
 
 
 @Injectable()

@@ -6,7 +6,7 @@ import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
 import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
-import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
+import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { GenerateAudioDto } from "../../application/dtos/generate-audio.dto";
 
 @Controller({

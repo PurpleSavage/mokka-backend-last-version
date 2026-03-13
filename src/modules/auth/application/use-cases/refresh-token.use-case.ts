@@ -1,4 +1,4 @@
-import { JwtPort } from "src/shared/application/ports/jwt.port";
+import { JwtPort } from "src/shared/common/application/ports/jwt.port";
 import { AccessToken } from "../types/access-token";
 import { RefreshTokenDto } from "../dtos/refresh-token.dto";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";

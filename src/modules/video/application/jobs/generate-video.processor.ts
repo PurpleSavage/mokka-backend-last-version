@@ -4,11 +4,11 @@ import { Job } from "bullmq";
 import { GenerateVideoDto } from "../dtos/generate-video.dto";
 import { PinoLogger } from "nestjs-pino";
 import { AppBaseError } from "src/shared/errors/base.error";
+import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
+import { CreditLogicRepository } from "src/shared/common/domain/repositories/credits-logic.repository";
 
-import { ExtractErrorInfo } from "src/shared/infrastructure/helpers/ExtractErrorInfo";
-import { StatusQueue } from "src/shared/infrastructure/enums/status-queue";
-import { CreditLogicRepository } from "src/shared/domain/repositories/credits-logic.repository";
-import { JobsType, NotifierService } from "src/modules/notifications/infrastructure/sockets/notifier.service";
+import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
+import { JobsType, NotifierService } from "src/shared/notifications/infrastructure/sockets/notifier.service";
 
 @Processor('video-queue')
 export class GenerateVideoProcessor extends WorkerHost{

@@ -1,12 +1,12 @@
-import { JwtPort } from "src/shared/application/ports/jwt.port";
+import { JwtPort } from "src/shared/common/application/ports/jwt.port";
 import { AuthPort } from "../../application/ports/auth.port";
 import { UserEntity } from "../../domain/entities/user.entity";
-import { UserDocument } from "src/shared/infrastructure/schemas/user.schema";
+import { UserDocument } from "src/shared/common/infrastructure/schemas/user.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { MokkaError } from "src/shared/errors/mokka.error";
-import { ErrorPlatformMokka } from "src/shared/infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 
 @Injectable()
 export class AuthQueryService implements AuthPort{

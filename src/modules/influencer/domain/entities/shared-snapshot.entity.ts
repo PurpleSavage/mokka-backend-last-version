@@ -1,4 +1,4 @@
-import { BaseSharedEntity } from '../../../../shared/domain/entities/base-shared.entity';
+import { BaseSharedEntity } from '../../../../shared/common/domain/entities/base-shared.entity';
 import { InfluencerSnapshotEntity } from './influencer-snapshot.entity';
 
 export class SharedSnapshotEntity extends BaseSharedEntity {

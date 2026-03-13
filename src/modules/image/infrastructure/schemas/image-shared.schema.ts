@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import {  HydratedDocument, Schema as MongooseSchema } from "mongoose";
-import { SharedBase } from "src/shared/infrastructure/schemas/base-shared-document.schema";
+import { SharedBase } from "src/shared/common/infrastructure/schemas/base-shared-document.schema";
 
 
 export type SharedImageDocument = HydratedDocument<SharedImage>

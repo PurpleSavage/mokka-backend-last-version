@@ -1,5 +1,5 @@
 
-import { BaseSharedEntity } from "src/shared/domain/entities/base-shared.entity";
+import { BaseSharedEntity } from "src/shared/common/domain/entities/base-shared.entity";
 import { ImageEntity } from "./image.entity"
 
 

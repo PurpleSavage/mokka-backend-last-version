@@ -1,6 +1,6 @@
 import { HttpStatus } from "@nestjs/common";
 import { AppBaseError } from "./base.error";
-import { ErrorPlatformMokka, OpenAIErrorCode, OpenAIErrorTypes } from "../infrastructure/enums/error-detail-types";
+import { ErrorPlatformMokka, OpenAIErrorCode, OpenAIErrorTypes } from "../common/infrastructure/enums/error-detail-types";
 
 export interface OpenAIErrorResponse {
   error: {

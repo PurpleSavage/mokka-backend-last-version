@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { Session } from "../types/session-response";
 import { AuthPort } from "../ports/auth.port";
-import { JwtPort } from "src/shared/application/ports/jwt.port";
+import { JwtPort } from "src/shared/common/application/ports/jwt.port";
 
 
 @Injectable()
