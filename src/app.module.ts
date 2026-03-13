@@ -15,12 +15,14 @@ import { ImageModule } from './modules/image/image.module';
 import { VideoModule } from './modules/video/video.module';
 import { TextModule } from './modules/text/text.module';
 import { InfluencerModule } from './modules/influencer/influencer.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 
 
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URI || ''),
     ConfigModule.forRoot({
       isGlobal: true,

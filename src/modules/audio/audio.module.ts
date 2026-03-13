@@ -13,6 +13,7 @@ import { ListAudiosUseCase } from "./application/use-cases/list-audios.use-case"
 import { BullModule } from "@nestjs/bullmq";
 import { AudioCommandController } from "./infrastructura/controllers/audio-command.controller";
 import { AudioQueryController } from "./infrastructura/controllers/audio-query.controller";
+import { AudioProcessor } from "./application/jobs/generate-audio.processor";
 
 @Module({
     imports:[
@@ -23,6 +24,7 @@ import { AudioQueryController } from "./infrastructura/controllers/audio-query.c
         }),
     ],
     providers:[
+        AudioProcessor,
         GenerateAudioUseCase,
         ListAudiosUseCase,
         {
