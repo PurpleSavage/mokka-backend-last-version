@@ -1,23 +1,8 @@
 // shared/infrastructure/websockets/notification.service.ts
 import { Injectable, OnModuleInit } from "@nestjs/common";
-import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { NotifierGateway } from "../../../../shared/notifications/infrastructure/sockets/notifier.gateway";
-import { ErrorSendNotification } from "../errors/types/error-send-notification";
-
-
-
-
-export enum JobsType {
-    IMAGE = 'image',
-    VIDEO = 'video',
-    AUDIO = 'audio',
-    TEXT = 'text',
-    IMAGE_REMIX = 'image-remix',
-    INFLUENCER = 'influencer',
-    INFLUENCER_SNAPSHOT = 'influencer-snapshot',
-    INFLUENCER_SCENE = 'influencer-scene'
-}
-
+import { SocketReadyResponseDto } from "../../application/dtos/socket-ready-response.dto";
+import { SocketErrorResponseDto } from "../../application/dtos/socket-error-response.dto";
 @Injectable()
 export class NotifierService implements OnModuleInit {
     constructor(private readonly gateway: NotifierGateway) {}
@@ -27,28 +12,33 @@ export class NotifierService implements OnModuleInit {
     }
 
     // Métodos genéricos
-    notifyReady<T,K>(
-        userId: string, 
-        type: JobsType,
-        data: {
-            jobId: string | number,
-            entity: T,
-            status: StatusQueue,
-            message?: string,
-            creditsUpdate:number,
-            notification?:K
+    notifyReady<T>(data: SocketReadyResponseDto<T>) {
+    this.gateway.emitToUser(
+        data.getNotification().user, 
+        `${data.getNotificationType()}-ready`, 
+        {
+            jobId: data.getJobId(),
+            notificationType: data.getNotificationType(),
+            notification: data.getNotification(),
+            entity: data.getEntity(),
+            creditsUpdated: data.getCreditsUpdated()
         }
-    ) {
-        this.gateway.emitToUser(userId, `${type}-ready`, data);
-    }
+    );
+}
 
-    notifyError<T>(
-        userId: string,
-        type: JobsType,
-        data: ErrorSendNotification<T>
-    ) {
-        this.gateway.emitToUser(userId, `${type}-error`, data);
-    }
+    notifyError(data: SocketErrorResponseDto) {
+    this.gateway.emitToUser(
+        data.getNotification().user,
+        `${data.getNotificationType()}-error`,
+        {
+            jobId: data.getJobId(),
+            notificationType: data.getNotificationType(),
+            notification: data.getNotification(),
+            error: data.getError(),
+            errorType: data.getErrorType()
+        }
+    );
+}
 
    
     

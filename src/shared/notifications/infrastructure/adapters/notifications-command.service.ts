@@ -11,6 +11,7 @@ import { ErrorPlatformMokka } from 'src/shared/common/infrastructure/enums/error
 import { NotificationEntity } from '../../domain/entities/notification.entity';
 import { NotificationDocument } from '../schemas/notification.schema';
 import { SavedNotificationVO } from '../../domain/value-objects/saved-notification.vo';
+import { normalizeId } from 'src/shared/common/application/helpers/normalized-obj';
 
 @Injectable()
 export class NotificationsCommandService implements NotificationsRepository {
@@ -32,6 +33,7 @@ export class NotificationsCommandService implements NotificationsRepository {
         const savedNotification = await notification.save()
         return NotificationEntity.create({
             id: savedNotification._id.toString(),
+            user:normalizeId(savedNotification.user),
             createdAt: savedNotification.createdAt,
             title: savedNotification.title,
             status: savedNotification.status,

@@ -7,6 +7,7 @@ import { MokkaError } from 'src/shared/errors/mokka.error';
 import { NotificationDocument } from '../schemas/notification.schema';
 import { NotificationEntity } from '../../domain/entities/notification.entity';
 import { NotificationsPort } from '../../application/ports/notifications.port';
+import { normalizeId } from 'src/shared/common/application/helpers/normalized-obj';
 
 @Injectable()
 export class NotificationsQueryService implements NotificationsPort {
@@ -25,6 +26,7 @@ export class NotificationsQueryService implements NotificationsPort {
         .exec();
         return allNotifications.map(doc => NotificationEntity.create({
             id: doc._id.toString(),
+            user:normalizeId(doc.user),
             createdAt: doc.createdAt,
             title: doc.title,
             status: doc.status,

@@ -5,6 +5,7 @@ import { JobsNotificationsType } from "../enums/jons-notifications-type";
 export class NotificationEntity{
     constructor(
         public readonly id: string,
+        public readonly user:string,
         public readonly createdAt: Date,
         public readonly title: string,
         public readonly status: StatusQueue,
@@ -19,6 +20,7 @@ export class NotificationEntity{
    */
   static create(data: {
     id: string;
+    user:string;
     createdAt: Date;
     title: string;
     status: StatusQueue;
@@ -30,6 +32,7 @@ export class NotificationEntity{
     
     return new NotificationEntity(
       data.id,
+      data.user,
       data.createdAt,
       data.title,
       data.status,

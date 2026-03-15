@@ -8,6 +8,5 @@ export interface ErrorNotification{
     error: string;
     statusCode: HttpStatus | number;
     errorType: ErrorPlatformMokka;
-    timestamp: Date;
     details?: string;
 }

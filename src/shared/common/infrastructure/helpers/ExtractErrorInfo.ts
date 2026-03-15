@@ -5,10 +5,8 @@ import { ErrorPlatformMokka } from "../enums/error-detail-types";
 import { ErrorNotification } from "src/shared/notifications/infrastructure/errors/types/error-notification";
 
 
-
 export class ExtractErrorInfo{
     static extract(error: unknown, jobId: string):ErrorNotification{
-        const timestamp = new Date()
         if (error instanceof AppBaseError) {
             return {
                 jobId,
@@ -16,7 +14,6 @@ export class ExtractErrorInfo{
                 error: error.message,
                 statusCode: error.getStatus(),
                 errorType: error.errorType,
-                timestamp,
                 details: error.details
             };
         
@@ -28,7 +25,6 @@ export class ExtractErrorInfo{
                 error: error.message,
                 statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
                 errorType: ErrorPlatformMokka.MOKKA_ERROR,
-                timestamp,
                 details: error.stack
             };
         }
@@ -38,7 +34,6 @@ export class ExtractErrorInfo{
             error: 'Unexpected error occurred to generate audio',
             statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
             errorType: ErrorPlatformMokka.UNKNOWN_ERROR,
-            timestamp,
             details: String(error)
         }
     }

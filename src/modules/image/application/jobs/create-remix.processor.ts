@@ -7,7 +7,8 @@ import { CreateRemixImageUseCase } from '../use-cases/create-remix-image.use-cas
 import { CreateRemixImageDto } from '../dtos/create-remix-image.dto';
 import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
-import { JobsType, NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
+import {  NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Processor('remix-image-queue')
 export class RemixImageProcessor extends WorkerHost {
@@ -16,6 +17,7 @@ export class RemixImageProcessor extends WorkerHost {
     private readonly notifierService: NotifierService,
     private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
+    private readonly eventEmitter: EventEmitter2,
   ) {
     super();
   }
