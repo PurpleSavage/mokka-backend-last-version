@@ -5,8 +5,8 @@ import { Queue } from 'bullmq';
 import { RequiresCredits } from 'src/decorators/requires-credits.decorator';
 import { CreditsGuard } from 'src/guards/credits/verify-credits.guard';
 import { AccesstokenGuard } from 'src/guards/tokens/access-token.guard';
-import { GenerateTextDto } from './application/dtos/request/generate-text.dto';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
+import { GenerateTextDto } from '../../application/dtos/request/generate-text.dto';
 
 @Controller({
     path:'text/write',

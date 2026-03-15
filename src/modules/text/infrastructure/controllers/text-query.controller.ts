@@ -1,9 +1,8 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, UseGuards } from "@nestjs/common";
-import { ListTextHistoryUseCase } from "./application/use-cases/list-history-text.use-case";
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
-import { ListHistoryTextDto } from "./application/dtos/request/list-history-text.dto";
-
+import { ListHistoryTextDto } from "../../application/dtos/request/list-history-text.dto";
+import { ListTextHistoryUseCase } from "../../application/use-cases/list-history-text.use-case";
 
 @Controller({
     path:'text/read',

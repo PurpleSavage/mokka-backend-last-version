@@ -4,10 +4,14 @@ import { PinoLogger } from "nestjs-pino";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { GenerateTextDto } from "../dtos/request/generate-text.dto";
 import { Job } from "bullmq";
-import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
-import { CreditLogicRepository } from "src/shared/common/domain/repositories/credits-logic.repository";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
-import { JobsType, NotifierService } from "src/shared/notifications/infrastructure/sockets/notifier.service";
+import { NotifierService } from "src/shared/notifications/infrastructure/sockets/notifier.service";
+import { EventEmitter2 } from "@nestjs/event-emitter";
+import { SavedNotificationVO } from "src/shared/notifications/domain/value-objects/saved-notification.vo";
+import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
+import { JobsNotificationsType } from "src/shared/notifications/domain/enums/jons-notifications-type";
+import { NotificationsRepository } from "src/shared/notifications/domain/repositories/notifications.repository";
+import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/socket-error-response.dto";
 
 
 
@@ -17,23 +21,20 @@ export class GenerateTextProcessor extends WorkerHost{
       private readonly generateTextUseCase:GenerateTextUseCase,
       private readonly notifierService: NotifierService,
       private readonly logger: PinoLogger,
-      private readonly creditsService: CreditLogicRepository,
+      private readonly eventEmitter: EventEmitter2,
+      private readonly notificationsCommandService: NotificationsRepository,
     ){
         super()
     }
     async process(job: Job<GenerateTextDto>) {
+      const generateTextDto = job.data;
         try {
-          const generateTextDto = job.data;
           const result = await this.generateTextUseCase.execute(generateTextDto)
-          const creditsUpdated= await this.creditsService.decreaseCredits(30,generateTextDto.user) 
-          this.notifierService.notifyReady(generateTextDto.user,JobsType.TEXT,{
-            jobId: job.id as string,
-            entity: result,
-            status: StatusQueue.COMPLETED,
-            message: 'Text generated',
-            creditsUpdate:creditsUpdated
-        })
-          
+          this.eventEmitter.emit('text.processing.completed', {
+            payload: generateTextDto,
+            text: result.text,
+            jobId: job.id,
+          })
         } catch (error) {
           const textDto = job.data;
           this.logger.error(
@@ -53,8 +54,26 @@ export class GenerateTextProcessor extends WorkerHost{
             'Error generating text',
           );
           const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
-          this.notifierService.notifyError( textDto.user,JobsType.TEXT,errorInfo)
-          
+          const voNotification = SavedNotificationVO.create({
+            user: generateTextDto.user,
+            title: 'Audio Failed',
+            status: StatusQueue.FAILED,
+            notificationType: JobsNotificationsType.TEXT,
+            message: errorInfo.error,
+            details: errorInfo.details,
+            errorType: errorInfo.errorType,
+          });
+          const savedNotification =await this.notificationsCommandService.saveNotification(voNotification);
+          const socketResponse = SocketErrorResponseDto.create({
+            jobId: errorInfo.jobId,
+            notificationType: JobsNotificationsType.TEXT,
+            notification: savedNotification,
+            error: errorInfo.error,
+            errorType: errorInfo.errorType,
+            statusCode: errorInfo.statusCode,
+            details: errorInfo.details,
+          });
+          this.notifierService.notifyError(socketResponse);
           throw error;
         }
     }

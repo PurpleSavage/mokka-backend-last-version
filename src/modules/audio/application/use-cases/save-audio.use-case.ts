@@ -107,9 +107,9 @@ export class SaveAudioUseCase {
         errorType: errorInfo.errorType,
         statusCode: errorInfo.statusCode,
         details: errorInfo.details,
-      });
+      })
 
-      this.notifierService.notifyError(socketResponse);
+      this.notifierService.notifyError(socketResponse)
     }
   }
 }
