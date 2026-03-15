@@ -17,6 +17,8 @@ import { GenerateImageUseCase } from "./application/use-cases/generate-image.use
 import { ImageCommandController } from "./infrastructure/controllers/image-command.controller";
 import { ImageQueryController } from "./infrastructure/controllers/image-query.controller";
 import { SharedImageSchema } from "./infrastructure/schemas/image-shared.schema";
+import { SaveImageUseCase } from "./application/use-cases/save-image.use-case";
+import { SaveRemixImageUseCase } from "./application/use-cases/save-remix-image.use-case";
 
 
 @Module({
@@ -43,6 +45,8 @@ import { SharedImageSchema } from "./infrastructure/schemas/image-shared.schema"
         ShareImageUseCase,
         GenerateImageUseCase,
         CreateRemixImageUseCase,
+        SaveImageUseCase,
+        SaveRemixImageUseCase,
         {
             useClass:ImageQueryService,
             provide:ImagePort

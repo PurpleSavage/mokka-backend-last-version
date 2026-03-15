@@ -17,7 +17,9 @@ import { PinoLogger } from "nestjs-pino";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
 import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/socket-error-response.dto";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class SaveImageUseCase{
     constructor(
         private readonly storageService:StorageRepository,
@@ -100,16 +102,16 @@ export class SaveImageUseCase{
             })
             const savedNotification =await this.notificationsCommandService.saveNotification(voNotification)
             const socketResponse = SocketErrorResponseDto.create({
-                    jobId: errorInfo.jobId,
-                    notificationType: JobsNotificationsType.AUDIO,
-                    notification: savedNotification,
-                    error: errorInfo.error,
-                    errorType: errorInfo.errorType,
-                    statusCode: errorInfo.statusCode,
-                    details: errorInfo.details,
-                  });
+                jobId: errorInfo.jobId,
+                notificationType: JobsNotificationsType.AUDIO,
+                notification: savedNotification,
+                error: errorInfo.error,
+                errorType: errorInfo.errorType,
+                statusCode: errorInfo.statusCode,
+                details: errorInfo.details,
+            });
             
-                  this.notifierService.notifyError(socketResponse);
+            this.notifierService.notifyError(socketResponse);
         }
     }   
 }

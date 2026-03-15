@@ -31,7 +31,7 @@ export class ImageProcessor extends WorkerHost {
 
       this.eventEmitter.emit('image.processing.completed', {
         payload: generateImageDto,
-        imageUr: result,
+        imageUrl: result,
         jobId: job.id,
       });
     } catch (error) {
@@ -50,7 +50,7 @@ export class ImageProcessor extends WorkerHost {
             error instanceof AppBaseError ? error.getStatus() : undefined,
           stack: error instanceof Error ? error.stack : undefined,
         },
-        'Error generating audio',
+        'Error generating image',
       );
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string);
       const voNotification = SavedNotificationVO.create({
@@ -61,7 +61,7 @@ export class ImageProcessor extends WorkerHost {
         message: errorInfo.error,
         details: errorInfo.details,
         errorType: errorInfo.errorType,
-      });
+      })
       const savedNotification = await this.notificationsCommandService.saveNotification(voNotification);
       const socketResponse = SocketErrorResponseDto.create({
         jobId: errorInfo.jobId,
@@ -71,9 +71,9 @@ export class ImageProcessor extends WorkerHost {
         errorType: errorInfo.errorType,
         statusCode: errorInfo.statusCode,
         details: errorInfo.details,
-      });
-      this.notifierService.notifyError(socketResponse);
-      throw error;
+      })
+      this.notifierService.notifyError(socketResponse)
+      throw error
     }
   }
 }

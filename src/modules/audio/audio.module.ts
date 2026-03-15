@@ -14,6 +14,7 @@ import { BullModule } from "@nestjs/bullmq";
 import { AudioCommandController } from "./infrastructura/controllers/audio-command.controller";
 import { AudioQueryController } from "./infrastructura/controllers/audio-query.controller";
 import { AudioProcessor } from "./application/jobs/generate-audio.processor";
+import { SaveAudioUseCase } from "./application/use-cases/save-audio.use-case";
 
 @Module({
     imports:[
@@ -27,6 +28,7 @@ import { AudioProcessor } from "./application/jobs/generate-audio.processor";
         AudioProcessor,
         GenerateAudioUseCase,
         ListAudiosUseCase,
+        SaveAudioUseCase,
         {
             useClass:AudioCommandService,
             provide:AudioRepository
