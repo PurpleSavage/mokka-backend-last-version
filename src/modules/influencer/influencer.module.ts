@@ -27,6 +27,9 @@ import { ListSharedInfluencerUseCase } from "./application/use-cases/list-shared
 import { ListSharedSnapshotsUseCase } from "./application/use-cases/list-shared-snapshots.use-case";
 import { ListSharedScenesUseCase } from "./application/use-cases/list-shared-scenes.use-case";
 import { ListInfluencersUseCase } from "./application/use-cases/list-influencers.use-case";
+import { SaveInfluencerFlowUseCase } from "./application/use-cases/save-influencer-flow.use-case";
+import { SaveSceneFlowUseCase } from "./application/use-cases/save-scene-flow.use-case";
+import { SaveSnapshotUseCase } from "./application/use-cases/save-snapshot-flow.use-case";
 
 @Module({
     imports:[
@@ -69,6 +72,9 @@ import { ListInfluencersUseCase } from "./application/use-cases/list-influencers
         ListSharedScenesUseCase,
         ListSharedInfluencerUseCase,
         ListInfluencersUseCase,
+        SaveInfluencerFlowUseCase,
+        SaveSceneFlowUseCase,
+        SaveSnapshotUseCase,
         {
             useClass:InfluencerCommandService,
             provide:InfluencerRepository

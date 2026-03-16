@@ -1,20 +1,13 @@
 import { Injectable } from "@nestjs/common";
-import { InfluencerRepository } from "../../domain/repository/influencer.repository";
 import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
-import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
 import { CreateInfluencerDto } from "../dtos/create-influencer.dto";
 import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
-import { PathStorage } from "src/shared/common/domain/enums/path-storage";
-import { SaveInfluencerVo } from "../../domain/value-objects/save-influencer.vo";
-import { StorageRepository } from "src/shared/common/domain/repositories/storage.repository";
+
 
 
 @Injectable()
 export class CreateInfluencerUseCase{
     constructor(
-        private readonly influencerCommandService:InfluencerRepository,
-        private readonly storageService:StorageRepository,
-        private readonly downloadService:DownloadFilePort,
         public readonly multimediaService:MultimediaGeneratorPort,
         private readonly mdReaderService:MdReaderPort,
     ){}
@@ -27,28 +20,6 @@ export class CreateInfluencerUseCase{
             prompt: templateFill,
         }
         const imageUrl= await this.multimediaService.generateImage(config)
-        const buffer = await this.downloadService.downloadUrl(imageUrl)
-        const response = await this.storageService.saveImage(buffer,dto.user,PathStorage.PATH_INFLUENCER)
-        const vo =SaveInfluencerVo.create(
-            {
-                user: dto.user,
-                name: dto.name,
-                ageRange: dto.ageRange,
-                gender: dto.gender,
-                bodyShape: dto.bodyShape,
-                skinColor: dto.skinColor, 
-                eyeColor: dto.eyeColor,
-                hairType: dto.hairType,
-                faceType: dto.faceType,
-                country: dto.country,
-                lipsType: dto.lipsType,
-                hairColor: dto.hairColor,
-                height: dto.height,
-                influencerUrlImage: response.url,
-                size:response.size
-            }
-        )
-        const influencerGenerated = await this.influencerCommandService.saveInfluencerCreated(vo)
-        return influencerGenerated
+        return imageUrl
     }
 }

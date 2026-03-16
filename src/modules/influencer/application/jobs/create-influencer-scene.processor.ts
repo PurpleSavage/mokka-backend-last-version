@@ -4,10 +4,14 @@ import { CreateInFluencerSceneUseCase } from '../use-cases/create-influencer-sce
 import { Job } from 'bullmq';
 import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';
 import { AppBaseError } from 'src/shared/errors/base.error';
-import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
-import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
-import { JobsType, NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
+import {  NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
+import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
+import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
+import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/socket-error-response.dto';
+import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 
 
 @Processor('influencer-scene-queue')
@@ -15,7 +19,8 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
   constructor(
     private readonly createInfluencerSceneUseCase: CreateInFluencerSceneUseCase,
     private readonly notifierService: NotifierService,
-    private readonly creditsService: CreditLogicRepository,
+    private readonly notificationsCommandService: NotificationsRepository,
+    private readonly eventEmitter: EventEmitter2,
     private readonly logger: PinoLogger,
   ) {
     super();
@@ -26,20 +31,11 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
       const result = await this.createInfluencerSceneUseCase.execute(
         createInfluencerSceneDto,
       )
-      
-      const creditsUpdated= await this.creditsService.decreaseCredits(30,createInfluencerSceneDto.user) 
-         
-      this.notifierService.notifyReady(
-        createInfluencerSceneDto.user,
-        JobsType.INFLUENCER_SCENE,
-        {
-          jobId: job.id as string,
-          entity: result,
-          status: StatusQueue.COMPLETED,
-          message: 'Influencer snapshot generated',
-          creditsUpdate:creditsUpdated
-        },
-      )
+      this.eventEmitter.emit('scene.processing.completed', {
+        payload: createInfluencerSceneDto,
+        videoUrl: result,
+        jobId: job.id,
+      });
     } catch (error) {
       const createinfluencerDto = job.data
 
@@ -61,11 +57,26 @@ export class CreateInfluencerSceneProcessor extends WorkerHost {
       )
       const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
 
-      this.notifierService.notifyError(
-        createinfluencerDto.user,
-        JobsType.INFLUENCER_SCENE,
-        errorInfo,
-      )
+      const voNotification = SavedNotificationVO.create({
+              user: createinfluencerDto.user,
+              title: 'Influencer scene Failed',
+              status: StatusQueue.FAILED,
+              notificationType: JobsNotificationsType.INFLUENCER_SCENE,
+              message: errorInfo.error,
+              details: errorInfo.details,
+              errorType: errorInfo.errorType,
+            });
+            const savedNotification =await this.notificationsCommandService.saveNotification(voNotification);
+            const socketResponse = SocketErrorResponseDto.create({
+              jobId: errorInfo.jobId,
+              notificationType: JobsNotificationsType.INFLUENCER_SCENE,
+              notification: savedNotification,
+              error: errorInfo.error,
+              errorType: errorInfo.errorType,
+              statusCode: errorInfo.statusCode,
+              details: errorInfo.details,
+            });
+            this.notifierService.notifyError(socketResponse);
 
       throw error
     }

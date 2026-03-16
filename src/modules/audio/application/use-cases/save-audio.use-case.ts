@@ -55,7 +55,7 @@ export class SaveAudioUseCase {
 
       const voNotification = SavedNotificationVO.create({
         user: payload.user,
-        title: 'Audio Generated',
+        title: 'Audio generated',
         status: StatusQueue.COMPLETED,
         notificationType: JobsNotificationsType.AUDIO,
         message: 'Audio generated successfully',
@@ -90,7 +90,7 @@ export class SaveAudioUseCase {
 
       const voNotification = SavedNotificationVO.create({
         user: payload.user,
-        title: 'Audio Failed',
+        title: 'Audio failed',
         status: StatusQueue.FAILED,
         notificationType: JobsNotificationsType.AUDIO,
         message: errorInfo.error,
