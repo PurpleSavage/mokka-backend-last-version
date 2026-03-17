@@ -15,22 +15,22 @@ export class Notification {
     @Prop({ default: Date.now })
     createdAt: Date;
 
-    @Prop({required:true})
+    @Prop({required:true,type: String})
     title:string
 
-    @Prop({required:true, enum:StatusQueue})
+    @Prop({required:true, enum:StatusQueue,type: String})
     status:StatusQueue
 
     @Prop({required:true, enum:JobsNotificationsType})
     notificationType:JobsNotificationsType
 
-    @Prop({required:false})
+    @Prop({required:false,type: String})
     message?: string
 
-    @Prop({required:false})
+    @Prop({required:false,type: String})
     details?: string
 
-    @Prop({required:true, enum:ErrorPlatformMokka})
+    @Prop({required:false, enum:ErrorPlatformMokka,type: String})
     errorType?: ErrorPlatformMokka
 }
 
