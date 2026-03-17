@@ -28,7 +28,7 @@ export class AudioProcessor extends WorkerHost {
     try {
       const generateAudioDto = job.data;
       const result = await this.generateAudioUseCase.execute(generateAudioDto);
-      this.eventEmitter.emit('video.processing.completed', {
+      this.eventEmitter.emit('audio.processing.completed', {
         payload: generateAudioDto,
         audioBuffer: result,
         jobId: job.id,
