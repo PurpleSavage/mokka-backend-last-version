@@ -17,8 +17,7 @@ export class TextCommandController {
         @InjectQueue('text-queue') private textQueue: Queue
     ) {}
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
+    @UseGuards(AccesstokenGuard, CreditsGuard)
     @RequiresCredits(20)
     @Post('new')
     @HttpCode(HttpStatus.OK)
