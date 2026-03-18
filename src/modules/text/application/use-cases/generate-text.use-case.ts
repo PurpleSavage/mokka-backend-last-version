@@ -18,7 +18,7 @@ export class GenerateTextUseCase{
             title:dto.title,
             context:dto.context
         }
-        const pormptmd = await this.mdReaderService.loadPrompt('generator_text','text')
+        const pormptmd = await this.mdReaderService.loadPrompt('generator-text','text')
         const templateFill = this.mdReaderService.fillTemplate(pormptmd,obj)
         const response = await this.textGeneratorService.createText(templateFill)
         return response

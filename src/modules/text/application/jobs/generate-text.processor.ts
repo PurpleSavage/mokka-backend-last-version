@@ -56,7 +56,7 @@ export class GenerateTextProcessor extends WorkerHost{
           const errorInfo = ExtractErrorInfo.extract(error, job.id as string)
           const voNotification = SavedNotificationVO.create({
             user: generateTextDto.user,
-            title: 'Audio Failed',
+            title: 'Text Failed',
             status: StatusQueue.FAILED,
             notificationType: JobsNotificationsType.TEXT,
             message: errorInfo.error,

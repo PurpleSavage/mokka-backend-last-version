@@ -48,6 +48,10 @@ export class NotifierGateway implements OnGatewayConnection, OnGatewayDisconnect
     // Métodos helper para emitir notificaciones
     emitToUser(userId: string, event: string, data: any) {
         const roomName = `user_${userId}`;
+        
+    
+        const sockets = this.server.sockets.adapter.rooms.get(roomName)
+        console.log('room sockets', sockets?.size ?? 0)
         this.server.to(roomName).emit(event, {
             ...data,
             timestamp: new Date().toISOString()
