@@ -23,8 +23,7 @@ export class InfluencerCommandController{
     ){}
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
+    @UseGuards(AccesstokenGuard, CreditsGuard)
     @RequiresCredits(30)
     @Post('model')
     @HttpCode(HttpStatus.OK)
@@ -46,8 +45,7 @@ export class InfluencerCommandController{
     }
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
+    @UseGuards(AccesstokenGuard, CreditsGuard)
     @RequiresCredits(30)
     @Post('snapshot')
     @HttpCode(HttpStatus.OK)
@@ -69,8 +67,7 @@ export class InfluencerCommandController{
     }
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
+    @UseGuards(AccesstokenGuard, CreditsGuard)
     @RequiresCredits(30)
     @Post('scene')
     @HttpCode(HttpStatus.OK)

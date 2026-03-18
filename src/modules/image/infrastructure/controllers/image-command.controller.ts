@@ -51,8 +51,7 @@ export class ImageCommandController{
 
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
+    @UseGuards(AccesstokenGuard, CreditsGuard)
     @RequiresCredits(20)
     @Post('remix/:imageSharedId')
     @HttpCode(HttpStatus.OK)
@@ -75,8 +74,7 @@ export class ImageCommandController{
 
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
+    @UseGuards(AccesstokenGuard, CreditsGuard)
     @RequiresCredits(30)
     @Post('generations')
     @HttpCode(HttpStatus.OK)

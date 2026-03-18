@@ -20,8 +20,7 @@ export class VideoCommandController{
         @InjectQueue('remix-video-queue') private remixVideoQueue: Queue,
     ){}
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
+    @UseGuards(AccesstokenGuard, CreditsGuard)
     @RequiresCredits(30)
     @Post('generations')
     @HttpCode(HttpStatus.OK)
