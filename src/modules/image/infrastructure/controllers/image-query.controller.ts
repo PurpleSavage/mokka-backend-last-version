@@ -4,8 +4,8 @@ import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { ListSharedImageUseCase } from "../../application/use-cases/list-shared-image.use-case";
 import { ListImagesUseCase } from "../../application/use-cases/list-images.use-case";
-import { ListImagesDto } from "../../application/dtos/list-images.dto";
-import { ListSharedImageDto } from "../../application/dtos/list-shared-image.dto";
+import { ListImagesDto } from "../../application/dtos/request/list-images.dto";
+import { ListSharedImageDto } from "../../application/dtos/request/list-shared-image.dto";
 
 
 @Controller({

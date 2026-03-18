@@ -4,7 +4,7 @@ import { AppBaseError } from 'src/shared/errors/base.error';
 import { Job } from 'bullmq';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { CreateRemixImageUseCase } from '../use-cases/create-remix-image.use-case';
-import { CreateRemixImageDto } from '../dtos/create-remix-image.dto';
+import { CreateRemixImageDto } from '../dtos/request/create-remix-image.dto';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import {  NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';

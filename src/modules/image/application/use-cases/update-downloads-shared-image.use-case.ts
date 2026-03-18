@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import {  UpdateDownloadsSharedImageDto } from "../dtos/update-downloads-image.dto";
+import {  UpdateDownloadsSharedImageDto } from "../dtos/request/update-downloads-image.dto";
 import { ImageRepository } from "../../domain/repositories/image.repository";
 
 @Injectable()

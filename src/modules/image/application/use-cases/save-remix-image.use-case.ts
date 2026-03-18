@@ -6,7 +6,7 @@ import { CreditLogicRepository } from 'src/shared/common/domain/repositories/cre
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
 import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { DownloadFilePort } from 'src/shared/common/application/ports/downlaod-file.port';
-import { CreateRemixImageDto } from '../dtos/create-remix-image.dto';
+import { CreateRemixImageDto } from '../dtos/request/create-remix-image.dto';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';

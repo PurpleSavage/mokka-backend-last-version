@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { CreateRemixImageDto } from "../dtos/create-remix-image.dto";
+import { CreateRemixImageDto } from "../dtos/request/create-remix-image.dto";
 import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
 import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
 

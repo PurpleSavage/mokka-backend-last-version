@@ -165,7 +165,7 @@ export class ImageCommandService implements ImageRepository{
             .setPrompt(remixImageSaved.prompt)
             .setSize(remixImageSaved.size)
             .setImageBase(normalizeId(remixImage.imageBase))
-            
+            .build()
         } catch (error) {
             this.logger.error(
                 {

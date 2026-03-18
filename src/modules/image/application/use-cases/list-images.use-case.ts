@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 
-import { ListImagesDto } from "../dtos/list-images.dto";
+import { ListImagesDto } from "../dtos/request/list-images.dto";
 import { ImagePort } from "../ports/image.port";
 
 @Injectable()

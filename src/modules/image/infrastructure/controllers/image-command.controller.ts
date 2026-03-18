@@ -11,10 +11,11 @@ import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { ShareImageUseCase } from "../../application/use-cases/shared-image.use-case";
 import { UpdateDownloadsSharedImageUseCase } from "../../application/use-cases/update-downloads-shared-image.use-case";
-import { UpdateDownloadsSharedImageDto } from "../../application/dtos/update-downloads-image.dto";
-import { ShareImageDto } from "../../application/dtos/share-image.dto";
-import { CreateRemixImageDto } from "../../application/dtos/create-remix-image.dto";
-import { GenerateImageDto } from "../../application/dtos/generate-image.dto";
+import { UpdateDownloadsSharedImageDto } from "../../application/dtos/request/update-downloads-image.dto";
+import { ShareImageDto } from "../../application/dtos/request/share-image.dto";
+import { CreateRemixImageDto } from "../../application/dtos/request/create-remix-image.dto";
+import { GenerateImageDto } from "../../application/dtos/request/generate-image.dto";
+
 
 @Controller({
     path:'image/write',
