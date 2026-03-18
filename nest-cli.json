@@ -5,23 +5,9 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "assets": [
-      {
-        "include": "contexts/text/prompts/**/*.md",
-        "outDir": "dist"
-      },
-      {
-        "include": "contexts/image/prompts/**/*.md", 
-        "outDir": "dist"
-      },
-      {
-        "include": "contexts/video/prompts/**/*.md", 
-        "outDir": "dist"
-      }
-      ,
-      {
-        "include": "contexts/influencer/prompts/**/*.md", 
-        "outDir": "dist"
-      }
+      { "include": "modules/image/prompts/**/*.md", "outDir": "dist" },
+      { "include": "modules/influencer/prompts/**/*.md", "outDir": "dist" },
+      { "include": "modules/text/prompts/**/*.md", "outDir": "dist" }
     ]
   }
 }

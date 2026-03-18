@@ -12,7 +12,7 @@ export class SharedMdReaderService implements MdReaderPort{
     const cached = this.templateCache.get(templateName);
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) return cached.content;
 
-    const filePath = path.join(__dirname, '..', '..','contexts',moduleName, 'prompts', `${templateName}.md`)
+    const filePath = path.join(process.cwd(), 'dist', 'modules', moduleName, 'prompts', `${templateName}.md`)
     const templateContent = await fs.promises.readFile(filePath, 'utf8');
     this.templateCache.set(templateName, { content: templateContent, timestamp: Date.now() });
     return templateContent;
