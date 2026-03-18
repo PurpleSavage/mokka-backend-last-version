@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { GenerateImageDto } from "../dtos/generate-image.dto";
+
 import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
 import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
+import { GenerateImageDto } from "../dtos/request/generate-image.dto";
 
 @Injectable()
 export class GenerateImageUseCase{

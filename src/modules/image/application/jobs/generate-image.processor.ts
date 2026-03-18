@@ -1,6 +1,6 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { GenerateImageUseCase } from '../use-cases/generate-image.use-case';
-import { GenerateImageDto } from '../dtos/generate-image.dto';
+
 import { PinoLogger } from 'nestjs-pino';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { Job } from 'bullmq';
@@ -12,6 +12,7 @@ import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jon
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/socket-error-response.dto';
+import { GenerateImageDto } from '../dtos/request/generate-image.dto';
 
 @Processor('image-queue')
 export class ImageProcessor extends WorkerHost {

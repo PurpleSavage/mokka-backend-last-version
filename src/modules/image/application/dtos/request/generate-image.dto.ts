@@ -1,7 +1,8 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { AspectRatioImage } from "../../../../shared/common/infrastructure/enums/image-aspect-ratio";
-import { TypeStyle } from "../../domain/enums/image-styles";
-import { TypeSubStyle } from "../../domain/enums/image-substyle";
+import { TypeStyle } from "src/modules/image/domain/enums/image-styles";
+import { TypeSubStyle } from "src/modules/image/domain/enums/image-substyle";
+import { AspectRatioImage } from "src/shared/common/infrastructure/enums/image-aspect-ratio";
+
 
 
 export class GenerateImageDto {

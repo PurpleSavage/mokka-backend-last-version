@@ -5,7 +5,7 @@ import { NotifierService } from "src/shared/notifications/infrastructure/sockets
 import { NotificationsRepository } from "src/shared/notifications/domain/repositories/notifications.repository";
 import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
 import { OnEvent } from "@nestjs/event-emitter";
-import { GenerateImageDto } from "../dtos/generate-image.dto";
+
 import { PathStorage } from "src/shared/common/domain/enums/path-storage";
 import { SavedGenerateImageVO } from "../../domain/value-objects/saved-generate-image.vo";
 import { SavedNotificationVO } from "src/shared/notifications/domain/value-objects/saved-notification.vo";
@@ -18,6 +18,7 @@ import { AppBaseError } from "src/shared/errors/base.error";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
 import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/socket-error-response.dto";
 import { Injectable } from "@nestjs/common";
+import { GenerateImageDto } from "../dtos/request/generate-image.dto";
 
 @Injectable()
 export class SaveImageUseCase{
