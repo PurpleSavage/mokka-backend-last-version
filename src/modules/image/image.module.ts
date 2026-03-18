@@ -19,6 +19,8 @@ import { ImageQueryController } from "./infrastructure/controllers/image-query.c
 import { SharedImageSchema } from "./infrastructure/schemas/image-shared.schema";
 import { SaveImageUseCase } from "./application/use-cases/save-image.use-case";
 import { SaveRemixImageUseCase } from "./application/use-cases/save-remix-image.use-case";
+import { RemixImageProcessor } from "./application/jobs/create-remix.processor";
+import { ImageProcessor } from "./application/jobs/generate-image.processor";
 
 
 @Module({
@@ -39,6 +41,8 @@ import { SaveRemixImageUseCase } from "./application/use-cases/save-remix-image.
 
     ],
     providers:[
+        RemixImageProcessor,
+        ImageProcessor,
         ListSharedImageUseCase,
         ListImagesUseCase,
         UpdateDownloadsSharedImageUseCase,

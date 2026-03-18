@@ -14,6 +14,7 @@ import { ListTextHistoryUseCase } from "./application/use-cases/list-history-tex
 import { SaveTextUseCase } from "./application/use-cases/save-text.use-case";
 import { TextCommandController } from "./infrastructure/controllers/text-command.controller";
 import { TextQueryController } from "./infrastructure/controllers/text-query.controller";
+import { GenerateTextProcessor } from "./application/jobs/generate-text.processor";
 
 @Module({
     imports:[
@@ -24,6 +25,7 @@ import { TextQueryController } from "./infrastructure/controllers/text-query.con
         }), 
     ],
     providers:[
+        GenerateTextProcessor,
         GenerateTextUseCase,
         ListTextHistoryUseCase,
         SaveTextUseCase,

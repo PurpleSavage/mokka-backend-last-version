@@ -17,6 +17,7 @@ export class TextCommandService implements TextRepository{
         private readonly logger: PinoLogger
     ){}
     async saveText(generateTextVO: GenerateTextVO): Promise<TextEntity> {
+        console.log('llegó el vo', generateTextVO)
         try {
             const text = new this.textModel({
                 user:generateTextVO.user,

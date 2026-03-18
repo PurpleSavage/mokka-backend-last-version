@@ -13,6 +13,7 @@ import { GenerateVideoUseCase } from "./application/use-cases/generate-video.use
 import { ListVideosUseCase } from "./application/use-cases/list-video.use-case";
 import { VideoCommandController } from "./infrastructure/controllers/video-command.controller";
 import { SaveVideoUseCase } from "./application/use-cases/save-video.use-case";
+import { GenerateVideoProcessor } from "./application/jobs/generate-video.processor";
 
 @Module({
     imports:[
@@ -29,6 +30,7 @@ import { SaveVideoUseCase } from "./application/use-cases/save-video.use-case";
         }),
     ],
     providers:[
+        GenerateVideoProcessor,
         GenerateVideoUseCase,
         ListVideosUseCase,
         SaveVideoUseCase,
