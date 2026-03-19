@@ -41,7 +41,7 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Get('models/:userId')
+    @Get('models/:user')
     @HttpCode(HttpStatus.OK)
     listInfluencers(
         @Param() dto:ListInfluencersDto

@@ -7,7 +7,7 @@ import { MokkaError } from 'src/shared/errors/mokka.error';
 import { ErrorPlatformMokka } from 'src/shared/common/infrastructure/enums/error-detail-types';
 import { PinoLogger } from 'nestjs-pino';
 import { InfluencerDocument } from '../schemas/influencer.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InfluencerSnapshotDocument } from '../schemas/influencer-snapshot.schema';
 import { normalizeId } from 'src/shared/common/application/helpers/normalized-obj';
 import { InfluencerScenaDocument } from '../schemas/influencer-scena.schema';
@@ -38,11 +38,11 @@ export class InfluencerQueryService implements InfluencerPort {
     private readonly sceneSharedModel: Model<SharedSceneDocument>,
     private readonly logger: PinoLogger,
   ) {}
-  async listInfluencers(userId: string): Promise<InfluencerEntity[]> {
+  async listInfluencers(user: string): Promise<InfluencerEntity[]> {
     try {
       const influencers = await this.influencerModel
         .find({
-          userId,
+          user: new Types.ObjectId(user),
         })
         .exec();
 
@@ -70,7 +70,7 @@ export class InfluencerQueryService implements InfluencerPort {
         {
           stack: error instanceof Error ? error.stack : undefined,
           message: 'Failed to list influecers models',
-          userId,
+          user,
         },
         'Failed to list influecers models',
       );

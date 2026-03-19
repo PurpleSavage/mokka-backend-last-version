@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ListInfluencersDto } from "../dtos/list-influencers.dto";
 import { InfluencerPort } from "../ports/influencer.port";
-import { InfluencerMapper } from "../mappers/influencer.mapper";
+
 
 @Injectable()
 export class ListInfluencersUseCase{
@@ -9,7 +9,9 @@ export class ListInfluencersUseCase{
         private readonly influencerQueryService: InfluencerPort
     ){}
     async execute(dto:ListInfluencersDto){
-        const influencers=await this.influencerQueryService.listInfluencers(dto.userId)
-        return InfluencerMapper.toResponseList(influencers);
+        console.log('llegó el dto',dto)
+        const influencers=await this.influencerQueryService.listInfluencers(dto.user)
+        console.log('influencers',influencers)
+        return influencers
     }
 }
