@@ -1,9 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import {  HttpStatus, Injectable } from "@nestjs/common";
 import { AuthPort } from "../ports/auth.port";
 import { LoginWithCredentialsDto } from "../dtos/login-with-credentials.dto";
 import { HashPort } from "../ports/hash.port";
 import { JwtPort } from "src/shared/common/application/ports/jwt.port";
 import { Session } from "../types/session-response";
+import { MokkaError } from "src/shared/errors/mokka.error";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 
 @Injectable()
 export class LoginWithCredentialsUseCase{
@@ -15,34 +17,38 @@ export class LoginWithCredentialsUseCase{
     async execute(loginWithCredentialsDto:LoginWithCredentialsDto):Promise<Session>{
         const user = await this.authQueryService.findUserByEmail(loginWithCredentialsDto.email)
         if(!user){
-            throw new HttpException({
-                status: HttpStatus.UNAUTHORIZED,
-                error:'User does not exist or invalid credentials',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.UNAUTHORIZED)
+            throw new MokkaError({
+                message: 'User does not exist or invalid credentials',
+                errorType: ErrorPlatformMokka.MOKKA_ERROR,
+                status: HttpStatus.NOT_FOUND,
+                details: 'User does not exist or invalid credentials'
+            })
         }
         if(!user.password){
-            throw new HttpException({
+            throw new MokkaError({
+                message: 'Invalid credentials',
+                errorType: ErrorPlatformMokka.MOKKA_ERROR,
                 status: HttpStatus.CONFLICT,
-                error:'Invalid credentials',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.CONFLICT)
+                details: 'User does not exist or invalid credentials'
+            })
         }
         const userValid = await this.hashService.compare(loginWithCredentialsDto.password,user.password)
         if(!userValid){
-            throw new HttpException({
+            throw new MokkaError({
+                message: 'Invalid credentials',
+                errorType: ErrorPlatformMokka.MOKKA_ERROR,
                 status: HttpStatus.CONFLICT,
-                error:'Invalid credentials',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.CONFLICT)
+                details: 'User does not exist or invalid credentials'
+            })
         }
-        const token = await this.jwtService.generateToken({ email: user.email},'15m')
+        const token = await this.jwtService.generateToken({ email: user.email},'1m')
         if(!token){
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error:'An error occurred while creating session, please try again later.',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new MokkaError({
+                message: 'An error occurred while creating session, please try again later.',
+                errorType: ErrorPlatformMokka.MOKKA_ERROR,
+                status: HttpStatus.CONFLICT,
+                details: 'An error occurred while creating session token'
+            })
         }
         return {
             access_token:token,

@@ -19,7 +19,7 @@ export class LoginWithGoogleUseCase{
     async execute(loginWithGoogleDto:LoginWithGoogleDto):Promise<Session>{
         const userAuthenticated = await this.googleService.verifyToken(loginWithGoogleDto.googleToken)
         const userExist = await this.authQueryService.findUserByEmail(userAuthenticated.email)
-        const token = await this.jwtService.generateToken({ email:userAuthenticated.email },'15m')
+        const token = await this.jwtService.generateToken({ email:userAuthenticated.email },'1m')
         if(!token){
             throw new MokkaError({
                 message: 'failed server',

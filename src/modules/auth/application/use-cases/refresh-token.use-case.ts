@@ -10,7 +10,7 @@ export class RefreshTokenUseCase{
         private readonly jwtService:JwtPort
     ){}
     async execute(refreshTokenDto:RefreshTokenDto):Promise<AccessToken>{
-        const access_token = await this.jwtService.generateToken({ email:refreshTokenDto.email},'15m')
+        const access_token = await this.jwtService.generateToken({ email:refreshTokenDto.email},'1m')
         if(!access_token){
             throw new MokkaError({
                 message: 'An error occurred while creating new session, please try again later.',

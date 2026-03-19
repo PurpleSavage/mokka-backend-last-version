@@ -12,6 +12,8 @@ import { Server, Socket } from 'socket.io';
     cors: {
         origin: '*',
     },
+    pingInterval: 10000,  // ping cada 10s
+    pingTimeout: 5000,
 })
 export class NotifierGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer()

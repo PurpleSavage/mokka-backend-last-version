@@ -9,9 +9,6 @@ export class ListInfluencersUseCase{
         private readonly influencerQueryService: InfluencerPort
     ){}
     async execute(dto:ListInfluencersDto){
-        console.log('llegó el dto',dto)
-        const influencers=await this.influencerQueryService.listInfluencers(dto.user)
-        console.log('influencers',influencers)
-        return influencers
+        return  this.influencerQueryService.listInfluencers(dto.user)
     }
 }

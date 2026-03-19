@@ -1,7 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import {  HttpStatus, Injectable } from "@nestjs/common";
 import { Session } from "../types/session-response";
 import { AuthPort } from "../ports/auth.port";
 import { JwtPort } from "src/shared/common/application/ports/jwt.port";
+import { MokkaError } from "src/shared/errors/mokka.error";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 
 
 @Injectable()
@@ -13,19 +15,21 @@ export class GetProfileUseCase{
     async execute(email:string):Promise<Session>{
         const user = await this.authQueryService.findUserByEmail(email)
         if(!user){
-            throw new HttpException({
+            throw new MokkaError({
+                message: 'User does not exist or invalid credentials',
+                errorType: ErrorPlatformMokka.MOKKA_ERROR,
                 status: HttpStatus.NOT_FOUND,
-                error:'This email address is already in use, please try another one.',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.NOT_FOUND)
+                details: 'User does not exist or invalid credentials'
+            })
         }
-        const access_token = await this.jwtService.generateToken({email:user.email},'15m')
+        const access_token = await this.jwtService.generateToken({email:user.email},'1m')
         if(!access_token){
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error:'An error occurred while creating the account token, please try again later.',
-                errorType:'Mokka_ERROR'
-            },HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new MokkaError({
+                message: 'User does not exist or invalid credentials',
+                errorType: ErrorPlatformMokka.MOKKA_ERROR,
+                status: HttpStatus.NOT_FOUND,
+                details: 'User does not exist or invalid credentials'
+            })
         }
         return {
             access_token,
