@@ -63,6 +63,7 @@ export class InfluencerQueryService implements InfluencerPort {
           .setName(influencer.name)
           .setLipsType(influencer.lipsType)
           .setSizeImage(influencer.sizeImage)
+          .setSkinColor(influencer.skinColor)
           .build();
       });
     } catch (error) {
