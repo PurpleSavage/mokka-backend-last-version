@@ -22,7 +22,7 @@ export class GetProfileUseCase{
                 details: 'User does not exist or invalid credentials'
             })
         }
-        const access_token = await this.jwtService.generateToken({email:user.email},'1m')
+        const access_token = await this.jwtService.generateToken({email:user.email},'1h')
         if(!access_token){
             throw new MokkaError({
                 message: 'User does not exist or invalid credentials',

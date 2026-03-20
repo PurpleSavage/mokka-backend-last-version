@@ -41,7 +41,7 @@ export class LoginWithCredentialsUseCase{
                 details: 'User does not exist or invalid credentials'
             })
         }
-        const token = await this.jwtService.generateToken({ email: user.email},'1m')
+        const token = await this.jwtService.generateToken({ email: user.email},'1h')
         if(!token){
             throw new MokkaError({
                 message: 'An error occurred while creating session, please try again later.',
