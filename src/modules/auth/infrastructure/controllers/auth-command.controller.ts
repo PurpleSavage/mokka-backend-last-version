@@ -6,7 +6,7 @@ import { CreateAccountWithCredentialsUseCase } from "../../application/use-cases
 import { LoginWithGoogleDto } from "../../application/dtos/login-with-google.dto";
 import { LoginWithGoogleUseCase } from "../../application/use-cases/login-with-google.use-case";
 import { LoginWithCredentialsUseCase } from "../../application/use-cases/login-crendetials.use-case";
-import { RefreshTokenUseCase } from "../../application/use-cases/refresh-token.use-case";
+
 
 
 
@@ -19,7 +19,6 @@ export class AuthCommandController{
       private readonly createAccountWithCredentialsUseCase:CreateAccountWithCredentialsUseCase,
       private readonly loginWithCrentialsUseCase:LoginWithCredentialsUseCase,
       private readonly loginWithGoogleUseCase:LoginWithGoogleUseCase,
-      private readonly refreshTokenUseCase:RefreshTokenUseCase,
     ){}
 
     @Post('user/new')

@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from "@nestjs/common";
 import { AudioEntity } from "../../domain/entities/audio.entity";
 import { AudioDocument } from "../schemas/audio.schema";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { normalizeId } from "src/shared/common/application/helpers/normalized-obj";
 import { AudioPort } from "../../application/ports/audio.port";
@@ -18,7 +18,7 @@ export class AudioQueryService implements AudioPort{
     async listAudios(userId: string): Promise<AudioEntity[]> {
         try {
             const audios = await this.audioModel.find({
-                userId
+                user: new Types.ObjectId(userId)
             }).exec()
              return audios.map((audio) =>
                 new AudioEntity()
