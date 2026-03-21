@@ -22,4 +22,8 @@ export abstract class InfluencerPort {
     abstract listSharedInfluencer(page:number):Promise<SharedInfluencerEntity[]>
     abstract listSharedSnapshot(page:number):Promise<SharedSnapshotEntity[]>
     abstract listSharedScene(page:number):Promise<SharedSceneEntity[]>
+
+
+    abstract listScenesByInfluencerId(influencer:string):Promise<InfluencerSceneEntity[]>
+    abstract listSnpashotsByInfluencerId(influencer:string):Promise<InfluencerSnapshotEntity[]>
 }

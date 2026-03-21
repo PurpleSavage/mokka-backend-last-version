@@ -20,6 +20,9 @@ import { ListSharedDto } from "../../application/dtos/list-shared.dto";
 import { ListSharedInfluencerUseCase } from "../../application/use-cases/list-shared-influencer.use-csase";
 import { ListSharedSnapshotsUseCase } from "../../application/use-cases/list-shared-snapshots.use-case";
 import { ListSharedScenesUseCase } from "../../application/use-cases/list-shared-scenes.use-case";
+import { ListScenesByInfluencerIdUseCase } from "../../application/use-cases/list-scenes-by-influencer-id.use-case";
+import { ListSnapshotsByInfluencerIdUseCase } from "../../application/use-cases/list-snapshots-by-influencer-id.use-case";
+import { ListByInfluencerDto } from "../../application/dtos/request/list-by-influencer-id.dto";
 
 @Controller({
     path:'influencer/read',
@@ -36,7 +39,9 @@ export class InfluencerQueryController{
         private readonly listInfluencersUseCase:ListInfluencersUseCase,
         private readonly listSharedInfluencersUseCase:ListSharedInfluencerUseCase,
         private readonly listSharedSnapshotsUseCase:ListSharedSnapshotsUseCase,
-        private readonly listSharedScenesUseCase:ListSharedScenesUseCase
+        private readonly listSharedScenesUseCase:ListSharedScenesUseCase,
+        private readonly listScenesByInfluencerIdUseCase:ListScenesByInfluencerIdUseCase,
+        private readonly listSnapshotsByInfluencerIdUseCase:ListSnapshotsByInfluencerIdUseCase
     ){}
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
@@ -141,5 +146,25 @@ export class InfluencerQueryController{
         @Query() dto:ListSharedDto
     ){
         return this.listSharedScenesUseCase.execute(dto)
+    }
+
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
+    @UseGuards(AccesstokenGuard)
+    @Get('influencer/scenes/:influencer')
+    @HttpCode(HttpStatus.OK)
+    listScenesByInfluencerId(
+        @Param() dto:ListByInfluencerDto
+    ){
+        return this.listScenesByInfluencerIdUseCase.execute(dto.influencer)
+    }
+
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
+    @UseGuards(AccesstokenGuard)
+    @Get('influencer/snapshots/:influencer')
+    @HttpCode(HttpStatus.OK)
+    listSnapshotsByInflunecerId(
+        @Param() dto:ListByInfluencerDto
+    ){
+        return this.listSnapshotsByInfluencerIdUseCase.execute(dto.influencer)
     }
 }

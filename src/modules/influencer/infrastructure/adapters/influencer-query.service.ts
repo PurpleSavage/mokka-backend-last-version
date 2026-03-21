@@ -554,4 +554,68 @@ export class InfluencerQueryService implements InfluencerPort {
       });
     }
   }
+  async listScenesByInfluencerId(influencer: string): Promise<InfluencerSceneEntity[]> {
+    try {
+      const scenes= await this.influencerSceneModel.find({
+        influencer: new Types.ObjectId(influencer)
+      }).exec()
+      return scenes.map((scene) => {
+        return new InfluencerSceneEntity()
+          .setAspectRatio(scene.aspectRatio)
+          .setId(scene._id.toString())
+          .setImageBaseUrls(scene.imageBaseUrls)
+          .setUrlScene(scene.urlScene)
+          .setVolume(scene.volume)
+          .setInfluencer(normalizeId(scene.influencer))
+          .setCreateDate(scene.createdAt)
+          .build();
+      });
+    } catch (error) {
+      this.logger.error(
+        {
+          stack: error instanceof Error ? error.stack : undefined,
+          message: 'Failed to list shared snaphsots',
+        },
+        'Failed to list shared snaphsots',
+      );
+      throw new MokkaError({
+        message: 'Database operation failed',
+        errorType: ErrorPlatformMokka.DATABASE_FAILED,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        details: 'Failed to list shared snaphsots, database failed',
+      });
+    }
+  }
+  async listSnpashotsByInfluencerId(influencer: string): Promise<InfluencerSnapshotEntity[]> {
+    try {
+      const snpashots = await this.influencerSnapshotModel.find({
+        influencer: new Types.ObjectId(influencer)
+      }).exec()
+       return snpashots.map((influencer) => {
+        return new InfluencerSnapshotEntity()
+          .setCreateDate(influencer.createdAt)
+          .setEnviroment(influencer.enviroment)
+          .setId(influencer._id.toString())
+          .setInfluencer(normalizeId(influencer.influencer))
+          .setOutfitStyle(influencer.outfitStyle)
+          .setPrompt(influencer.prompt)
+          .setsnapshotUrl(influencer.snapshotUrl)
+          .build();
+      });
+    } catch (error) {
+      this.logger.error(
+        {
+          stack: error instanceof Error ? error.stack : undefined,
+          message: 'Failed to list shared snaphsots',
+        },
+        'Failed to list shared snaphsots',
+      );
+      throw new MokkaError({
+        message: 'Database operation failed',
+        errorType: ErrorPlatformMokka.DATABASE_FAILED,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        details: 'Failed to list shared snaphsots, database failed',
+      });
+    }
+  }
 }

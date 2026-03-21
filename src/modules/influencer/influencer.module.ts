@@ -33,6 +33,8 @@ import { SaveSnapshotUseCase } from "./application/use-cases/save-snapshot-flow.
 import { CreateInfluencerSceneProcessor } from "./application/jobs/create-influencer-scene.processor";
 import { CreateInfluencerSnapshotProcessor } from "./application/jobs/create-influencer-snapshot.processor";
 import { CreateInfluencerProcessor } from "./application/jobs/create-influencer.processor";
+import { ListScenesByInfluencerIdUseCase } from "./application/use-cases/list-scenes-by-influencer-id.use-case";
+import { ListSnapshotsByInfluencerIdUseCase } from "./application/use-cases/list-snapshots-by-influencer-id.use-case";
 
 @Module({
     imports:[
@@ -62,6 +64,8 @@ import { CreateInfluencerProcessor } from "./application/jobs/create-influencer.
         })
     ],
     providers:[
+        ListScenesByInfluencerIdUseCase,
+        ListSnapshotsByInfluencerIdUseCase,
         CreateInfluencerSceneProcessor,
         CreateInfluencerSnapshotProcessor,
         CreateInfluencerProcessor,
