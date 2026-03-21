@@ -25,7 +25,7 @@ import { ListSnapshotsByInfluencerIdUseCase } from "../../application/use-cases/
 import { ListByInfluencerDto } from "../../application/dtos/request/list-by-influencer-id.dto";
 
 @Controller({
-    path:'influencer/read',
+    path:'influencers/read',
     version:'1'
 })
 export class InfluencerQueryController{
