@@ -2,7 +2,6 @@ import { Controller, Get, HttpCode, HttpStatus, Param, Query, UseGuards } from "
 import { GetInfluencerByIdUseCase } from "../../application/use-cases/get-influencer-by-id.use-case";
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
-import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { GetInfluencerByIdDto } from "../../application/dtos/get-influencer-by-id.dto";
 import { GetSnapshotByIdUseCase } from "../../application/use-cases/get-snapshot-by-id.use-case";
 import { getSnapshotByIdDto } from "../../application/dtos/get-snapshot-by-id.dto";
@@ -107,7 +106,6 @@ export class InfluencerQueryController{
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @UseGuards(CreditsGuard)
     @Get('last-snapshots/:userId')
     @HttpCode(HttpStatus.OK)
     historySnapshotslastWeek(

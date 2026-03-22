@@ -1,7 +1,7 @@
-import { Controller, Get, HttpCode, HttpStatus, Param} from "@nestjs/common";
+import { Controller, Get, HttpCode, HttpStatus, Param, UseGuards} from "@nestjs/common";
 
 import { Throttle } from "@nestjs/throttler";
-//import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
+import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { ListAudiosDto } from "../../application/dtos/list-audios.dto";
 import { ListAudiosUseCase } from "../../application/use-cases/list-audios.use-case";
 
@@ -16,7 +16,7 @@ export class AudioQueryController{
     ){}
  
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    // @UseGuards(AccesstokenGuard)
+    @UseGuards(AccesstokenGuard)
     @Get('audios/:user')
     @HttpCode(HttpStatus.OK)
     async listAudios(

@@ -8,6 +8,7 @@ import {
 
 import { FastifyRequest } from 'fastify';
 import { JwtPort } from 'src/shared/common/application/ports/jwt.port';
+import { ErrorPlatformMokka } from 'src/shared/common/infrastructure/enums/error-detail-types';
 
 interface RequestWithUser extends FastifyRequest {
   userEmail?: {
@@ -41,8 +42,9 @@ export class AccesstokenGuard implements CanActivate {
     if (!token) {
       throw new UnauthorizedException({
         message: 'Access token missing',
+        errorType: ErrorPlatformMokka.MOKKA_UNAUTHORIZED,  // 👈 agrega esto
         statusCode: 401,
-        renovate: true, 
+        renovate: true,
       });
     }
 
@@ -51,8 +53,9 @@ export class AccesstokenGuard implements CanActivate {
       
       if (!payload) {
         throw new UnauthorizedException({
-          message:'Invalid or expired token',
-          statusCode:401,
+          message: 'Access token missing',
+          errorType: ErrorPlatformMokka.MOKKA_UNAUTHORIZED,  // 👈 agrega esto
+          statusCode: 401,
           renovate: true,
         });
       }
