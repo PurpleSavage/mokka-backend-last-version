@@ -6,6 +6,7 @@ import { ListSharedImageUseCase } from "../../application/use-cases/list-shared-
 import { ListImagesUseCase } from "../../application/use-cases/list-images.use-case";
 import { ListImagesDto } from "../../application/dtos/request/list-images.dto";
 import { ListSharedImageDto } from "../../application/dtos/request/list-shared-image.dto";
+import { ListImagesLastWeekUseCase } from "../../application/use-cases/list-images-last-week.use-case";
 
 
 @Controller({
@@ -15,7 +16,8 @@ import { ListSharedImageDto } from "../../application/dtos/request/list-shared-i
 export class ImageQueryController{
     constructor(
         private readonly listSharedImageUseCase:ListSharedImageUseCase,
-        private readonly listImagesUseCase:ListImagesUseCase
+        private readonly listImagesUseCase:ListImagesUseCase,
+        private readonly listImagesLastWeekUseCase: ListImagesLastWeekUseCase
     ){}
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
@@ -38,4 +40,15 @@ export class ImageQueryController{
     ){
         return this.listSharedImageUseCase.execute(listSharedImageDto)  
     }
+
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
+    @UseGuards(AccesstokenGuard)
+    @Get('last-images/:user')
+    @HttpCode(HttpStatus.OK)
+    listImagesLastWeek(
+        @Param() listImagesDto:ListImagesDto
+    ){
+        return this.listImagesLastWeekUseCase.execute(listImagesDto.user)
+    }
+
 }

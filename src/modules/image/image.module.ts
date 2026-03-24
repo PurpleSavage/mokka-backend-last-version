@@ -21,6 +21,7 @@ import { SaveImageUseCase } from "./application/use-cases/save-image.use-case";
 import { SaveRemixImageUseCase } from "./application/use-cases/save-remix-image.use-case";
 import { RemixImageProcessor } from "./application/jobs/create-remix.processor";
 import { ImageProcessor } from "./application/jobs/generate-image.processor";
+import { ListImagesLastWeekUseCase } from "./application/use-cases/list-images-last-week.use-case";
 
 
 @Module({
@@ -44,6 +45,7 @@ import { ImageProcessor } from "./application/jobs/generate-image.processor";
         RemixImageProcessor,
         ImageProcessor,
         ListSharedImageUseCase,
+        ListImagesLastWeekUseCase,
         ListImagesUseCase,
         UpdateDownloadsSharedImageUseCase,
         ShareImageUseCase,

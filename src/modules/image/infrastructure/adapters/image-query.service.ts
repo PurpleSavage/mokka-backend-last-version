@@ -111,4 +111,49 @@ export class ImageQueryService implements ImagePort{
             })
         }
     }
+    async listImagesLastWeek(userId: string): Promise<ImageEntity[]> {
+        try {
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+            sevenDaysAgo.setHours(0, 0, 0, 0);
+            const lastImages = await this.imageModel
+            .find({
+                user: userId,
+                createdAt: {
+                    $gte: sevenDaysAgo,
+                },
+            })
+            .sort({ createdAt: -1 })
+            .exec();
+            return lastImages.map((image)=>{
+                return new ImageEntity()
+                .setId(image._id.toString())
+                .setAspectRatio(image.aspectRatio)
+                .setCreateDate(image.createdAt)
+                .setHeight(image.height)
+                .setImageUrl(image.imageUrl)
+                .setPrompt(image.prompt)
+                .setSize(image.size)
+                .setStyle(image.style)
+                .setSubStyle(image.subStyle)
+                .setWidth(image.width)
+                .build()
+            })
+        } catch (error) {
+            this.logger.error(
+                {
+                stack: error instanceof Error ? error.stack : undefined,
+                message: 'Failed to list history imagest last week',
+                userId,
+                },
+                'Failed to list history images last week',
+            );
+            throw new MokkaError({
+                message: 'Database operation failed',
+                errorType: ErrorPlatformMokka.DATABASE_FAILED,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                details: 'Failed to list history images last week',
+            });
+        }
+    }
 }
