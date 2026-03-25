@@ -1,6 +1,5 @@
 import { OnEvent } from "@nestjs/event-emitter";
 import { GenerateVideoDto } from "../dtos/generate-video.dto";
-import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/socket-error-response.dto";
 import { PinoLogger } from "nestjs-pino";
 import { NotificationsRepository } from "src/shared/notifications/domain/repositories/notifications.repository";
 import { NotifierService } from "src/shared/notifications/infrastructure/sockets/notifier.service";
@@ -14,9 +13,10 @@ import { CreditLogicRepository } from "src/shared/common/domain/repositories/cre
 import { SavedNotificationVO } from "src/shared/notifications/domain/value-objects/saved-notification.vo";
 import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { JobsNotificationsType } from "src/shared/notifications/domain/enums/jons-notifications-type";
-import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/socket-ready-response.dto";
 import { VideoEntity } from "../../domain/entities/video.entity";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
+import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/request/socket-error-response.dto";
+import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/request/socket-ready-response.dto";
 
 export class SaveVideoUseCase{
     constructor(

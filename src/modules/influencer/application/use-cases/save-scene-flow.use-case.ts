@@ -13,11 +13,11 @@ import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objec
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
-import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/socket-error-response.dto';
 import { PathStorage } from 'src/shared/common/domain/enums/path-storage';
 import { SaveSceneInfluencerVo } from '../../domain/value-objects/save-scene.vo';
-import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/socket-ready-response.dto';
 import { InfluencerSceneEntity } from '../../domain/entities/influencer-scene.entity';
+import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
+import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
 
 @Injectable()
 export class SaveSceneFlowUseCase {

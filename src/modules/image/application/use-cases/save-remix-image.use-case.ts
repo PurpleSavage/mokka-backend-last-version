@@ -12,12 +12,12 @@ import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objec
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
-import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/socket-error-response.dto';
 import { PathStorage } from 'src/shared/common/domain/enums/path-storage';
 import { RemixImageVo } from '../../domain/value-objects/remix-image.vo';
-import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/socket-ready-response.dto';
 import { RemixImageEntity } from '../../domain/entities/remix-image.entity';
 import { Injectable } from '@nestjs/common';
+import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
+import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
 
 @Injectable()
 export class SaveRemixImageUseCase {

@@ -11,7 +11,8 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
-import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/socket-error-response.dto';
+import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
+
 
 @Processor('remix-image-queue')
 export class RemixImageProcessor extends WorkerHost {

@@ -13,11 +13,11 @@ import { NotifierService } from "src/shared/notifications/infrastructure/sockets
 import { AppBaseError } from "src/shared/errors/base.error";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
 import { SavedNotificationVO } from "src/shared/notifications/domain/value-objects/saved-notification.vo";
-import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/socket-error-response.dto";
 import { JobsNotificationsType } from "src/shared/notifications/domain/enums/jons-notifications-type";
 import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
-import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/socket-ready-response.dto";
 import { InfluencerEntity } from "../../domain/entities/influecer.entity";
+import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/request/socket-error-response.dto";
+import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/request/socket-ready-response.dto";
 
 @Injectable()
 export class SaveInfluencerFlowUseCase{

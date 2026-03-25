@@ -1,15 +1,15 @@
 import { Controller, Get, HttpCode, HttpStatus, Query, UseGuards } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
-import { ListNotificationsDto } from "src/shared/notifications/application/dtos/list-notifications.dto";
-import { ListNotificationsUseCase } from "../../../../shared/notifications/application/use-cases/list-notifications.use-case";
+import { ListNotificationsDto } from "src/shared/notifications/application/dtos/request/list-notifications.dto";
+import { ListNotificationsUseCase } from "../../application/use-cases/list-notifications.use-case";
 
 
 @Controller({
     path:'notifications/read',
     version:'1'
 })
-export class NotifierQueryController{
+export class NotificationsQueryController{
     constructor(
         private readonly listNotificationsUSeCase:ListNotificationsUseCase
     ){}

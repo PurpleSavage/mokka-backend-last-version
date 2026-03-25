@@ -1,7 +1,8 @@
 import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types"
-import { NotificationEntity } from "../../domain/entities/notification.entity"
-import { JobsNotificationsType } from "../../domain/enums/jons-notifications-type"
+
 import { HttpStatus } from "@nestjs/common"
+import { NotificationEntity } from "src/shared/notifications/domain/entities/notification.entity"
+import { JobsNotificationsType } from "src/shared/notifications/domain/enums/jons-notifications-type"
 
 export class SocketErrorResponseDto {
     private constructor(

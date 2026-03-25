@@ -11,7 +11,7 @@ import { SavedNotificationVO } from "src/shared/notifications/domain/value-objec
 import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { JobsNotificationsType } from "src/shared/notifications/domain/enums/jons-notifications-type";
 import { NotificationsRepository } from "src/shared/notifications/domain/repositories/notifications.repository";
-import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/socket-error-response.dto";
+import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/request/socket-error-response.dto";
 
 @Processor('video-queue')
 export class GenerateVideoProcessor extends WorkerHost{

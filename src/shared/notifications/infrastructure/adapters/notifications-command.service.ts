@@ -50,13 +50,56 @@ export class NotificationsCommandService implements NotificationsRepository {
           message: 'Failed to save notifications from database',
         //   userId: user,
         },
-        'Failed to get notifications from database',
+        'Failed to save notifications from database',
       );
       throw new MokkaError({
         message: 'Failed to save notifications from database',
         errorType: ErrorPlatformMokka.DATABASE_FAILED,
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         details: 'Failed to get notifications from database',
+      });
+    }
+  }
+  async readNotification(notificationId: string): Promise<NotificationEntity> {
+    try {
+      const notification = await this.notificationModel.findByIdAndUpdate(
+        notificationId,
+        { isRead: true },
+        { new: true }  // retorna el documento actualizado
+      )
+
+      if (!notification) throw new MokkaError({
+        message: 'Notification not found',
+        errorType: ErrorPlatformMokka.NOT_FOUND,
+        status: HttpStatus.NOT_FOUND,
+        details: 'Notification not found',
+      })
+      return NotificationEntity.create({
+        id: notification._id.toString(),
+        user: normalizeId(notification.user),
+        createdAt: notification.createdAt,
+        isRead: notification.isRead,
+        title: notification.title,
+        status: notification.status,
+        notificationType: notification.notificationType,
+        message: notification.message,
+        details: notification.details,
+        errorType: notification.errorType,
+      })
+    } catch (error) {
+      this.logger.error(
+        {
+          stack: error instanceof Error ? error.stack : undefined,
+          message: 'The notification could not be marked as read.',
+        //   userId: user,
+        },
+        'Failed to marked notification from database',
+      );
+      throw new MokkaError({
+        message: 'The notification could not be marked as read.',
+        errorType: ErrorPlatformMokka.DATABASE_FAILED,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        details: 'Failed to marked notification from database',
       });
     }
   }

@@ -1,8 +1,9 @@
 // shared/infrastructure/websockets/notification.service.ts
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { NotifierGateway } from "../../../../shared/notifications/infrastructure/sockets/notifier.gateway";
-import { SocketReadyResponseDto } from "../../application/dtos/socket-ready-response.dto";
-import { SocketErrorResponseDto } from "../../application/dtos/socket-error-response.dto";
+import { SocketErrorResponseDto } from "../../application/dtos/request/socket-error-response.dto";
+import { SocketReadyResponseDto } from "../../application/dtos/request/socket-ready-response.dto";
+
 @Injectable()
 export class NotifierService implements OnModuleInit {
     constructor(private readonly gateway: NotifierGateway) {}

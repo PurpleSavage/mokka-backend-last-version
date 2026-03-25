@@ -1,5 +1,6 @@
-import { NotificationEntity } from "../../domain/entities/notification.entity"
-import { JobsNotificationsType } from "../../domain/enums/jons-notifications-type"
+import { NotificationEntity } from "src/shared/notifications/domain/entities/notification.entity"
+import { JobsNotificationsType } from "src/shared/notifications/domain/enums/jons-notifications-type"
+
 
 export class SocketReadyResponseDto<T> {
     private constructor(

@@ -23,12 +23,14 @@ import { NotificationsCommandService } from "./notifications/infrastructure/adap
 import { NotificationsRepository } from "./notifications/domain/repositories/notifications.repository";
 import { NotificationsQueryService } from "./notifications/infrastructure/adapters/notifications-query.service";
 import { NotificationsPort } from "./notifications/application/ports/notifications.port";
-import { NotifierQueryController } from "./notifications/infrastructure/controllers/notifier-query.controller";
+import {  NotificationsQueryController } from "./notifications/infrastructure/controllers/notifications-query.controller";
 import { NotifierService } from "./notifications/infrastructure/sockets/notifier.service";
 import { NotifierGateway } from "./notifications/infrastructure/sockets/notifier.gateway";
 import { ListNotificationsUseCase } from "./notifications/application/use-cases/list-notifications.use-case";
 import { SaveNotificationUseCase } from "./notifications/application/use-cases/save-notification.use-cae";
 import { NotificationSchema } from "./notifications/infrastructure/schemas/notification.schema";
+import { NotificationsCommandController } from "./notifications/infrastructure/controllers/notifications-command.controller";
+import { ReadNotificationUseClase } from "src/shared/notifications/application/use-cases/read-notification.use-case";
 
 @Global() 
 @Module({
@@ -43,13 +45,15 @@ import { NotificationSchema } from "./notifications/infrastructure/schemas/notif
         ]),
     ],
     controllers:[
-        NotifierQueryController
+        NotificationsQueryController,
+        NotificationsCommandController
     ],
     providers:[
         NotifierService,
         NotifierGateway,
         ListNotificationsUseCase,
         SaveNotificationUseCase,
+        ReadNotificationUseClase,
         {
             useClass:SharedMdReaderService,
             provide:MdReaderPort

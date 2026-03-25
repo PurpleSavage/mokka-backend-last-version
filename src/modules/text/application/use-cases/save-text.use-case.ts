@@ -8,13 +8,13 @@ import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
-import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/socket-error-response.dto';
 import { GenerateTextVO } from '../../domain/value-objects/generate-text.vo';
 import { TextRepository } from '../../domain/repositories/text.repository';
 import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
 import { TextEntity } from '../../domain/entities/text.entity';
-import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/socket-ready-response.dto';
 import { Injectable } from '@nestjs/common';
+import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
+import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
 
 @Injectable()
 export class SaveTextUseCase {

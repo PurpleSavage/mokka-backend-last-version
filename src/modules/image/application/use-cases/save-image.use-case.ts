@@ -12,13 +12,13 @@ import { SavedNotificationVO } from "src/shared/notifications/domain/value-objec
 import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { JobsNotificationsType } from "src/shared/notifications/domain/enums/jons-notifications-type";
 import { ImageEntity } from "../../domain/entities/image.entity";
-import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/socket-ready-response.dto";
 import { PinoLogger } from "nestjs-pino";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
-import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/socket-error-response.dto";
 import { Injectable } from "@nestjs/common";
 import { GenerateImageDto } from "../dtos/request/generate-image.dto";
+import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/request/socket-error-response.dto";
+import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/request/socket-ready-response.dto";
 
 @Injectable()
 export class SaveImageUseCase{

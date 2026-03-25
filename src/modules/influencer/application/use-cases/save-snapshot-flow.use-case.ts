@@ -8,7 +8,6 @@ import { PinoLogger } from 'nestjs-pino';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
 import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { CreateInfluencerSnapshotDto } from '../dtos/create-influencer-snapshot.dto';
-import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/socket-error-response.dto';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
@@ -16,8 +15,9 @@ import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/Extra
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { SaveSnapshotVo } from '../../domain/value-objects/save-snapshot.vo';
 import { PathStorage } from 'src/shared/common/domain/enums/path-storage';
-import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/socket-ready-response.dto';
 import { InfluencerSnapshotEntity } from '../../domain/entities/influencer-snapshot.entity';
+import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
+import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
 
 @Injectable()
 export class SaveSnapshotUseCase {
