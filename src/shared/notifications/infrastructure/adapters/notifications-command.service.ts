@@ -34,6 +34,7 @@ export class NotificationsCommandService implements NotificationsRepository {
         return NotificationEntity.create({
             id: savedNotification._id.toString(),
             user:normalizeId(savedNotification.user),
+            isRead:notification.isRead,
             createdAt: savedNotification.createdAt,
             title: savedNotification.title,
             status: savedNotification.status,

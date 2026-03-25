@@ -28,6 +28,7 @@ export class NotificationsQueryService implements NotificationsPort {
             id: doc._id.toString(),
             user:normalizeId(doc.user),
             createdAt: doc.createdAt,
+            isRead:doc.isRead,
             title: doc.title,
             status: doc.status,
             notificationType: doc.notificationType,

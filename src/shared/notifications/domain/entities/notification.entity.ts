@@ -6,6 +6,7 @@ export class NotificationEntity{
     constructor(
         public readonly id: string,
         public readonly user:string,
+        public readonly isRead:boolean,
         public readonly createdAt: Date,
         public readonly title: string,
         public readonly status: StatusQueue,
@@ -24,6 +25,7 @@ export class NotificationEntity{
     createdAt: Date;
     title: string;
     status: StatusQueue;
+    isRead:boolean;
     notificationType: JobsNotificationsType;
     message?: string;
     details?: string;
@@ -33,6 +35,7 @@ export class NotificationEntity{
     return new NotificationEntity(
       data.id,
       data.user,
+      data.isRead,
       data.createdAt,
       data.title,
       data.status,
