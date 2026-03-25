@@ -26,16 +26,16 @@ export class Image{
     @Prop({required:true})
     imageUrl:string;
 
-    @Prop({required:true,enum:AspectRatioImage})
+    @Prop({required:true,enum:AspectRatioImage,type: String})
     aspectRatio:AspectRatioImage
 
     @Prop({required:true})  //peso de la imagen
     size:string
 
-    @Prop({required:true,enum:TypeStyle})
+    @Prop({required:true,enum:TypeStyle,type: String})
     style:TypeStyle
 
-    @Prop({required:true,enum:TypeSubStyle})
+    @Prop({required:true,enum:TypeSubStyle,type: String})
     subStyle:TypeSubStyle
 }
 

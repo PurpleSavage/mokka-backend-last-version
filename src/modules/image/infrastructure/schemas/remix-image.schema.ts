@@ -13,7 +13,7 @@ export class RemixImage{
     @Prop({type: MongooseSchema.Types.ObjectId, ref: 'Image', required: true})
     imageBase:MongooseSchema.Types.ObjectId;
 
-    @Prop({ required: true })
+    @Prop({ required: true,type: String })
     prompt:string;
 
     @Prop({ default: Date.now })
@@ -25,16 +25,16 @@ export class RemixImage{
     @Prop({required:true})
     height:number;
 
-    @Prop({required:true})
+    @Prop({required:true,type: String})
     imageUrl:string;
 
-    @Prop({required:true})
+    @Prop({required:true,type: String})
     prevImageUrl:string;
 
-    @Prop({required:true,enum:AspectRatioImage})
+    @Prop({required:true,enum:AspectRatioImage,type: String})
     aspectRatio:AspectRatioImage
 
-    @Prop({required:true})  //peso de la imagen
+    @Prop({required:true,type: String})  //peso de la imagen
     size:string
 }
 

@@ -21,7 +21,7 @@ export class Notification {
     @Prop({required:true, enum:StatusQueue,type: String})
     status:StatusQueue
 
-    @Prop({required:true, enum:JobsNotificationsType})
+    @Prop({required:true, enum:JobsNotificationsType,type: String})
     notificationType:JobsNotificationsType
 
     @Prop({required:false,type: String})

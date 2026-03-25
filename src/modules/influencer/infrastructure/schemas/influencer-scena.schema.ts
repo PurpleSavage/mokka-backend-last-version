@@ -9,10 +9,10 @@ export class InfluencerScena{
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
     user: MongooseSchema.Types.ObjectId;
 
-    @Prop({required:true})
+    @Prop({required:true,type: String})
     urlScene:string
 
-    @Prop({required:true})
+    @Prop({required:true,type: String})
     prompt:string
   
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Influencer', required: true })
@@ -21,10 +21,10 @@ export class InfluencerScena{
     @Prop({required:true, default:false})
     volume:boolean
 
-    @Prop({required:true})
+    @Prop({required:true,})
     imageBaseUrls:string[]
 
-    @Prop({required:true,enum:VideoAspectRatio})
+    @Prop({required:true,enum:VideoAspectRatio,type: String})
     aspectRatio:VideoAspectRatio
 
     @Prop({ default: Date.now })

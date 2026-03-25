@@ -29,7 +29,7 @@ export class Video{
     createdAt: Date;
 
 
-    @Prop({required:true,enum:VideoAspectRatio})
+    @Prop({required:true,enum:VideoAspectRatio,type: String})
     aspectRatio:VideoAspectRatio
 
 

@@ -18,10 +18,10 @@ export class User {
   @Prop({ default: true })
   isActive: boolean;
 
-  @Prop({ required: true })
+  @Prop({ required: true,type: String  })
   refreshtoken: string;
 
-  @Prop({ required: true, enum: TypeAuth })
+  @Prop({ required: true, enum: TypeAuth,type: String  })
   typeAuth: TypeAuth;
 
   @Prop({ required: true})

@@ -19,22 +19,22 @@ export class InfluencerSnapshot{
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Influencer', required: true })
     influencer: MongooseSchema.Types.ObjectId;
 
-    @Prop({required:true})
+    @Prop({required:true,type: String})
     snapshotUrl: string;
     
-    @Prop({required:true})
+    @Prop({required:true,type: String})
     prompt:string
 
-    @Prop({required:true, enum:Environment})
+    @Prop({required:true, enum:Environment,type: String})
     enviroment:Environment
 
-    @Prop({required:true,enum:OutfitType})
+    @Prop({required:true,enum:OutfitType,type: String})
     outfitStyle:OutfitType
 
     @Prop({ default: Date.now })
     createdAt: Date;
 
-    @Prop({required:true,enum:AspectRatioImage})
+    @Prop({required:true,enum:AspectRatioImage,type: String})
     aspectRatio:AspectRatioImage
 
 }

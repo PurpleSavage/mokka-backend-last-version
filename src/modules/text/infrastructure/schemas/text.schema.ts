@@ -13,32 +13,32 @@ export class Text{
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Text', required: true })
     user: MongooseSchema.Types.ObjectId;
 
-    @Prop({ required: true })
+    @Prop({ required: true,type: String })
     context:string
 
     @Prop({ default: Date.now })
     createdAt: Date
 
 
-    @Prop({ required: true})
+    @Prop({ required: true,type: String})
     promotionType:string
 
 
-    @Prop({ required: true })
+    @Prop({ required: true,type: String })
     title: string;
 
 
-    @Prop({ required: true,enum:Tone})
+    @Prop({ required: true,enum:Tone,type: String})
     toneType: Tone;
 
-    @Prop({ required: true,enum:Length})
+    @Prop({ required: true,enum:Length,type: String})
     textLength: Length;
 
 
-    @Prop({ required: true,enum:Format})
+    @Prop({ required: true,enum:Format,type: String})
     textFormat: Format;
 
-    @Prop({ required: true })
+    @Prop({ required: true,type: String })
     improvedContext:string
 }
 

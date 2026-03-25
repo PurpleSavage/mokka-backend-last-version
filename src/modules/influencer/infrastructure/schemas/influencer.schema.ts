@@ -25,49 +25,49 @@ export class Influencer{
     @Prop({required:true})
     name: string;
     
-    @Prop({required:true,enum:AgeRange})
+    @Prop({required:true,enum:AgeRange,type: String})
     ageRange: AgeRange;
 
-    @Prop({required:true,enum:Gender})
+    @Prop({required:true,enum:Gender,type: String})
     gender: Gender;
 
-    @Prop({required:true,enum:BodyShape})
+    @Prop({required:true,enum:BodyShape,type: String})
     bodyShape: BodyShape;
 
-    @Prop({required:true,enum:SkinColor})
+    @Prop({required:true,enum:SkinColor,type: String})
     skinColor: SkinColor;
 
-    @Prop({required:true,enum:EyeColor})
+    @Prop({required:true,enum:EyeColor,type: String})
     eyeColor: EyeColor;
 
-    @Prop({required:true,enum:HairType})
+    @Prop({required:true,enum:HairType,type: String})
     hairType: HairType;
 
-    @Prop({ required: true,enum:FaceType })
+    @Prop({ required: true,enum:FaceType,type: String })
     faceType: FaceType; 
 
 
-    @Prop({ required: true})
+    @Prop({ required: true,type: String})
     country: string;
 
 
-    @Prop({ required: true,enum:LipsType })
+    @Prop({ required: true,enum:LipsType,type: String })
     lipsType: LipsType;
 
-    @Prop({ required: true,enum:HairColor })
+    @Prop({ required: true,enum:HairColor,type: String })
     hairColor: HairColor;
 
     @Prop({ required: true })   
     height: number;
 
-    @Prop({ required: true})
+    @Prop({ required: true,type: String})
     influencerUrlImage:string   
 
     
     @Prop({ default: Date.now })
     createdAt: Date;
 
-    @Prop({ required: true})
+    @Prop({ required: true,type: String})
     sizeImage:string
 
 }

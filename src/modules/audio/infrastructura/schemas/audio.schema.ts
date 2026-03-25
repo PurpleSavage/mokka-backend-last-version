@@ -24,10 +24,10 @@ export class Audio {
   @Prop({ required: true })
   urlAudio: string;
 
-  @Prop({required:true,enum:IdModelsAudio})
+  @Prop({required:true,enum:IdModelsAudio,type: String})
   idModel:IdModelsAudio
 
-  @Prop({required:true,enum:ModelsAudio})
+  @Prop({required:true,enum:ModelsAudio,type: String})
   nameModelAudio:ModelsAudio
 
   
