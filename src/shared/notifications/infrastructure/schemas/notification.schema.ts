@@ -32,6 +32,9 @@ export class Notification {
 
     @Prop({required:false, enum:ErrorPlatformMokka,type: String})
     errorType?: ErrorPlatformMokka
+
+    @Prop({ type: Boolean, default: false, })
+    isRead: boolean;
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);

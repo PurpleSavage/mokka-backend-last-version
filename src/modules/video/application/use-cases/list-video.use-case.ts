@@ -1,6 +1,8 @@
+import { Injectable } from "@nestjs/common";
 import { VideoEntity } from "../../domain/entities/video.entity";
 import { VideoPort } from "../ports/video.port";
 
+@Injectable()
 export class ListVideosUseCase{
     constructor(
         private readonly videoQueryService: VideoPort
