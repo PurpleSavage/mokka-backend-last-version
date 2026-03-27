@@ -4,7 +4,6 @@ import { StorageRepository } from 'src/shared/common/domain/repositories/storage
 import { ImageRepository } from '../../domain/repositories/image.repository';
 import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
-import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { DownloadFilePort } from 'src/shared/common/application/ports/downlaod-file.port';
 import { CreateRemixImageDto } from '../dtos/request/create-remix-image.dto';
 import { AppBaseError } from 'src/shared/errors/base.error';
@@ -18,6 +17,7 @@ import { RemixImageEntity } from '../../domain/entities/remix-image.entity';
 import { Injectable } from '@nestjs/common';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
 import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
+import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
 
 @Injectable()
 export class SaveRemixImageUseCase {
@@ -26,7 +26,7 @@ export class SaveRemixImageUseCase {
     private readonly imageCommandService: ImageRepository,
     private readonly creditsService: CreditLogicRepository,
     private readonly notifierService: NotifierService,
-    private readonly notificationsCommandService: NotificationsRepository,
+    private readonly saveNotificationUseCase:SaveNotificationUseCase,
     private readonly downloadService: DownloadFilePort,
     private readonly logger: PinoLogger,
   ) {}
@@ -42,10 +42,6 @@ export class SaveRemixImageUseCase {
     try {
         const imagebuffer = await this.downloadService.downloadUrl(urlRemixImage)
         const imageUrlStorage = await this.storageService.saveImage(imagebuffer,payload.user,PathStorage.PATH_IMAGE_REMIXES)
-        const creditsUpdated = await this.creditsService.decreaseCredits(
-                30,
-                payload.user,
-        )
         const imageSharedId =await this.imageCommandService.updateRemixes(payload.imageShared)
         const vo = RemixImageVo.create({
             user:payload.user,
@@ -59,6 +55,10 @@ export class SaveRemixImageUseCase {
             prevImageUrl:payload.prevImageUrl
         })
         const remixImage = await this.imageCommandService.saveRemixImage(vo)
+         const creditsUpdated = await this.creditsService.decreaseCredits(
+                30,
+                payload.user,
+        )
         const voNotification = SavedNotificationVO.create({
             user: payload.user,
             title: 'Image remix Generated',
@@ -66,7 +66,7 @@ export class SaveRemixImageUseCase {
             notificationType: JobsNotificationsType.IMAGE,
             message: 'Image remix generated successfully',
         })
-        const savedNotification = await this.notificationsCommandService.saveNotification(voNotification)
+        const savedNotification = await this.saveNotificationUseCase.execute(voNotification)
         const socketResponse = SocketReadyResponseDto.create<RemixImageEntity>({
             jobId,
             notificationType: JobsNotificationsType.AUDIO,
@@ -102,7 +102,7 @@ export class SaveRemixImageUseCase {
         details: errorInfo.details,
         errorType: errorInfo.errorType,
       });
-      const savedNotification = await this.notificationsCommandService.saveNotification(voNotification);
+      const savedNotification = await this.saveNotificationUseCase.execute(voNotification);
       const socketResponse = SocketErrorResponseDto.create({
         jobId: errorInfo.jobId,
         notificationType: JobsNotificationsType.AUDIO,

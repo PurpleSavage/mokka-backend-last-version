@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ReadNotificationResponseDto } from "src/shared/notifications/application/dtos/responses/read-notification-response.dto";
 import { NotificationsRepository } from "src/shared/notifications/domain/repositories/notifications.repository";
-import { ReadNotificationMapper } from "../../../../modules/audio/application/mappers/read-notification.mapper";
+import { ReadNotificationMapper } from "../mappers/read-notification.mapper";
 
 @Injectable()
 export class ReadNotificationUseClase{

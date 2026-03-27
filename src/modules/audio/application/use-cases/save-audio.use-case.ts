@@ -8,15 +8,14 @@ import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import { StorageRepository } from 'src/shared/common/domain/repositories/storage.repository';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
-import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
 import { AudioEntity } from '../../domain/entities/audio.entity';
-
 import { PinoLogger } from 'nestjs-pino';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
 import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
+import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
 
 @Injectable()
 export class SaveAudioUseCase {
@@ -25,7 +24,7 @@ export class SaveAudioUseCase {
     private readonly storageService: StorageRepository,
     private readonly creditsService: CreditLogicRepository,
     private readonly notifierService: NotifierService,
-    private readonly notificationsCommandService: NotificationsRepository,
+    private readonly saveNotificationUseCase:SaveNotificationUseCase,
     private readonly logger: PinoLogger,
   ) {}
 
@@ -43,17 +42,17 @@ export class SaveAudioUseCase {
         audioBuffer,
       );
 
-      const creditsUpdated = await this.creditsService.decreaseCredits(
-        30,
-        payload.user,
-      );
-
       const vo = GenerateAudioVO.create({
         ...payload,
         urlAudio: url,
       });
-      const audio = await this.audioCommandService.saveGeneratedAudio(vo);
+      const audio = await this.audioCommandService.saveGeneratedAudio(vo)
 
+      const creditsUpdated = await this.creditsService.decreaseCredits(
+        30,
+        payload.user,
+      )
+      
       const voNotification = SavedNotificationVO.create({
         user: payload.user,
         title: 'Audio generated',
@@ -61,7 +60,8 @@ export class SaveAudioUseCase {
         notificationType: JobsNotificationsType.AUDIO,
         message: 'Audio generated successfully',
       });
-      const savedNotification = await this.notificationsCommandService.saveNotification(voNotification);
+      const savedNotification = await this.saveNotificationUseCase.execute(voNotification);
+     
       const socketResponse = SocketReadyResponseDto.create<AudioEntity>({
         jobId,
         notificationType: JobsNotificationsType.AUDIO,
@@ -98,7 +98,7 @@ export class SaveAudioUseCase {
         details: errorInfo.details,
         errorType: errorInfo.errorType,
       })
-      const savedNotification =await this.notificationsCommandService.saveNotification(voNotification);
+      const savedNotification =await this.saveNotificationUseCase.execute(voNotification);
 
       const socketResponse = SocketErrorResponseDto.create({
         jobId: errorInfo.jobId,

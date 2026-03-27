@@ -1,7 +1,6 @@
 import { OnEvent } from '@nestjs/event-emitter';
 import { GenerateTextDto } from '../dtos/request/generate-text.dto';
 import { PinoLogger } from 'nestjs-pino';
-import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
@@ -15,15 +14,16 @@ import { TextEntity } from '../../domain/entities/text.entity';
 import { Injectable } from '@nestjs/common';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
 import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
+import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
 
 @Injectable()
 export class SaveTextUseCase {
   constructor(
     private readonly notifierService: NotifierService,
-    private readonly notificationsCommandService: NotificationsRepository,
     private readonly textCommandService:TextRepository,
     private readonly logger: PinoLogger,
     private readonly creditsService: CreditLogicRepository,
+    private readonly saveNotificationUseCase:SaveNotificationUseCase,
   ) {}
 
   @OnEvent('text.processing.completed', { async: true })
@@ -56,7 +56,7 @@ export class SaveTextUseCase {
             notificationType: JobsNotificationsType.TEXT,
             message: 'Text generated successfully',
         })
-        const savedNotification = await this.notificationsCommandService.saveNotification(voNotification)
+        const savedNotification = await this.saveNotificationUseCase.execute(voNotification)
         const socketResponse = SocketReadyResponseDto.create<TextEntity>({
             jobId,
             notificationType: JobsNotificationsType.AUDIO,
@@ -94,7 +94,7 @@ export class SaveTextUseCase {
         errorType: errorInfo.errorType,
       });
       const savedNotification =
-        await this.notificationsCommandService.saveNotification(voNotification);
+        await this.saveNotificationUseCase.execute(voNotification);
 
       const socketResponse = SocketErrorResponseDto.create({
         jobId: errorInfo.jobId,

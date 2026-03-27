@@ -10,9 +10,8 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
-
-import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
+import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
 @Processor('influencer-snapshot-queue')
 export class CreateInfluencerSnapshotProcessor extends WorkerHost {
   constructor(
@@ -20,7 +19,7 @@ export class CreateInfluencerSnapshotProcessor extends WorkerHost {
     private readonly notifierService: NotifierService,
     private readonly logger: PinoLogger,
     private readonly eventEmitter: EventEmitter2,
-    private readonly notificationsCommandService: NotificationsRepository,
+    private readonly saveNotificationUseCase:SaveNotificationUseCase,
   ) {
     super();
   }
@@ -63,7 +62,7 @@ export class CreateInfluencerSnapshotProcessor extends WorkerHost {
         details: errorInfo.details,
         errorType: errorInfo.errorType,
       });
-      const savedNotification =await this.notificationsCommandService.saveNotification(voNotification);
+      const savedNotification =await this.saveNotificationUseCase.execute(voNotification);
       const socketResponse = SocketErrorResponseDto.create({
         jobId: errorInfo.jobId,
         notificationType: JobsNotificationsType.INFLUENCER_SNAPSHOT,

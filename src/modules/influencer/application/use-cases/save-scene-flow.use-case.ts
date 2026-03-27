@@ -6,7 +6,6 @@ import { InfluencerRepository } from '../../domain/repository/influencer.reposit
 import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
 import { PinoLogger } from 'nestjs-pino';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
-import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
@@ -18,6 +17,7 @@ import { SaveSceneInfluencerVo } from '../../domain/value-objects/save-scene.vo'
 import { InfluencerSceneEntity } from '../../domain/entities/influencer-scene.entity';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
 import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
+import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
 
 @Injectable()
 export class SaveSceneFlowUseCase {
@@ -28,7 +28,7 @@ export class SaveSceneFlowUseCase {
     private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
     private readonly notifierService: NotifierService,
-    private readonly notificationsCommandService: NotificationsRepository,
+    private readonly saveNotificationUseCase:SaveNotificationUseCase,
   ) {}
   @OnEvent('scene.processing.completed', { async: true })
   async execute(eventData: {
@@ -61,7 +61,7 @@ export class SaveSceneFlowUseCase {
             notificationType: JobsNotificationsType.INFLUENCER_SCENE,
             message: 'Influencer scene generated successfully',
         })
-        const savedNotification = await this.notificationsCommandService.saveNotification(voNotification);
+        const savedNotification = await this.saveNotificationUseCase.execute(voNotification);
         const socketResponse = SocketReadyResponseDto.create<InfluencerSceneEntity>({
             jobId,
             notificationType: JobsNotificationsType.INFLUENCER_SCENE,
@@ -98,7 +98,7 @@ export class SaveSceneFlowUseCase {
         details: errorInfo.details,
         errorType: errorInfo.errorType,
       });
-      const savedNotification =await this.notificationsCommandService.saveNotification(voNotification);
+      const savedNotification =await this.saveNotificationUseCase.execute(voNotification);
 
       const socketResponse = SocketErrorResponseDto.create({
         jobId: errorInfo.jobId,

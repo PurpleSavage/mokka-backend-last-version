@@ -6,7 +6,6 @@ import { InfluencerRepository } from '../../domain/repository/influencer.reposit
 import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
 import { PinoLogger } from 'nestjs-pino';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
-import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { CreateInfluencerSnapshotDto } from '../dtos/create-influencer-snapshot.dto';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
@@ -18,6 +17,7 @@ import { PathStorage } from 'src/shared/common/domain/enums/path-storage';
 import { InfluencerSnapshotEntity } from '../../domain/entities/influencer-snapshot.entity';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
 import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
+import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
 
 @Injectable()
 export class SaveSnapshotUseCase {
@@ -28,7 +28,7 @@ export class SaveSnapshotUseCase {
     private readonly creditsService: CreditLogicRepository,
     private readonly logger: PinoLogger,
     private readonly notifierService: NotifierService,
-    private readonly notificationsCommandService: NotificationsRepository,
+    private readonly saveNotificationUseCase:SaveNotificationUseCase,
   ) {}
   @OnEvent('snapshot.processing.completed', { async: true })
   async execute(eventData: {
@@ -61,7 +61,7 @@ export class SaveSnapshotUseCase {
                 notificationType: JobsNotificationsType.INFLUENCER_SNAPSHOT,
                 message: 'Influencer snapshot generated successfully',
         })
-        const savedNotification = await this.notificationsCommandService.saveNotification(voNotification);
+        const savedNotification = await this.saveNotificationUseCase.execute(voNotification);
         const socketResponse = SocketReadyResponseDto.create<InfluencerSnapshotEntity>({
             jobId,
             notificationType: JobsNotificationsType.INFLUENCER_SNAPSHOT,
@@ -98,7 +98,7 @@ export class SaveSnapshotUseCase {
         details: errorInfo.details,
         errorType: errorInfo.errorType,
       });
-      const savedNotification =await this.notificationsCommandService.saveNotification(voNotification);
+      const savedNotification =await this.saveNotificationUseCase.execute(voNotification);
 
       const socketResponse = SocketErrorResponseDto.create({
         jobId: errorInfo.jobId,

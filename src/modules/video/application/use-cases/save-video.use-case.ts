@@ -1,7 +1,6 @@
 import { OnEvent } from "@nestjs/event-emitter";
 import { GenerateVideoDto } from "../dtos/generate-video.dto";
 import { PinoLogger } from "nestjs-pino";
-import { NotificationsRepository } from "src/shared/notifications/domain/repositories/notifications.repository";
 import { NotifierService } from "src/shared/notifications/infrastructure/sockets/notifier.service";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
@@ -17,16 +16,19 @@ import { VideoEntity } from "../../domain/entities/video.entity";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
 import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/request/socket-error-response.dto";
 import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/request/socket-ready-response.dto";
+import { SaveNotificationUseCase } from "src/shared/notifications/application/use-cases/save-notification.use-cae";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class SaveVideoUseCase{
     constructor(
         private readonly notifierService: NotifierService,
-        private readonly notificationsCommandService: NotificationsRepository,
         private readonly logger: PinoLogger,
         private readonly downloadService:DownloadFilePort,
         private readonly storageService:StorageRepository,
         private readonly videoCommandService:VideoRepository,
         private readonly creditsService: CreditLogicRepository,
+        private readonly saveNotificationUseCase:SaveNotificationUseCase,
     ){}
 
     @OnEvent('video.processing.completed', { async: true })
@@ -58,7 +60,7 @@ export class SaveVideoUseCase{
                 notificationType: JobsNotificationsType.VIDEO,
                 message: 'Video generated successfully',
             });
-            const savedNotification = await this.notificationsCommandService.saveNotification(voNotification);
+            const savedNotification = await this.saveNotificationUseCase.execute(voNotification);
             const socketResponse = SocketReadyResponseDto.create<VideoEntity>({
                 jobId,
                 notificationType: JobsNotificationsType.AUDIO,
@@ -95,7 +97,7 @@ export class SaveVideoUseCase{
                     details: errorInfo.details,
                     errorType: errorInfo.errorType,
                   })
-                  const savedNotification =await this.notificationsCommandService.saveNotification(voNotification);
+                  const savedNotification =await this.saveNotificationUseCase.execute(voNotification);
             
                   const socketResponse = SocketErrorResponseDto.create({
                     jobId: errorInfo.jobId,

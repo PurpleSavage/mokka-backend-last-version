@@ -2,10 +2,8 @@ import { StorageRepository } from "src/shared/common/domain/repositories/storage
 import { ImageRepository } from "../../domain/repositories/image.repository";
 import { CreditLogicRepository } from "src/shared/common/domain/repositories/credits-logic.repository";
 import { NotifierService } from "src/shared/notifications/infrastructure/sockets/notifier.service";
-import { NotificationsRepository } from "src/shared/notifications/domain/repositories/notifications.repository";
 import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
 import { OnEvent } from "@nestjs/event-emitter";
-
 import { PathStorage } from "src/shared/common/domain/enums/path-storage";
 import { SavedGenerateImageVO } from "../../domain/value-objects/saved-generate-image.vo";
 import { SavedNotificationVO } from "src/shared/notifications/domain/value-objects/saved-notification.vo";
@@ -19,6 +17,7 @@ import { Injectable } from "@nestjs/common";
 import { GenerateImageDto } from "../dtos/request/generate-image.dto";
 import { SocketErrorResponseDto } from "src/shared/notifications/application/dtos/request/socket-error-response.dto";
 import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/request/socket-ready-response.dto";
+import { SaveNotificationUseCase } from "src/shared/notifications/application/use-cases/save-notification.use-cae";
 
 @Injectable()
 export class SaveImageUseCase{
@@ -27,7 +26,7 @@ export class SaveImageUseCase{
         private readonly imageCommandService:ImageRepository,
         private readonly creditsService: CreditLogicRepository,
         private readonly notifierService: NotifierService,
-        private readonly notificationsCommandService: NotificationsRepository,
+        private readonly saveNotificationUseCase:SaveNotificationUseCase,
         private readonly downloadService:DownloadFilePort,
         private readonly logger: PinoLogger,
     ){}
@@ -65,7 +64,7 @@ export class SaveImageUseCase{
                 notificationType: JobsNotificationsType.IMAGE,
                 message: 'Image generated successfully',
             })
-            const savedNotification = await this.notificationsCommandService.saveNotification(voNotification)
+            const savedNotification = await this.saveNotificationUseCase.execute(voNotification)
             const socketResponse = SocketReadyResponseDto.create<ImageEntity>({
                 jobId,
                 notificationType: JobsNotificationsType.AUDIO,
@@ -101,7 +100,7 @@ export class SaveImageUseCase{
                 details: errorInfo.details,
                 errorType: errorInfo.errorType,
             })
-            const savedNotification =await this.notificationsCommandService.saveNotification(voNotification)
+            const savedNotification =await this.saveNotificationUseCase.execute(voNotification)
             const socketResponse = SocketErrorResponseDto.create({
                 jobId: errorInfo.jobId,
                 notificationType: JobsNotificationsType.AUDIO,

@@ -10,17 +10,17 @@ import { NotifierService } from 'src/shared/notifications/infrastructure/sockets
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
-import { NotificationsRepository } from 'src/shared/notifications/domain/repositories/notifications.repository';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
+import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
 
 @Processor('audio-queue')
 export class AudioProcessor extends WorkerHost {
   constructor(
     private readonly generateAudioUseCase: GenerateAudioUseCase,
     private readonly notifierService: NotifierService,
-    private readonly notificationsCommandService: NotificationsRepository,
     private readonly logger: PinoLogger,
     private readonly eventEmitter: EventEmitter2,
+    private readonly saveNotificationUseCase:SaveNotificationUseCase
   ) {
     super();
   }
@@ -61,7 +61,7 @@ export class AudioProcessor extends WorkerHost {
         details: errorInfo.details,
         errorType: errorInfo.errorType,
       });
-      const savedNotification =await this.notificationsCommandService.saveNotification(voNotification);
+      const savedNotification =await this.saveNotificationUseCase.execute(voNotification);
       const socketResponse = SocketErrorResponseDto.create({
         jobId: errorInfo.jobId,
         notificationType: JobsNotificationsType.AUDIO,
