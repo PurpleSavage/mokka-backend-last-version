@@ -122,6 +122,7 @@ import { ReadNotificationUseClase } from "src/shared/notifications/application/u
         CreditLogicRepository,
         NotifierService,
         NotificationsRepository,
+        SaveNotificationUseCase,
         NotificationsPort
     ]
 })
