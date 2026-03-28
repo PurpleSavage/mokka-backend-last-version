@@ -1,11 +1,15 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import {  ModelNodeDocument, ModelNodeSchema } from './3d-node-schema';
 import { StatusModel, StatusModelType } from '../../domain/enums/status-model';
 
-export type ModelDocument = HydratedDocument<Model>;
+export type Model3DDocument = HydratedDocument<Model3D>;
 
-export class Model {
+@Schema({ 
+  collection: 'models', // <--- ESTO es lo que le dice a Mongo dónde buscar exactamente
+  timestamps: true 
+})
+export class Model3D {
   @Prop({ required: true, unique: true })
   slug: string;
 
@@ -41,5 +45,5 @@ export class Model {
   @Prop({ type: [ModelNodeSchema] })
   nodes: Types.DocumentArray<ModelNodeDocument>;
 }
-export const ModelSchema = SchemaFactory.createForClass(Model);
-ModelSchema.set('timestamps', true);
+export const Model3DSchema = SchemaFactory.createForClass(Model3D);
+Model3DSchema.set('timestamps', true);

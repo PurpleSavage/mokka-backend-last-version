@@ -16,6 +16,7 @@ import { VideoModule } from './modules/video/video.module';
 import { TextModule } from './modules/text/text.module';
 import { InfluencerModule } from './modules/influencer/influencer.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { Mockups3DModule } from './modules/mockups-3d/mockups-3d.module';
 
 
 
@@ -62,7 +63,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     ImageModule,
     VideoModule,
     TextModule,
-    InfluencerModule
+    InfluencerModule,
+    Mockups3DModule
   ],
   controllers: [],
   providers: [

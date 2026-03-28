@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { List3DModelsUseCase } from "./application/use-cases/list-3d-models.use-case";
 import { SharedModule } from "src/shared/shared.module";
 import { MongooseModule } from "@nestjs/mongoose";
-import { ModelSchema } from "./infrastructure/schemas/3d-model.schema";
+import { Model3DSchema } from "./infrastructure/schemas/3d-model.schema";
 import { Mockups3DQueryService } from "./infrastructure/adapters/mockups-3d-query.service";
 import { Mockups3DPort } from "./application/ports/mockups-3d.port";
 import { Mockups3DQueryController } from "./infrastructure/controllers/mockups-3d-query.controller";
@@ -11,7 +11,7 @@ import { Mockups3DQueryController } from "./infrastructure/controllers/mockups-3
     imports:[
         SharedModule,
         MongooseModule.forFeature([
-            { name: 'Model3D', schema: ModelSchema},
+            { name: 'MODEL_3D_ENTITY', schema: Model3DSchema},
             
         ]),
     ],

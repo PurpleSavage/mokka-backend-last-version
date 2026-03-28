@@ -20,7 +20,7 @@ export class NotificationsQueryService implements NotificationsPort {
         const limit = 20;
         const skip = (page - 1) * limit
         const allNotifications =  await this.notificationModel.find({ user, isRead: false })
-        .sort({ createAt: -1 }) 
+        .sort({ createdAt: -1 }) 
         .skip(skip)
         .limit(limit)
         .exec();
