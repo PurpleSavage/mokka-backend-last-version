@@ -1,8 +1,8 @@
-import { Body, Controller,Get,HttpCode,HttpStatus, Param, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller,Get,HttpCode,HttpStatus,Req, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { RefreshtokenGuard, RequestWithUser } from "src/guards/tokens/refresh-token.guard";
 import { GetProfileUseCase } from "../../application/use-cases/get-profile.use-case";
 import { RefreshTokenUseCase } from "../../application/use-cases/refresh-token.use-case";
-import { RefreshTokenDto } from "../../application/dtos/refresh-token.dto";
+import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
 
 
 @Controller({
@@ -39,10 +39,19 @@ export class AuthQueryController{
 
   @UseGuards(RefreshtokenGuard)
     @HttpCode(HttpStatus.OK)
-    @Get('refresh-token/:email')
+    @Get('refresh-token')
     getNewtoken(
-        @Param() refreshtokenDto:RefreshTokenDto
+        @Req() req: RequestWithUser
     ){
-        return this.refreshTokenUseCase.execute(refreshtokenDto)
+      const email = req.userEmail?.email;
+      if (!email) {
+        throw new  UnauthorizedException({
+                message: 'Session expired, please login again',
+                errorType: ErrorPlatformMokka.MOKKA_UNAUTHORIZED,  
+                statusCode: 401,
+                renovate: false, 
+        });
+      }
+      return this.refreshTokenUseCase.execute(email)
     }
 }
