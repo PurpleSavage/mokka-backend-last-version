@@ -23,7 +23,6 @@ export class Mockups3DQueryService implements Mockups3DPort {
         .skip(skip)
         .limit(limit)
         .exec()
-        console.log('estos son los docs',modelsDocs)
         return modelsDocs.map(doc => Model3DEntity.create({
         id: doc._id.toString(), 
         slug: doc.slug,
