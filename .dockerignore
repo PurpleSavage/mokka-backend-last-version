@@ -62,6 +62,7 @@ README.md
 !contexts/image/prompts/**/*.md
 !contexts/video/prompts/**/*.md
 !contexts/influencer/prompts/**/*.md
+!contexts/audio/prompts/**/*.md
 # Temporary files
 tmp
 temp

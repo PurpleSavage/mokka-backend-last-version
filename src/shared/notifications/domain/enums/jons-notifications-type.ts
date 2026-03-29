@@ -6,7 +6,8 @@ export const JobsNotificationsType = {
     IMAGE_REMIX :'image-remix',
     INFLUENCER :'influencer',
     INFLUENCER_SNAPSHOT :'influencer-snapshot',
-    INFLUENCER_SCENE :'influencer-scene'
+    INFLUENCER_SCENE :'influencer-scene',
+    MUSIC:'music',    
 } as const;
 
 export type JobsNotificationsType = typeof JobsNotificationsType[keyof typeof JobsNotificationsType]

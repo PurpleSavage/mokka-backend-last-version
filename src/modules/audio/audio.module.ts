@@ -15,20 +15,37 @@ import { AudioCommandController } from "./infrastructura/controllers/audio-comma
 import { AudioQueryController } from "./infrastructura/controllers/audio-query.controller";
 import { AudioProcessor } from "./application/jobs/generate-audio.processor";
 import { SaveAudioUseCase } from "./application/use-cases/save-audio.use-case";
+import { MusicSchema } from "./infrastructura/schemas/music.schema";
+import { SaveMusicUseCase } from "./application/use-cases/save-music.use-case";
+import { MusicRepository } from "./domain/repositories/music.repository";
+import { MusicCommandService } from "./infrastructura/adapters/music-command.service";
+import { GenerateMusicUseCase } from "./application/use-cases/generate-music.use-case";
+import { MusicProcessor } from "./application/jobs/generate-music.processor";
+import { MusicCommandController } from "./infrastructura/controllers/music-command.controller";
 
 @Module({
     imports:[
         SharedModule,
-        MongooseModule.forFeature([{ name: 'Audio', schema: AudioSchema}]),
+        MongooseModule.forFeature([
+            { name: 'Audio', schema: AudioSchema},
+            { name: 'Music', schema: MusicSchema}
+        ]),
         BullModule.registerQueue({  // registrar cola
             name: 'audio-queue',
+        }),
+        BullModule.registerQueue({  
+            name: 'music-queue',
+                            
         }),
     ],
     providers:[
         AudioProcessor,
+        MusicProcessor,
         GenerateAudioUseCase,
         ListAudiosUseCase,
         SaveAudioUseCase,
+        SaveMusicUseCase,
+        GenerateMusicUseCase,
         {
             useClass:AudioCommandService,
             provide:AudioRepository
@@ -40,16 +57,22 @@ import { SaveAudioUseCase } from "./application/use-cases/save-audio.use-case";
         {
             useClass:AudioGeneratorService,
             provide:AudioGeneratorPort
+        },
+        {
+            useClass:MusicCommandService,
+            provide:MusicRepository
         }
     ],
     controllers:[
         AudioCommandController,
         AudioQueryController,
+        MusicCommandController
     ],
     exports:[
         AudioPort,
         AudioRepository,
-        AudioGeneratorPort
+        AudioGeneratorPort,
+        MusicRepository
     ]
 })
 export class AudioModule{}

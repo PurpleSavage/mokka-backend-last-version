@@ -8,7 +8,8 @@
     "assets": [
       { "include": "modules/image/prompts/**/*.md", "outDir": "dist" },
       { "include": "modules/influencer/prompts/**/*.md", "outDir": "dist" },
-      { "include": "modules/text/prompts/**/*.md", "outDir": "dist" }
+      { "include": "modules/text/prompts/**/*.md", "outDir": "dist" },
+      { "include": "modules/audio/prompts/**/*.md", "outDir": "dist" }
     ]
   }
 }
