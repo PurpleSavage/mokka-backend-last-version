@@ -1,7 +1,7 @@
 export class ModelNodeEntity {
   constructor(
     public readonly id: string,
-    public readonly name_mesh: string,
+    public readonly nameMesh: string,
     public readonly label: string,
     public readonly isEditable: boolean,
     public readonly materialDefault: string,

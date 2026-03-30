@@ -9,9 +9,9 @@ export class Model3DEntity {
     public readonly name: string,
     public readonly category: string,
     public readonly status: StatusModelType,
-    public readonly model_url: string,
-    public readonly thumbnail_url: string,
-    public readonly camera_settings: {
+    public readonly modelUrl: string,
+    public readonly thumbnailUrl: string,
+    public readonly cameraSettings: {
       position: number[];
       target: number[];
       fov: number;
