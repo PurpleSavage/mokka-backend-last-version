@@ -29,9 +29,9 @@ export class Mockups3DQueryService implements Mockups3DPort {
         name: doc.name,
         category: doc.category,
         status: doc.status,
-        model_url: doc.model_url,
-        thumbnail_url: doc.thumbnail_url,
-        camera_settings: doc.camera_settings,
+        modelUrl: doc.model_url,
+        thumbnailUrl: doc.thumbnail_url,
+        cameraSettings: doc.camera_settings,
         createdAt: doc.createdAt,
         nodes: doc.nodes.map(node => ({
           id: node._id.toString(),

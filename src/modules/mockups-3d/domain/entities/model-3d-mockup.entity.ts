@@ -26,9 +26,9 @@ export class Model3DEntity {
     name: string;
     category: string;
     status?: StatusModelType;
-    model_url: string;
-    thumbnail_url: string;
-    camera_settings: { position: number[]; target: number[]; fov: number };
+    modelUrl: string;
+    thumbnailUrl: string;
+    cameraSettings: { position: number[]; target: number[]; fov: number };
     nodes: ModelNodeDataResponseDto[]; 
     createdAt:Date;
   }): Model3DEntity {
@@ -41,9 +41,9 @@ export class Model3DEntity {
       data.name,
       data.category,
       data.status ?? StatusModel.ACTIVE,
-      data.model_url,
-      data.thumbnail_url,
-      data.camera_settings,
+      data.modelUrl,
+      data.thumbnailUrl,
+      data.cameraSettings,
       nodeEntities,
       data.createdAt ?? new Date() 
     );
