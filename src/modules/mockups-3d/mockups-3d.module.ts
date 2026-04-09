@@ -9,6 +9,7 @@ import { Mockups3DQueryController } from "./infrastructure/controllers/mockups-3
 import { BackgroundMockupSchema } from "./infrastructure/schemas/background-mockup.schema";
 import { ListBackgroundsUseCase } from "./application/use-cases/list-backgrounds.use-case";
 
+
 @Module({
     imports:[
         SharedModule,
