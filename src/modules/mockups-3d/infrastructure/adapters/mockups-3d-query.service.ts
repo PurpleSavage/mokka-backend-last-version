@@ -7,11 +7,14 @@ import { ErrorPlatformMokka } from 'src/shared/common/infrastructure/enums/error
 import { Model } from 'mongoose';
 import { Model3DDocument} from '../schemas/3d-model.schema';
 import { InjectModel } from '@nestjs/mongoose';
+import { BackgroundMockupDocument } from '../schemas/background-mockup.schema';
+import { BackgroundMockupEntity } from '../../domain/entities/background-mockup.entity';
 
 @Injectable()
 export class Mockups3DQueryService implements Mockups3DPort {
   constructor(
     @InjectModel('MODEL_3D_ENTITY') private readonly model3DModel: Model<Model3DDocument>,
+    @InjectModel('background-mockup') private readonly backgroundMockupModel: Model<BackgroundMockupDocument>,
     private readonly logger: PinoLogger, 
   ) {}
   async list3DMoclups(page: number): Promise<Model3DEntity[]> {
@@ -44,6 +47,41 @@ export class Mockups3DQueryService implements Mockups3DPort {
         }))
       }));
 
+    } catch (error) {
+      this.logger.error(
+        {
+          stack: error instanceof Error ? error.stack : undefined,
+          message: 'Error to list shared images by userId',
+        },
+        'Error to list shared images by userId',
+      );
+      throw new MokkaError({
+        message: 'Error to list shared 3d models',
+        errorType: ErrorPlatformMokka.DATABASE_FAILED,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        details: 'Database operation failed',
+      });
+    }
+  }
+
+  async listBackgroundsMockups(page: number): Promise<BackgroundMockupEntity[]> {
+    try {
+      const limit = 20;
+      const skip = (page - 1) * limit
+
+      const backgrounds = await this.backgroundMockupModel.find().sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec()
+
+      return  backgrounds.map((background)=>{
+        return BackgroundMockupEntity.create({
+          backgroundUrl:background.background_url,
+          createdAt:background.createdAt,
+          id:background._id.toString(),
+          name:background.name
+        })
+      })
     } catch (error) {
       this.logger.error(
         {
