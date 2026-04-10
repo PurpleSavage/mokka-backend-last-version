@@ -19,9 +19,9 @@ export abstract class InfluencerPort {
     abstract getInfluencerSceneById(sceneId:string):Promise<InfluencerSceneEntity>
 
 
-    abstract listSharedInfluencer(page:number):Promise<SharedInfluencerEntity[]>
-    abstract listSharedSnapshot(page:number):Promise<SharedSnapshotEntity[]>
-    abstract listSharedScene(page:number):Promise<SharedSceneEntity[]>
+    abstract listSharedInfluencer(page:number,limit:number):Promise<SharedInfluencerEntity[]>
+    abstract listSharedSnapshot(page:number,limit:number):Promise<SharedSnapshotEntity[]>
+    abstract listSharedScene(page:number,limit:number):Promise<SharedSceneEntity[]>
 
 
     abstract listScenesByInfluencerId(influencer:string):Promise<InfluencerSceneEntity[]>

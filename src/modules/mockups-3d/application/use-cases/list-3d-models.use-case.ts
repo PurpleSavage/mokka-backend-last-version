@@ -10,10 +10,10 @@ export class List3DModelsUseCase{
         private readonly mockups3dQueryService:Mockups3DPort,
          private readonly cacheService: CacheManagerPort
     ){}
-    async execute(page:number){
-        const cachedPage = await this.cacheService.read<Model3DEntity>(this.CACHE_KEY,page)
+    async execute(page:number,limit:number){
+        const cachedPage = await this.cacheService.read<Model3DEntity>(this.CACHE_KEY,page,limit)
         if (cachedPage && cachedPage.length > 0) return cachedPage
-        const listModels = await this.mockups3dQueryService.list3DMoclups(page)
+        const listModels = await this.mockups3dQueryService.list3DMoclups(page,limit)
         await this.cacheService.setMany(this.CACHE_KEY,listModels)
         return listModels
 

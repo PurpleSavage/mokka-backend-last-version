@@ -53,9 +53,8 @@ export class ImageQueryService implements ImagePort{
             })
         }
     }
-    async listSharedImage(page:number): Promise<SharedImageEntity[]> {
+    async listSharedImage(page:number,limit:number): Promise<SharedImageEntity[]> {
         try {
-            const limit = 20;
             const skip = (page - 1) * limit
             const sharedImages= await this.sharedImageModel.find()
             .populate<{ image: ImageDocument}>('image')

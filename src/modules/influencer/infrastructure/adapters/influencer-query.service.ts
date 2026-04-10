@@ -384,9 +384,8 @@ export class InfluencerQueryService implements InfluencerPort {
     }
   }
 
-  async listSharedInfluencer(page: number): Promise<SharedInfluencerEntity[]> {
+  async listSharedInfluencer(page: number,limit:number): Promise<SharedInfluencerEntity[]> {
     try {
-      const limit = 20;
       const skip = (page - 1) * limit;
       const sharedInfluencers = await this.influencerSharedModel
         .find()
@@ -447,9 +446,8 @@ export class InfluencerQueryService implements InfluencerPort {
       });
     }
   }
-  async listSharedScene(page: number): Promise<SharedSceneEntity[]> {
+  async listSharedScene(page: number,limit:number): Promise<SharedSceneEntity[]> {
     try {
-      const limit = 20;
       const skip = (page - 1) * limit;
       const sharedScenes = await this.sceneSharedModel
         .find()
@@ -501,9 +499,8 @@ export class InfluencerQueryService implements InfluencerPort {
       });
     }
   }
-  async listSharedSnapshot(page: number): Promise<SharedSnapshotEntity[]> {
+  async listSharedSnapshot(page: number,limit:number): Promise<SharedSnapshotEntity[]> {
     try {
-      const limit = 20;
       const skip = (page - 1) * limit;
       const sharedSnapshots = await this.snapshotSharedModel
         .find()

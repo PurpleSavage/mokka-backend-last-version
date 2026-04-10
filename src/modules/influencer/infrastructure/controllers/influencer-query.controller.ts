@@ -15,13 +15,13 @@ import { ListHistorySnapshotsDto } from "../../application/dtos/list-history-sna
 import { ListSnpashotsLastWeekDto } from "../../application/dtos/list-snapshots-last-week.dto";
 import { ListInfluencersUseCase } from "../../application/use-cases/list-influencers.use-case";
 import { ListInfluencersDto } from "../../application/dtos/list-influencers.dto";
-import { ListSharedDto } from "../../application/dtos/list-shared.dto";
 import { ListSharedInfluencerUseCase } from "../../application/use-cases/list-shared-influencer.use-csase";
 import { ListSharedSnapshotsUseCase } from "../../application/use-cases/list-shared-snapshots.use-case";
 import { ListSharedScenesUseCase } from "../../application/use-cases/list-shared-scenes.use-case";
 import { ListScenesByInfluencerIdUseCase } from "../../application/use-cases/list-scenes-by-influencer-id.use-case";
 import { ListSnapshotsByInfluencerIdUseCase } from "../../application/use-cases/list-snapshots-by-influencer-id.use-case";
 import { ListByInfluencerDto } from "../../application/dtos/request/list-by-influencer-id.dto";
+import { ListResourcesDto } from "src/shared/common/application/dtos/request/list-resources.dto";
 
 @Controller({
     path:'influencers/read',
@@ -119,7 +119,7 @@ export class InfluencerQueryController{
     @Get('shared-influencers')
     @HttpCode(HttpStatus.OK)
     listSharedInfluencer(
-        @Query() dto:ListSharedDto
+        @Query() dto:ListResourcesDto
     ){
         return this.listSharedInfluencersUseCase.execute(dto)
     }
@@ -130,7 +130,7 @@ export class InfluencerQueryController{
     @Get('shared-snapshots')
     @HttpCode(HttpStatus.OK)
     listSharedSnapshots(
-        @Query() dto:ListSharedDto
+        @Query() dto:ListResourcesDto
     ){
         return this.listSharedSnapshotsUseCase.execute(dto)
     }
@@ -141,7 +141,7 @@ export class InfluencerQueryController{
     @Get('shared-scenes')
     @HttpCode(HttpStatus.OK)
     listSharedScenes(
-        @Query() dto:ListSharedDto
+        @Query() dto:ListResourcesDto
     ){
         return this.listSharedScenesUseCase.execute(dto)
     }

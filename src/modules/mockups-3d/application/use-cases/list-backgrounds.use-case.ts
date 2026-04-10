@@ -10,10 +10,10 @@ export class ListBackgroundsUseCase{
         private readonly mockups3dQueryService:Mockups3DPort,
         private readonly cacheService: CacheManagerPort
     ){}
-    async execute(page:number){
-        const cachedPage = await this.cacheService.read<BackgroundMockupEntity>(this.CACHE_KEY,page)
+    async execute(page:number,limit:number){
+        const cachedPage = await this.cacheService.read<BackgroundMockupEntity>(this.CACHE_KEY,page,limit)
         if (cachedPage && cachedPage.length > 0) return cachedPage
-        const mockups = await this.mockups3dQueryService.listBackgroundsMockups(page)
+        const mockups = await this.mockups3dQueryService.listBackgroundsMockups(page,limit)
         await this.cacheService.setMany(this.CACHE_KEY,mockups)
         return mockups
     }

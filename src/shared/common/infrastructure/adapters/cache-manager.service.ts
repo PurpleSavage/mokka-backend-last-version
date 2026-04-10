@@ -8,15 +8,15 @@ import { CacheManagerPort } from "src/shared/common/application/ports/cache-mana
 
 @Injectable()
 export class CacheManagerService implements CacheManagerPort{
-    private readonly PAGE_SIZE = 20;
+    
     constructor(
         @Inject('REDIS_CLIENT') private redis: Redis
     ){}
 
    
-    async read<T>(name: string, page: number): Promise<T[]> {
-        const start = (page - 1) * this.PAGE_SIZE
-        const end = page * this.PAGE_SIZE - 1
+    async read<T>(name: string, page: number,limit:number): Promise<T[]> {
+        const start = (page - 1) * limit
+        const end = page * limit - 1
         const list = await this.redis.lrange(name, start, end)
         return list.map(item => JSON.parse(item) as T)
     }

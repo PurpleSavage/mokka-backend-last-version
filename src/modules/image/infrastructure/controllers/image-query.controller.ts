@@ -5,8 +5,8 @@ import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { ListSharedImageUseCase } from "../../application/use-cases/list-shared-image.use-case";
 import { ListImagesUseCase } from "../../application/use-cases/list-images.use-case";
 import { ListImagesDto } from "../../application/dtos/request/list-images.dto";
-import { ListSharedImageDto } from "../../application/dtos/request/list-shared-image.dto";
 import { ListImagesLastWeekUseCase } from "../../application/use-cases/list-images-last-week.use-case";
+import { ListResourcesDto } from "src/shared/common/application/dtos/request/list-resources.dto";
 
 
 @Controller({
@@ -36,7 +36,7 @@ export class ImageQueryController{
     @Get('share')
     @HttpCode(HttpStatus.OK)
     listSharedImages(
-        @Query() listSharedImageDto:ListSharedImageDto
+        @Query() listSharedImageDto:ListResourcesDto
     ){
         return this.listSharedImageUseCase.execute(listSharedImageDto)  
     }

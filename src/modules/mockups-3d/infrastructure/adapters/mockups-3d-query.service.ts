@@ -17,9 +17,8 @@ export class Mockups3DQueryService implements Mockups3DPort {
     @InjectModel('background-mockup') private readonly backgroundMockupModel: Model<BackgroundMockupDocument>,
     private readonly logger: PinoLogger, 
   ) {}
-  async list3DMoclups(page: number): Promise<Model3DEntity[]> {
+  async list3DMoclups(page: number,limit:number): Promise<Model3DEntity[]> {
     try {
-        const limit = 20;
         const skip = (page - 1) * limit;
         const modelsDocs= await this.model3DModel.find()
         .sort({ createdAt: -1 })
@@ -64,9 +63,8 @@ export class Mockups3DQueryService implements Mockups3DPort {
     }
   }
 
-  async listBackgroundsMockups(page: number): Promise<BackgroundMockupEntity[]> {
+  async listBackgroundsMockups(page: number,limit:number): Promise<BackgroundMockupEntity[]> {
     try {
-      const limit = 20;
       const skip = (page - 1) * limit
 
       const backgrounds = await this.backgroundMockupModel.find().sort({ createdAt: -1 })
