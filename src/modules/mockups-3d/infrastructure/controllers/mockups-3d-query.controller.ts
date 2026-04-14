@@ -26,7 +26,7 @@ export class Mockups3DQueryController{
     }
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
-    //@UseGuards(AccesstokenGuard)
+    @UseGuards(AccesstokenGuard)
     @Get('backgrounds')
     @HttpCode(HttpStatus.OK)
     getBackgroundModels(
