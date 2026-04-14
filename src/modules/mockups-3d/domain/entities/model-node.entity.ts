@@ -18,7 +18,7 @@ export class ModelNodeEntity {
   ) {}
   static create(data: {
     id: string;
-    name_mesh: string;
+    nameMesh: string;
     label: string;
     isEditable: boolean;
     materialDefault: string;
@@ -35,7 +35,7 @@ export class ModelNodeEntity {
   }): ModelNodeEntity {
     return new ModelNodeEntity(
       data.id,
-      data.name_mesh,
+      data.nameMesh,
       data.label,
       data.isEditable ,
       data.materialDefault,

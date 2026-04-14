@@ -17,11 +17,11 @@ export class Mockups3DQueryService implements Mockups3DPort {
     @InjectModel('background-mockup') private readonly backgroundMockupModel: Model<BackgroundMockupDocument>,
     private readonly logger: PinoLogger, 
   ) {}
-  async list3DMoclups(page: number,limit:number): Promise<Model3DEntity[]> {
+  async list3DMockups(page: number,limit:number): Promise<Model3DEntity[]> {
     try {
         const skip = (page - 1) * limit;
         const modelsDocs= await this.model3DModel.find()
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: 1 })
         .skip(skip)
         .limit(limit)
         .exec()
@@ -31,13 +31,13 @@ export class Mockups3DQueryService implements Mockups3DPort {
         name: doc.name,
         category: doc.category,
         status: doc.status,
-        modelUrl: doc.model_url,
-        thumbnailUrl: doc.thumbnail_url,
-        cameraSettings: doc.camera_settings,
+        modelUrl: doc.modelUrl,
+        thumbnailUrl: doc.thumbnailUrl,
+        cameraSettings: doc.cameraSettings,
         createdAt: doc.createdAt,
         nodes: doc.nodes.map(node => ({
           id: node._id.toString(),
-          name_mesh: node.name_mesh,
+          nameMesh: node.nameMesh,
           label: node.label,
           isEditable: node.isEditable,
           materialDefault: node.materialDefault,
@@ -67,14 +67,15 @@ export class Mockups3DQueryService implements Mockups3DPort {
     try {
       const skip = (page - 1) * limit
 
-      const backgrounds = await this.backgroundMockupModel.find().sort({ createdAt: -1 })
+      const backgrounds = await this.backgroundMockupModel.find()
+        .sort({ createdAt: 1 })
         .skip(skip)
         .limit(limit)
         .exec()
 
       return  backgrounds.map((background)=>{
         return BackgroundMockupEntity.create({
-          backgroundUrl:background.background_url,
+          backgroundUrl:background.backgroundUrl,
           createdAt:background.createdAt,
           id:background._id.toString(),
           name:background.name

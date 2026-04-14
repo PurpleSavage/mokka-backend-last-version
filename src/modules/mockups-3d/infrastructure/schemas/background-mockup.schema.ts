@@ -6,7 +6,7 @@ export type BackgroundMockupDocument = HydratedDocument<BackgroundMockup>;
 @Schema()
 export class BackgroundMockup{
     @Prop({ required: true })
-    background_url:string
+    backgroundUrl:string
 
     @Prop({ required: true })
     name:string

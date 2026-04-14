@@ -27,13 +27,13 @@ export class Model3D {
     status: StatusModelType;
 
   @Prop({ required: true })
-  model_url: string;
+  modelUrl: string;
 
   @Prop({ required: true })
-  thumbnail_url: string;
+  thumbnailUrl: string;
 
   @Prop({ type: Object, required: true })
-  camera_settings: {
+  cameraSettings: {
     position: number[];
     target: number[];
     fov: number;

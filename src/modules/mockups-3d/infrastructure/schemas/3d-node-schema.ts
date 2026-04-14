@@ -6,7 +6,7 @@ export type ModelNodeDocument = HydratedDocument<ModelNode>;
 @Schema()
 export class ModelNode {
   @Prop({ required: true })
-  name_mesh: string;
+  nameMesh: string;
 
   @Prop({ required: true })
   label: string;
