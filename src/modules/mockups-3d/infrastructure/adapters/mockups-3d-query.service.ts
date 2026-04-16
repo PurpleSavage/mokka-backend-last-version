@@ -21,7 +21,7 @@ export class Mockups3DQueryService implements Mockups3DPort {
     try {
         const skip = (page - 1) * limit;
         const modelsDocs= await this.model3DModel.find()
-        .sort({ createdAt: 1 })
+        .sort({ createdAt: 1,_id: 1 })
         .skip(skip)
         .limit(limit)
         .exec()
@@ -68,7 +68,7 @@ export class Mockups3DQueryService implements Mockups3DPort {
       const skip = (page - 1) * limit
 
       const backgrounds = await this.backgroundMockupModel.find()
-        .sort({ createdAt: 1 })
+        .sort({ createdAt: 1,_id: 1 })
         .skip(skip)
         .limit(limit)
         .exec()

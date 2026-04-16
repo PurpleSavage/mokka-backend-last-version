@@ -32,7 +32,10 @@ export class CacheManagerService implements CacheManagerPort{
 
     async setMany<T>(name: string, values: T[]): Promise<void> {
         if (values.length === 0) return;
+        const currentLength = await this.redis.llen(name)
+        if (currentLength > 0) return
         await this.redis.rpush(name, ...values.map(v => JSON.stringify(v)))
+        await this.redis.expire(name, 60 * 60)
     }
 
     async length(name: string): Promise<number> {
