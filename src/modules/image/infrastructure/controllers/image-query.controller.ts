@@ -33,7 +33,7 @@ export class ImageQueryController{
 
     @Throttle({ default: { limit: 400, ttl: 60000 } })
     @UseGuards(AccesstokenGuard)
-    @Get('share')
+    @Get('shared')
     @HttpCode(HttpStatus.OK)
     listSharedImages(
         @Query() listSharedImageDto:ListResourcesDto
