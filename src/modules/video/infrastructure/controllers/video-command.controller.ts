@@ -5,9 +5,10 @@ import { Queue } from "bullmq";
 import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
-
 import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
-import { GenerateVideoDto } from "../../application/dtos/generate-video.dto";
+import { GenerateVideoDto } from "../../application/dtos/request/generate-video.dto";
+import { ShareVideoUseCase } from "../../application/use-cases/share-video.use-case";
+import { ShareVideoDto } from "../../application/dtos/request/share-video.dto";
 
 
 @Controller({
@@ -17,7 +18,8 @@ import { GenerateVideoDto } from "../../application/dtos/generate-video.dto";
 export class VideoCommandController{
     constructor(
         @InjectQueue('video-queue') private imageQueue: Queue,
-        @InjectQueue('remix-video-queue') private remixVideoQueue: Queue,
+        private readonly shareVideoUseCase:ShareVideoUseCase
+        //@InjectQueue('remix-video-queue') private remixVideoQueue: Queue,
     ){}
     @Throttle({ default: { limit: 10, ttl: 60000 } })
     @UseGuards(AccesstokenGuard, CreditsGuard)
@@ -41,4 +43,15 @@ export class VideoCommandController{
         }
     }
 
+
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
+    @UseGuards(AccesstokenGuard)
+    @RequiresCredits(30)
+    @Post('share')
+    @HttpCode(HttpStatus.OK)
+    shareVideo(
+        @Body() dto:ShareVideoDto
+    ){
+        return this.shareVideoUseCase.execute(dto)
+    }
 }

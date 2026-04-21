@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer"
 import {  IsBoolean, IsEnum, IsNotEmpty,IsString, MaxLength } from "class-validator"
-import { VideoAspectRatio } from "../../../../shared/common/domain/enums/video-aspectratio"
+import { VideoAspectRatio } from "../../../../../shared/common/domain/enums/video-aspectratio"
 
 export class GenerateVideoDto{
 

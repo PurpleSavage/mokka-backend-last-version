@@ -15,8 +15,11 @@ import { ShareSceneDto } from "../../application/dtos/request/share-scene.dto";
 import { ShareSceneUseCase } from "../../application/use-cases/share-scene.use-case";
 import { ShareSnapshotUseCase } from "../../application/use-cases/share-snapshot.use-case";
 import { ShareSnapshotDto } from "../../application/dtos/request/share-snapshot.dto";
+import { ApiTags } from "@nestjs/swagger";
 
 
+@ApiTags('Influencers write  service')
+@Controller('influencers')
 @Controller({
      path:'influencer/write',
     version:'1'

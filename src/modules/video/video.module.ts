@@ -14,13 +14,15 @@ import { ListVideosUseCase } from "./application/use-cases/list-video.use-case";
 import { VideoCommandController } from "./infrastructure/controllers/video-command.controller";
 import { SaveVideoUseCase } from "./application/use-cases/save-video.use-case";
 import { GenerateVideoProcessor } from "./application/jobs/generate-video.processor";
+import { SharedVideoSchema } from "./infrastructure/schemas/video-shared.schema";
+import { ShareVideoUseCase } from "./application/use-cases/share-video.use-case";
 
 @Module({
     imports:[
         SharedModule,
         MongooseModule.forFeature([
             { name: 'Video', schema: VideoSchema},
-
+            {name:'SharedVideo', schema:SharedVideoSchema}
         ]),
         BullModule.registerQueue({              // ← Agrega esta cola
             name: 'remix-video-queue',
@@ -34,6 +36,7 @@ import { GenerateVideoProcessor } from "./application/jobs/generate-video.proces
         GenerateVideoUseCase,
         ListVideosUseCase,
         SaveVideoUseCase,
+        ShareVideoUseCase,
         {
             useClass:VideoCommandService,
             provide:VideoRepository

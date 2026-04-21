@@ -22,7 +22,10 @@ import { ListScenesByInfluencerIdUseCase } from "../../application/use-cases/lis
 import { ListSnapshotsByInfluencerIdUseCase } from "../../application/use-cases/list-snapshots-by-influencer-id.use-case";
 import { ListByInfluencerDto } from "../../application/dtos/request/list-by-influencer-id.dto";
 import { ListResourcesDto } from "src/shared/common/application/dtos/request/list-resources.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Influencers write  service')
+@Controller('influencers')
 @Controller({
     path:'influencers/read',
     version:'1'

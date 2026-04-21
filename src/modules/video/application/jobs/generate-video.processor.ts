@@ -1,7 +1,7 @@
 import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { GenerateVideoUseCase } from "../use-cases/generate-video.use-case";
 import { Job } from "bullmq";
-import { GenerateVideoDto } from "../dtos/generate-video.dto";
+import { GenerateVideoDto } from "../dtos/request/generate-video.dto";
 import { PinoLogger } from "nestjs-pino";
 import { AppBaseError } from "src/shared/errors/base.error";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";

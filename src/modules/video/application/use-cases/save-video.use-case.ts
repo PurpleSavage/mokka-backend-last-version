@@ -1,5 +1,5 @@
 import { OnEvent } from "@nestjs/event-emitter";
-import { GenerateVideoDto } from "../dtos/generate-video.dto";
+import { GenerateVideoDto } from "../dtos/request/generate-video.dto";
 import { PinoLogger } from "nestjs-pino";
 import { NotifierService } from "src/shared/notifications/infrastructure/sockets/notifier.service";
 import { AppBaseError } from "src/shared/errors/base.error";

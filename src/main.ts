@@ -4,6 +4,8 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import cookie from '@fastify/cookie'; 
 import { Logger } from 'nestjs-pino'
+import { apiReference } from '@scalar/nestjs-api-reference';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger' 
 
 async function bootstrap() {
   const whitelist = [
@@ -17,7 +19,28 @@ async function bootstrap() {
     { bufferLogs: true }
   )
   app.useLogger(app.get(Logger))
-  
+
+  const config = new DocumentBuilder()
+    .setTitle('Mokka AI API')
+    .setDescription('The Mokka API description')
+    .setVersion('1.0')
+    .addTag('mokka')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  // --- 2. SEGUNDO: Pasas el documento ya creado a Scalar ---
+  app.use(
+    '/docs',
+    apiReference({
+      theme: 'moon',
+      withFastify: true,
+      content: document, 
+    }),
+  );
+
+
   app.enableCors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true)

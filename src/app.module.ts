@@ -9,7 +9,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
 import { LoggerModule } from 'nestjs-pino';
 import { BullModule } from '@nestjs/bullmq';
-
 import { AudioModule } from './modules/audio/audio.module';
 import { ImageModule } from './modules/image/image.module';
 import { VideoModule } from './modules/video/video.module';

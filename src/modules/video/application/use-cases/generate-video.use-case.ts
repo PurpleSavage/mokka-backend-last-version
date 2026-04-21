@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
-import { GenerateVideoDto } from "../dtos/generate-video.dto";
+import { GenerateVideoDto } from "../dtos/request/generate-video.dto";
 
 
 @Injectable()

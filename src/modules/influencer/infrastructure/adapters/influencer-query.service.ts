@@ -391,6 +391,7 @@ export class InfluencerQueryService implements InfluencerPort {
         .find()
         .populate<{ influencer: InfluencerDocument }>('influencer')
         .populate<{ sharedBy: UserDocument }>('sharedBy')
+        .sort({ createdAt: -1,_id: -1 })
         .skip(skip)
         .limit(limit)
         .exec();
@@ -453,6 +454,7 @@ export class InfluencerQueryService implements InfluencerPort {
         .find()
         .populate<{ scene: InfluencerScenaDocument }>('scene')
         .populate<{ sharedBy: UserDocument }>('sharedBy')
+        .sort({ createdAt: -1,_id: -1 })
         .skip(skip)
         .limit(limit)
         .exec();
@@ -506,6 +508,7 @@ export class InfluencerQueryService implements InfluencerPort {
         .find()
         .populate<{ snapshot: InfluencerSnapshotDocument }>('snapshot')
         .populate<{ sharedBy: UserDocument }>('sharedBy')
+        .sort({ createdAt: -1,_id: -1 })
         .skip(skip)
         .limit(limit)
         .exec();
