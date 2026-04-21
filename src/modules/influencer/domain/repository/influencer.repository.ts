@@ -13,7 +13,10 @@ export abstract class InfluencerRepository {
     abstract saveSnapshotInfluencer(vo:SaveSnapshotVo):Promise<InfluencerSnapshotEntity>  
     abstract saveSceneInfluencer(vo:SaveSceneInfluencerVo):Promise<InfluencerSceneEntity>  
 
-    abstract sharedInfluencer(influencerId: string, sharedBy: string):Promise<SharedInfluencerEntity>
-    abstract sharedScene(sceneId:string, sharedBy: string):Promise<SharedSceneEntity>
-    abstract sharedSnapshot(snapshotId:string, sharedBy: string):Promise<SharedSnapshotEntity>
+    abstract shareInfluencer(influencerId: string, sharedBy: string):Promise<SharedInfluencerEntity>
+    abstract shareScene(sceneId:string, sharedBy: string):Promise<SharedSceneEntity>
+    abstract shareSnapshot(snapshotId:string, sharedBy: string):Promise<SharedSnapshotEntity>
+
+
+    
 }

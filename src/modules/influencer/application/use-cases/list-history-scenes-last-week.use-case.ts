@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ListScenesLastWeekDto } from "../dtos/list-scenes-last-week.dto";
+import { ListScenesLastWeekDto } from "../dtos/responses/list-scenes-last-week.dto";
 import { InfluencerPort } from "../ports/influencer.port";
 
 @Injectable()

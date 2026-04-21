@@ -1,13 +1,13 @@
 import { IsNotEmpty, IsString, IsEnum, IsNumber, Min, Max } from "class-validator";
-import { AgeRange } from "../../domain/enums/valid-ramge-age";
-import { Gender } from "../../domain/enums/valid-gender";
-import { BodyShape } from "../../domain/enums/valid-body-shape";
-import { SkinColor } from "../../domain/enums/valid-skin-color";
-import { EyeColor } from "../../domain/enums/valid-eye-color";
-import { HairType } from "../../domain/enums/valid-hair-type";
-import { FaceType } from "../../domain/enums/valid-face-type";
-import { LipsType } from "../../domain/enums/valid-lips-type";
-import { HairColor } from "../../domain/enums/valid-hair-colors";
+import { AgeRange } from "../../../domain/enums/valid-ramge-age";
+import { Gender } from "../../../domain/enums/valid-gender";
+import { BodyShape } from "../../../domain/enums/valid-body-shape";
+import { SkinColor } from "../../../domain/enums/valid-skin-color";
+import { EyeColor } from "../../../domain/enums/valid-eye-color";
+import { HairType } from "../../../domain/enums/valid-hair-type";
+import { FaceType } from "../../../domain/enums/valid-face-type";
+import { LipsType } from "../../../domain/enums/valid-lips-type";
+import { HairColor } from "../../../domain/enums/valid-hair-colors";
 
 export class CreateInfluencerDto {
     @IsNotEmpty()

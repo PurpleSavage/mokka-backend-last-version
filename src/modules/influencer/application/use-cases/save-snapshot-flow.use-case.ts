@@ -6,7 +6,7 @@ import { InfluencerRepository } from '../../domain/repository/influencer.reposit
 import { CreditLogicRepository } from 'src/shared/common/domain/repositories/credits-logic.repository';
 import { PinoLogger } from 'nestjs-pino';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
-import { CreateInfluencerSnapshotDto } from '../dtos/create-influencer-snapshot.dto';
+import { CreateInfluencerSnapshotDto } from '../dtos/responses/create-influencer-snapshot.dto';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';

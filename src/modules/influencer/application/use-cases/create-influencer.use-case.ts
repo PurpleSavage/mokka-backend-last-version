@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
-import { CreateInfluencerDto } from "../dtos/create-influencer.dto";
+import { CreateInfluencerDto } from "../dtos/responses/create-influencer.dto";
 import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
 
 

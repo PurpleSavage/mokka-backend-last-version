@@ -2,7 +2,7 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { CreateInFluencerSceneUseCase } from '../use-cases/create-influencer-scene.use-case';
 import { Job } from 'bullmq';
-import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';
+import { CreateInfluencerSceneDto } from '../dtos/responses/create-influencer-scene.dto';
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import {  NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';

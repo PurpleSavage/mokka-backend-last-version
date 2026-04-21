@@ -1,7 +1,7 @@
 import {IsEnum, IsNotEmpty, IsString, IsUrl } from "class-validator"
 import { AspectRatioImage } from "src/shared/common/infrastructure/enums/image-aspect-ratio"
-import { OutfitType } from "../../domain/enums/valid-outfits"
-import { Environment } from "../../domain/enums/valid-eviroments"
+import { OutfitType } from "../../../domain/enums/valid-outfits"
+import { Environment } from "../../../domain/enums/valid-eviroments"
 
 export class CreateInfluencerSnapshotDto{
     @IsNotEmpty()

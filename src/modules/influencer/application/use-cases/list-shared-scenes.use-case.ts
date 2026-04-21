@@ -6,19 +6,19 @@ import { ListResourcesDto } from 'src/shared/common/application/dtos/request/lis
 
 @Injectable()
 export class ListSharedScenesUseCase {
-  private nameList = 'SHARED_SCENES_LIST';
+  private nameList = 'shared-scenes:list';
   constructor(
     private readonly influencerQueryService: InfluencerPort,
     private readonly cachemanager: CacheManagerPort,
   ) {}
   async execute(dto:ListResourcesDto) {
-    const cacheList = await this.cachemanager.read<SharedSceneEntity>(
+    const cachedPage = await this.cachemanager.read<SharedSceneEntity>(
       this.nameList,
       dto.page,
       dto.limit
     )
-    if (cacheList.length > 0) {
-      return cacheList;
+    if (cachedPage && cachedPage.length > 0) {
+      return cachedPage;
     }
     const list = await this.influencerQueryService.listSharedScene(
       dto.page,

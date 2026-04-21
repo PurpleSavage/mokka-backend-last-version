@@ -35,6 +35,9 @@ import { CreateInfluencerSnapshotProcessor } from "./application/jobs/create-inf
 import { CreateInfluencerProcessor } from "./application/jobs/create-influencer.processor";
 import { ListScenesByInfluencerIdUseCase } from "./application/use-cases/list-scenes-by-influencer-id.use-case";
 import { ListSnapshotsByInfluencerIdUseCase } from "./application/use-cases/list-snapshots-by-influencer-id.use-case";
+import { ShareSceneUseCase } from "./application/use-cases/share-scene.use-case";
+import { ShareSnapshotUseCase } from "./application/use-cases/share-snapshot.use-case";
+import { ShareInfluencerUseCase } from "./application/use-cases/share-influencer.use-case";
 
 @Module({
     imports:[
@@ -85,6 +88,9 @@ import { ListSnapshotsByInfluencerIdUseCase } from "./application/use-cases/list
         SaveInfluencerFlowUseCase,
         SaveSceneFlowUseCase,
         SaveSnapshotUseCase,
+        ShareSnapshotUseCase,
+        ShareSceneUseCase,
+        ShareInfluencerUseCase,
         {
             useClass:InfluencerCommandService,
             provide:InfluencerRepository

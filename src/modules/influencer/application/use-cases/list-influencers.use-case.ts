@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ListInfluencersDto } from "../dtos/list-influencers.dto";
+import { ListInfluencersDto } from "../dtos/responses/list-influencers.dto";
 import { InfluencerPort } from "../ports/influencer.port";
 
 

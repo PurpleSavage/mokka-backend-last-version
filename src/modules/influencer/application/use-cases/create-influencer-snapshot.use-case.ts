@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
 import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
-import { CreateInfluencerSnapshotDto } from "../dtos/create-influencer-snapshot.dto";
+import { CreateInfluencerSnapshotDto } from "../dtos/responses/create-influencer-snapshot.dto";
 
 @Injectable()
 export class CreateInfluencerSnapshotUseCase{

@@ -6,15 +6,15 @@ import { ListResourcesDto } from "src/shared/common/application/dtos/request/lis
 
 @Injectable()
 export class ListSharedInfluencerUseCase{
-    private nameList = 'SHARED_INFLUENCER_LIST'
+    private nameList = 'shared-influencers:list'
     constructor(
         private readonly influencerQueryService:InfluencerPort,
         private readonly cachemanager:CacheManagerPort
     ){}
     async execute(dto:ListResourcesDto){
-        const cacheList = await this.cachemanager.read<SharedInfluencerEntity>(this.nameList,dto.page,dto.limit)
-        if(cacheList.length>0){
-            return cacheList
+        const cachedPage = await this.cachemanager.read<SharedInfluencerEntity>(this.nameList,dto.page,dto.limit)
+        if(cachedPage && cachedPage.length>0){
+            return cachedPage
         }
         const  list = await this.influencerQueryService.listSharedInfluencer(dto.page,dto.limit)
         await this.cachemanager.setMany(this.nameList,list) 

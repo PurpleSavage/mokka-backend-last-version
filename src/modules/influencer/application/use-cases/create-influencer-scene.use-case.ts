@@ -1,5 +1,5 @@
 import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
-import { CreateInfluencerSceneDto } from "../dtos/create-influencer-scene.dto";
+import { CreateInfluencerSceneDto } from "../dtos/responses/create-influencer-scene.dto";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

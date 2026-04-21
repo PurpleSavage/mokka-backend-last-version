@@ -169,7 +169,7 @@ export class InfluencerCommandService implements InfluencerRepository {
     }
   }
 
-  async sharedInfluencer(influencerId: string, sharedBy: string): Promise<SharedInfluencerEntity> {
+  async shareInfluencer(influencerId: string, sharedBy: string): Promise<SharedInfluencerEntity> {
     try {
       const response = new this.influencerSharedModel({
         sharedBy,
@@ -201,7 +201,7 @@ export class InfluencerCommandService implements InfluencerRepository {
         })
     }
   }
-  async sharedScene(sceneId:string, sharedBy: string): Promise<SharedSceneEntity> {
+  async shareScene(sceneId:string, sharedBy: string): Promise<SharedSceneEntity> {
     try {
       const response  = new this.sceneSharedModel({
         sharedBy,
@@ -233,7 +233,7 @@ export class InfluencerCommandService implements InfluencerRepository {
         })
     }
   }
-  async sharedSnapshot(snapshotId:string, sharedBy: string): Promise<SharedSnapshotEntity> {
+  async shareSnapshot(snapshotId:string, sharedBy: string): Promise<SharedSnapshotEntity> {
     try {
       const response = new this.snapshotSharedModel({
         sharedBy,

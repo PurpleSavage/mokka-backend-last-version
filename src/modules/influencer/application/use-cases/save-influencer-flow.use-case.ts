@@ -3,7 +3,7 @@ import { OnEvent } from "@nestjs/event-emitter";
 import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
 import { StorageRepository } from "src/shared/common/domain/repositories/storage.repository";
 import { InfluencerRepository } from "../../domain/repository/influencer.repository";
-import { CreateInfluencerDto } from "../dtos/create-influencer.dto";
+import { CreateInfluencerDto } from "../dtos/responses/create-influencer.dto";
 import { PathStorage } from "src/shared/common/domain/enums/path-storage";
 import { SaveInfluencerVo } from "../../domain/value-objects/save-influencer.vo";
 import { CreditLogicRepository } from "src/shared/common/domain/repositories/credits-logic.repository";

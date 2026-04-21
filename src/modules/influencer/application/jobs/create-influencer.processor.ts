@@ -3,7 +3,7 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { CreateInfluencerUseCase } from '../use-cases/create-influencer.use-case';
 import { AppBaseError } from 'src/shared/errors/base.error';
-import { CreateInfluencerDto } from '../dtos/create-influencer.dto';
+import { CreateInfluencerDto } from '../dtos/responses/create-influencer.dto';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';

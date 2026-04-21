@@ -10,7 +10,7 @@ import { AppBaseError } from 'src/shared/errors/base.error';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
-import { CreateInfluencerSceneDto } from '../dtos/create-influencer-scene.dto';
+import { CreateInfluencerSceneDto } from '../dtos/responses/create-influencer-scene.dto';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
 import { PathStorage } from 'src/shared/common/domain/enums/path-storage';
 import { SaveSceneInfluencerVo } from '../../domain/value-objects/save-scene.vo';

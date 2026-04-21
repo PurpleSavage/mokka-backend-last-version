@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { GetInfluencerByIdDto } from "../dtos/get-influencer-by-id.dto";
+import { GetInfluencerByIdDto } from "../dtos/responses/get-influencer-by-id.dto";
 import { InfluencerPort } from "../ports/influencer.port";
 
 

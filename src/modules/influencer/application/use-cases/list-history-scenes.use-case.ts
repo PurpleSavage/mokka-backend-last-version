@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ListHistoryScenesDto } from "../dtos/list-history-scenes.dto";
+import { ListHistoryScenesDto } from "../dtos/responses/list-history-scenes.dto";
 import { InfluencerPort } from "../ports/influencer.port";
 
 @Injectable()
