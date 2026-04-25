@@ -8,7 +8,9 @@ import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { GenerateAudioDto } from "../../application/dtos/generate-audio.dto";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Audios - Commands')
 @Controller({
   path:'audio/write',
   version:'1'
@@ -17,6 +19,38 @@ export class AudioCommandController{
   constructor(
     @InjectQueue('audio-queue') private audioQueue: Queue,
   ){}
+
+  @ApiOperation({ 
+    summary: 'Iniciar generación de audio',
+    description: 'Encola un trabajo de generación. Requiere 30 créditos en la cuenta del usuario.'
+  })
+  @ApiBody({ type: GenerateAudioDto })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Trabajo encolado exitosamente',
+    schema: {
+      example: {
+        jobId: '123',
+        status: 'processing',
+        message: 'Audio generation started'
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 402, 
+    description: 'Créditos insuficientes.',
+    schema: {
+      example: {
+        message: 'Required: 30, Current: 12',
+        errorType: 'MOKKA_ERROR',
+        status: 402,
+        timestamp: '2026-04-24T23:50:00Z',
+        details: 'INSUFFICIENT_CREDITS'
+      }
+    }
+  })
+  @ApiResponse({ status: 401, description: 'Token no válido o expirado' })
+  @ApiResponse({ status: 429, description: 'Demasiadas peticiones (Rate Limit)' })
 
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   @UseGuards(AccesstokenGuard, CreditsGuard)

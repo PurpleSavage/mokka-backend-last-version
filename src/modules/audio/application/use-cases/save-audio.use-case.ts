@@ -16,6 +16,7 @@ import { AppBaseError } from 'src/shared/errors/base.error';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
 import { SocketReadyResponseDto } from 'src/shared/notifications/application/dtos/request/socket-ready-response.dto';
 import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
+import { PathStorage } from 'src/shared/common/domain/enums/path-storage';
 
 @Injectable()
 export class SaveAudioUseCase {
@@ -40,6 +41,7 @@ export class SaveAudioUseCase {
       const { url } = await this.storageService.saveAudio(
         payload.user,
         audioBuffer,
+        PathStorage.PATH_AUDIO
       );
 
       const vo = GenerateAudioVO.create({

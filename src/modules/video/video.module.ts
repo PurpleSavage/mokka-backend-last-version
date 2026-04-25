@@ -16,6 +16,7 @@ import { SaveVideoUseCase } from "./application/use-cases/save-video.use-case";
 import { GenerateVideoProcessor } from "./application/jobs/generate-video.processor";
 import { SharedVideoSchema } from "./infrastructure/schemas/video-shared.schema";
 import { ShareVideoUseCase } from "./application/use-cases/share-video.use-case";
+import { ListSharedVideosUseCase } from "./application/use-cases/list-shared-video.use-case";
 
 @Module({
     imports:[
@@ -37,6 +38,7 @@ import { ShareVideoUseCase } from "./application/use-cases/share-video.use-case"
         ListVideosUseCase,
         SaveVideoUseCase,
         ShareVideoUseCase,
+        ListSharedVideosUseCase,
         {
             useClass:VideoCommandService,
             provide:VideoRepository

@@ -1,7 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, HttpStatus } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthPort } from 'src/modules/auth/application/ports/auth.port';
 import { FastifyRequest } from 'fastify';
+import { MokkaError } from 'src/shared/errors/mokka.error';
+import { ErrorPlatformMokka } from 'src/shared/common/infrastructure/enums/error-detail-types';
+import { CreditBalanceError } from 'src/shared/errors/credit-balance.error';
 
 interface RequestWithUser extends FastifyRequest {
   userEmail?: {
@@ -24,25 +27,27 @@ export class CreditsGuard implements CanActivate {
     const user = request.userEmail
 
     if (!user || !user.email) {
-      throw new HttpException(
-        { error: 'INVALID_USER', message: 'User information not found in request.' },
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new MokkaError({
+        message: 'User information not found in request.',
+        errorType: ErrorPlatformMokka.MOKKA_UNAUTHORIZED,
+        status: HttpStatus.UNAUTHORIZED
+      });
     }
 
     const userFromDb = await this.authQueryService.findUserByEmail(user.email);
 
     if (!userFromDb) {
-      throw new HttpException(
-        { error: 'USER_NOT_FOUND', message: 'User does not exist.' },
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new MokkaError({
+        message: 'User does not exist in our database.',
+        errorType: ErrorPlatformMokka.NOT_FOUND,
+        status: HttpStatus.NOT_FOUND
+      });
     }
 
     if (userFromDb.credits < requiredCredits) {
-      throw new HttpException(
-        { error: 'INSUFFICIENT_CREDITS', message: 'Not enough credits for this action.' },
-        HttpStatus.PAYMENT_REQUIRED,
+      throw new CreditBalanceError(
+        `Required: ${requiredCredits}, Current: ${userFromDb.credits}`,
+        'INSUFFICIENT_CREDITS'
       );
     }
 

@@ -16,6 +16,7 @@ import { AppBaseError } from "src/shared/errors/base.error";
 import { ExtractErrorInfo } from "src/shared/common/infrastructure/helpers/ExtractErrorInfo";
 import { SocketReadyResponseDto } from "src/shared/notifications/application/dtos/request/socket-ready-response.dto";
 import { MusicEntity } from "../../domain/entities/music.entity";
+import { PathStorage } from "src/shared/common/domain/enums/path-storage";
 
 @Injectable()
 export class SaveMusicUseCase{
@@ -39,6 +40,7 @@ export class SaveMusicUseCase{
             const { url } = await this.storageService.saveAudio(
                 payload.user,
                 audioBuffer,
+                PathStorage.PATH_MUSIC
             );
             const vo = GeneratedMusicVO.create({
                 user: payload.user,

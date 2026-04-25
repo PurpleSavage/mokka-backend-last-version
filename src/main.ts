@@ -34,7 +34,7 @@ async function bootstrap() {
   app.use(
     '/docs',
     apiReference({
-      theme: 'moon',
+      theme: 'deepSpace',
       withFastify: true,
       content: document, 
     }),
