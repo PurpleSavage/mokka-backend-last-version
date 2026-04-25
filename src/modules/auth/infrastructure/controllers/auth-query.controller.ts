@@ -3,8 +3,11 @@ import { RefreshtokenGuard, RequestWithUser } from "src/guards/tokens/refresh-to
 import { GetProfileUseCase } from "../../application/use-cases/get-profile.use-case";
 import { RefreshTokenUseCase } from "../../application/use-cases/refresh-token.use-case";
 import { ErrorPlatformMokka } from "src/shared/common/infrastructure/enums/error-detail-types";
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 
 
+@ApiTags('Auth - Queries')
+@ApiBearerAuth()
 @Controller({
   path:'auth/read',
   version:'1'
@@ -15,6 +18,27 @@ export class AuthQueryController{
     private readonly refreshTokenUseCase:RefreshTokenUseCase,
   ){}
 
+
+  @ApiOperation({ 
+    summary: 'Obtener perfil del usuario', 
+    description: 'Retorna la información básica del usuario y su balance actual de créditos.' 
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Perfil obtenido exitosamente.',
+    schema: {
+      example: {
+        access_token: 'eyJhbGciOiJIUzI1Ni...',
+        user: {
+          email: 'jeanpaul@mokka.ai',
+          id: 'uuid-1234-5678',
+          credits: 150,
+          createDate: '2026-04-25T00:00:00Z'
+        }
+      }
+    }
+  })
+  @ApiUnauthorizedResponse({ description: 'Token de refresco inválido o expirado.' })
   @UseGuards(RefreshtokenGuard)
   @Get('profile')
   @HttpCode(HttpStatus.OK)
@@ -37,12 +61,38 @@ export class AuthQueryController{
     }
   }
 
+
+  @ApiOperation({ 
+    summary: 'Refrescar token de acceso', 
+    description: 'Genera un nuevo access_token utilizando el refresh_token válido de la sesión actual.' 
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Token refrescado exitosamente.',
+    schema: {
+      example: {
+        access_token: 'eyJhbGciOiJIUzI1Ni...'
+      }
+    }
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Sesión expirada.',
+    schema: {
+      example: {
+        message: 'Session expired, please login again',
+        errorType: 'MOKKA_UNAUTHORIZED',
+        statusCode: 401,
+        renovate: false
+      }
+    }
+  })
   @UseGuards(RefreshtokenGuard)
-    @HttpCode(HttpStatus.OK)
-    @Get('refresh-token')
-    getNewtoken(
-        @Req() req: RequestWithUser
-    ){
+  @HttpCode(HttpStatus.OK)
+  @Get('refresh-token')
+  getNewtoken(
+    @Req() req: RequestWithUser
+  ){
       const email = req.userEmail?.email;
       if (!email) {
         throw new  UnauthorizedException({
