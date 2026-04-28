@@ -7,8 +7,6 @@ import { TextCommandService } from "./infrastructure/adapters/text-command.servi
 import { TextRepository } from "./domain/repositories/text.repository";
 import { TextQueryService } from "./infrastructure/adapters/text-query.service";
 import { TextPort } from "./application/ports/text.port";
-import { TextGeneratorService } from "./infrastructure/adapters/text-generator.service";
-import { TextGeneratorPort } from "./application/ports/text-generator.port";
 import { GenerateTextUseCase } from "./application/use-cases/generate-text.use-case";
 import { ListTextHistoryUseCase } from "./application/use-cases/list-history-text.use-case";
 import { SaveTextUseCase } from "./application/use-cases/save-text.use-case";
@@ -37,10 +35,7 @@ import { GenerateTextProcessor } from "./application/jobs/generate-text.processo
             useClass:TextQueryService,
             provide:TextPort
         },
-        {
-            useClass:TextGeneratorService,
-            provide:TextGeneratorPort
-        }
+        
     ],
     controllers:[
         TextCommandController,
@@ -49,7 +44,6 @@ import { GenerateTextProcessor } from "./application/jobs/generate-text.processo
     exports:[
         TextPort,
         TextRepository,
-        TextGeneratorPort   
     ]
 })
 export class TextModule{}

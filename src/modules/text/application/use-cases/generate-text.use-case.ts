@@ -1,12 +1,14 @@
 import { MdReaderPort } from "src/shared/common/application/ports/md-reader.port";
 import { GenerateTextDto } from "../dtos/request/generate-text.dto";
-import { TextGeneratorPort } from "../ports/text-generator.port";
+
 import { Injectable } from "@nestjs/common";
+import { MultimediaGeneratorPort } from "src/shared/common/application/ports/multimedia-generator.port";
 
 @Injectable()
 export class GenerateTextUseCase{
     constructor(
-        private readonly textGeneratorService:TextGeneratorPort,
+        private readonly multimediaService:MultimediaGeneratorPort,
+       
         private readonly mdReaderService:MdReaderPort
     ){}
     async execute(dto:GenerateTextDto){
@@ -20,7 +22,7 @@ export class GenerateTextUseCase{
         }
         const pormptmd = await this.mdReaderService.loadPrompt('generator-text','text')
         const templateFill = this.mdReaderService.fillTemplate(pormptmd,obj)
-        const response = await this.textGeneratorService.createText(templateFill)
+        const response = await this.multimediaService.generateText(templateFill)
         return response
     }
 }

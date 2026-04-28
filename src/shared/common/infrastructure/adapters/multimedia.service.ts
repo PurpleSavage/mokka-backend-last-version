@@ -14,6 +14,7 @@ import { VideoAspectRatio } from "src/shared/common/domain/enums/video-aspectrat
 export class MultimediaService implements MultimediaGeneratorPort{
     private videoModel = "google/veo-3"
     private imageModel="google/nano-banana-pro"
+    private textModel="google/gemini-3.1-pro"
     private readonly multimediaClient: Replicate
     
     
@@ -178,6 +179,71 @@ export class MultimediaService implements MultimediaGeneratorPort{
                 MultimediaErrorTypes.PREDICTION_FAILED,
                 HttpStatus.INTERNAL_SERVER_ERROR
             )
+        }
+    }
+    async generateText(context: string): Promise<{text:string}> {
+        try {
+            const input={
+                top_p: 0.7,
+                images: [],
+                prompt: context,
+                videos: [],
+                temperature: 1,
+                thinking_level: "high",
+                max_output_tokens: 1000
+            }
+            let prediction = await this.multimediaClient.predictions.create({
+                model: this.textModel,
+                input
+            })
+            prediction = await this.multimediaClient.wait(prediction);
+            if (prediction.status !== 'succeeded') {
+                throw new MultimediaGeneratorError(
+                    'Text generation failed ',
+                    MultimediaErrorTypes.PREDICTION_FAILED,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
+            }
+            const output = prediction.output as string[] | string;
+            let generatedText = '';
+
+            if (Array.isArray(output)) {
+                generatedText = output.join('').trim();
+            } else if (typeof output === 'string') {
+                generatedText = output.trim();
+            }
+
+            if (!generatedText) {
+                throw new MultimediaGeneratorError(
+                    'No text was generated in the response',
+                    MultimediaErrorTypes.MISSING_OUTPUT,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                );
+            }
+
+            return { text: generatedText };
+        } catch (error) {
+            this.logger.error(
+                {
+                    stack: error instanceof Error ? error.stack : undefined,
+                    message: "Error generating text with AI"
+                },
+                'Error generating text'
+            );
+
+            if (error instanceof MultimediaGeneratorError || error instanceof HttpException) {
+                throw error;
+            }
+
+            if (typeof error === 'object' && error !== null && 'error' in error) {
+                throw MultimediaGeneratorError.fromReplicateResponse(error as MultimediaResponseDto);
+            }
+
+            throw new MultimediaGeneratorError(
+                'Unexpected error when generating text',
+                MultimediaErrorTypes.PREDICTION_FAILED,
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
     
