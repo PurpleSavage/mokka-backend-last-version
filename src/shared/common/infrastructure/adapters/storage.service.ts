@@ -83,7 +83,7 @@ export class StorageService implements StorageRepository {
 
     async saveAudio(idUser: string, buffer: Buffer, path: PathStorageType): Promise<SupabaseResponse> {
         const filename = `${idUser}-${this.generateId()}.mp3`;
-        const filePath = `${path}/${filename}`;
+        const filePath = `multimedia/${path}/${filename}`;
         
         const url = await this.uploadToR2(filePath, buffer, 'audio/mpeg');
         
@@ -93,7 +93,7 @@ export class StorageService implements StorageRepository {
     async saveImage(bufferImage: Buffer, userId: string, path: PathStorageType): Promise<SupabaseImageResponse> {
         const filename = `${userId}-${this.generateId()}.png`;
         const size = this.calculateSizeFile(bufferImage.length);
-        const filePath = `${path}/${filename}`;
+        const filePath = `multimedia/${path}/${filename}`;
 
         const url = await this.uploadToR2(filePath, bufferImage, 'image/png');
 
@@ -102,7 +102,7 @@ export class StorageService implements StorageRepository {
 
     async saveVideo(idUser: string, bufferVideo: Buffer, path: PathStorageType): Promise<SupabaseVideoResponse> {
         const filename = `${idUser}-${this.generateId()}.mp4`;
-        const filePath = `${path}/${filename}`;
+        const filePath = `multimedia/${path}/${filename}`;
 
         const url = await this.uploadToR2(filePath, bufferVideo, 'video/mp4');
 
