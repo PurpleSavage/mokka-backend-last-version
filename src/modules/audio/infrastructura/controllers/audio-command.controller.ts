@@ -1,14 +1,11 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
-
-import { InjectQueue } from "@nestjs/bullmq";
-import { Queue } from "bullmq";
 import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
-import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { GenerateAudioDto } from "../../application/dtos/generate-audio.dto";
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { EnqueueAudioUseCase } from "../../application/use-cases/enqueue-audio.use-case";
 
 @ApiTags('Audios - Commands')
 @Controller({
@@ -17,7 +14,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 })
 export class AudioCommandController{
   constructor(
-    @InjectQueue('audio-queue') private audioQueue: Queue,
+    private readonly  enqueueAudioUseCase:EnqueueAudioUseCase
   ){}
 
   @ApiOperation({ 
@@ -57,20 +54,9 @@ export class AudioCommandController{
   @RequiresCredits(30)
   @Post('generations')
   @HttpCode(HttpStatus.OK)
-  async audioGeneration(
+  audioGeneration(
     @Body() generateAudioDto:GenerateAudioDto
   ){
-    const job = await this.audioQueue.add('generate-audio',
-      generateAudioDto,
-      {
-        removeOnComplete: false, // o true si también quieres limpiar los completados
-        removeOnFail: true,      // 🔹 elimina el job de Redis si falla
-      },
-    )
-    return{
-      jobId:job.id,
-      status:StatusQueue.PROCESSING,
-      message:'Audio generation started'
-    }
+    return this.enqueueAudioUseCase.execute(generateAudioDto)
   }
 }

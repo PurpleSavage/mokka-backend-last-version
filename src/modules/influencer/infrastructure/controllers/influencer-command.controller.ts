@@ -39,7 +39,7 @@ export class InfluencerCommandController{
     @RequiresCredits(30)
     @Post('model')
     @HttpCode(HttpStatus.OK)
-   influencerGenerator(
+    influencerGenerator(
         @Body() dto:CreateInfluencerDto
     ){
         return this.enqueueInfluencerUseCase.execute(dto)

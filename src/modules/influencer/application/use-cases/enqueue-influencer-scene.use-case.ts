@@ -20,7 +20,7 @@ export class EnqueueInfluencerSceneUseCase {
       const job = await this.sceneQueue.add('influencer-scene-queue', dto, {
         removeOnComplete: false,
         removeOnFail: true,
-        jobId: `scene-${dto.influencer}-${Date.now()}`, 
+        jobId: uniqueJobId, 
         attempts: 3,
         backoff: {
           type: 'exponential',

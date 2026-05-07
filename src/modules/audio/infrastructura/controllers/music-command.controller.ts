@@ -1,13 +1,11 @@
-import { InjectQueue } from "@nestjs/bullmq"
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from "@nestjs/common"
-import { Queue } from "bullmq"
 import { RequiresCredits } from "src/decorators/requires-credits.decorator"
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard"
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard"
 import { GenerateMusicDto } from "../../application/dtos/generate-music.dto"
 import { Throttle } from "@nestjs/throttler"
-import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue"
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger"
+import { EnqueueMusicUseCase } from "../../application/use-cases/enqueue-music.use-case"
 
 @ApiTags('Music - Commands')
 @Controller({
@@ -16,7 +14,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger"
 })
 export class MusicCommandController{
   constructor(
-    @InjectQueue('music-queue') private musicQueue: Queue,
+    private readonly enqueueMusicUseCase:EnqueueMusicUseCase
   ){}
 
   @ApiOperation({ 
@@ -56,20 +54,9 @@ export class MusicCommandController{
   @RequiresCredits(30)
   @Post('generations')
   @HttpCode(HttpStatus.OK)
-  async musicGeneration(
+  musicGeneration(
     @Body() generateMusicDto:GenerateMusicDto
   ){
-    const job = await this.musicQueue.add('music-queue',
-      generateMusicDto,
-      {
-        removeOnComplete: false, // o true si también quieres limpiar los completados
-        removeOnFail: true,      // 🔹 elimina el job de Redis si falla
-      },
-    )
-    return{
-      jobId:job.id,
-      status:StatusQueue.PROCESSING,
-      message:'Music generation started'
-    }
+    return this.enqueueMusicUseCase.execute(generateMusicDto)
   }
 }

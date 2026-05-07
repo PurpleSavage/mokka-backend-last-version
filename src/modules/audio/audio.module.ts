@@ -22,6 +22,8 @@ import { MusicCommandService } from "./infrastructura/adapters/music-command.ser
 import { GenerateMusicUseCase } from "./application/use-cases/generate-music.use-case";
 import { MusicProcessor } from "./application/jobs/generate-music.processor";
 import { MusicCommandController } from "./infrastructura/controllers/music-command.controller";
+import { EnqueueAudioUseCase } from "./application/use-cases/enqueue-audio.use-case";
+import { EnqueueMusicUseCase } from "./application/use-cases/enqueue-music.use-case";
 
 @Module({
     imports:[
@@ -46,6 +48,8 @@ import { MusicCommandController } from "./infrastructura/controllers/music-comma
         SaveAudioUseCase,
         SaveMusicUseCase,
         GenerateMusicUseCase,
+        EnqueueAudioUseCase,
+        EnqueueMusicUseCase,
         {
             useClass:AudioCommandService,
             provide:AudioRepository
