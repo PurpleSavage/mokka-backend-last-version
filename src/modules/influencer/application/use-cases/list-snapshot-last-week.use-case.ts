@@ -8,6 +8,6 @@ export class ListSnapshotLastWeekUseCase{
         private readonly influencerQueryService: InfluencerPort
     ){}
     execute(dto:ListSnpashotsLastWeekDto){
-        return this.influencerQueryService.influencerScenesLastWeek(dto.userId)
+        return this.influencerQueryService.influencersSnapshotLastWeek(dto.userId)
     }
 }

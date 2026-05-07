@@ -1,12 +1,10 @@
-import { InjectQueue } from "@nestjs/bullmq";
+
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
-import { Queue } from "bullmq";
 import { RequiresCredits } from "src/decorators/requires-credits.decorator";
 import { CreditsGuard } from "src/guards/credits/verify-credits.guard";
 import { AccesstokenGuard } from "src/guards/tokens/access-token.guard";
 import { CreateInfluencerDto } from "../../application/dtos/responses/create-influencer.dto";
-import { StatusQueue } from "src/shared/common/infrastructure/enums/status-queue";
 import { CreateInfluencerSnapshotDto } from "../../application/dtos/responses/create-influencer-snapshot.dto";
 import { CreateInfluencerSceneDto } from "../../application/dtos/responses/create-influencer-scene.dto";
 import { ShareInfluencerDto } from "../../application/dtos/request/share-influencer.dto";
@@ -16,22 +14,24 @@ import { ShareSceneUseCase } from "../../application/use-cases/share-scene.use-c
 import { ShareSnapshotUseCase } from "../../application/use-cases/share-snapshot.use-case";
 import { ShareSnapshotDto } from "../../application/dtos/request/share-snapshot.dto";
 import { ApiTags } from "@nestjs/swagger";
+import { EnqueueInfluencerUseCase } from "../../application/use-cases/enqueue-influencer.use-case";
+import { EnqueueInfluencerSnapshotUseCase } from "../../application/use-cases/enqueue-influencer-snapshot.use-case";
+import { EnqueueInfluencerSceneUseCase } from "../../application/use-cases/enqueue-influencer-scene.use-case";
 
 
 @ApiTags('Influencers write  service')
-@Controller('influencers')
 @Controller({
      path:'influencer/write',
     version:'1'
 })
 export class InfluencerCommandController{
     constructor(
-        @InjectQueue('influencer-queue') private influencerQueue: Queue,
-        @InjectQueue('influencer-snapshot-queue') private influencerSnapshotQueue:Queue,
-        @InjectQueue('influencer-scene-queue') private influencerSceneQueue: Queue,
         private readonly shareInfluencerUseCase:ShareInfluencerUseCase,
         private readonly shareSceneUseCase:ShareSceneUseCase,
-        private readonly shareSnapshotUseCase:ShareSnapshotUseCase
+        private readonly shareSnapshotUseCase:ShareSnapshotUseCase,
+        private readonly enqueueInfluencerUseCase:EnqueueInfluencerUseCase,
+        private readonly enqueueInfluencerSnapshotUseCase:EnqueueInfluencerSnapshotUseCase,
+        private readonly enqueueInfluencerSceneUseCase:EnqueueInfluencerSceneUseCase
     ){}
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
@@ -39,21 +39,10 @@ export class InfluencerCommandController{
     @RequiresCredits(30)
     @Post('model')
     @HttpCode(HttpStatus.OK)
-    async influencerGenerator(
+   influencerGenerator(
         @Body() dto:CreateInfluencerDto
     ){
-        const job = await this.influencerQueue.add('influencer-queue',
-            dto,
-            {
-                removeOnComplete: false, 
-                removeOnFail: true,      
-            },
-        )
-         return{
-            jobId:job.id,
-            status:StatusQueue.PROCESSING,
-            message:'Influencer generation started'
-        }
+        return this.enqueueInfluencerUseCase.execute(dto)
     }
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
@@ -61,21 +50,10 @@ export class InfluencerCommandController{
     @RequiresCredits(30)
     @Post('snapshot')
     @HttpCode(HttpStatus.OK)
-    async influencerSnapshotGenerator(
+    influencerSnapshotGenerator(
         @Body() dto:CreateInfluencerSnapshotDto
     ){
-        const job = await this.influencerSnapshotQueue.add('influencer-snapshot-queue',
-            dto,
-            {
-                removeOnComplete: false, 
-                removeOnFail: true,      
-            },
-        )
-         return{
-            jobId:job.id,
-            status:StatusQueue.PROCESSING,
-            message:'Influencer generation started'
-        }
+        return this.enqueueInfluencerSnapshotUseCase.execute(dto)
     }
 
     @Throttle({ default: { limit: 10, ttl: 60000 } })
@@ -83,21 +61,10 @@ export class InfluencerCommandController{
     @RequiresCredits(30)
     @Post('scene')
     @HttpCode(HttpStatus.OK)
-    async influencerSceneGenerator(
+    influencerSceneGenerator(
         @Body() dto:CreateInfluencerSceneDto
     ){
-        const job = await this.influencerSceneQueue.add('influencer-scene-queue',
-            dto,
-            {
-                removeOnComplete: false, 
-                removeOnFail: true,      
-            },
-        )
-         return{
-            jobId:job.id,
-            status:StatusQueue.PROCESSING,
-            message:'Influencer generation started'
-        }
+        return this.enqueueInfluencerSceneUseCase.execute(dto)
     }
 
     

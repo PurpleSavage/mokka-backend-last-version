@@ -25,7 +25,6 @@ import { ListResourcesDto } from "src/shared/common/application/dtos/request/lis
 import { ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Influencers write  service')
-@Controller('influencers')
 @Controller({
     path:'influencers/read',
     version:'1'
