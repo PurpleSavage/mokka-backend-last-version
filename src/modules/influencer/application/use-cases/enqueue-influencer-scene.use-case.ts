@@ -18,8 +18,6 @@ export class EnqueueInfluencerSceneUseCase {
     const uniqueJobId = `scene-${dto.influencer}-${Date.now()}`;
     try {
       const job = await this.sceneQueue.add('influencer-scene-queue', dto, {
-        removeOnComplete: false,
-        removeOnFail: true,
         jobId: uniqueJobId, 
         attempts: 3,
         backoff: {

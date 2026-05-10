@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
 import { DownloadFilePort } from 'src/shared/common/application/ports/downlaod-file.port';
 import { StorageRepository } from 'src/shared/common/domain/repositories/storage.repository';
 import { InfluencerRepository } from '../../domain/repository/influencer.repository';
@@ -30,7 +29,6 @@ export class SaveSceneFlowUseCase {
     private readonly notifierService: NotifierService,
     private readonly saveNotificationUseCase:SaveNotificationUseCase,
   ) {}
-  @OnEvent('scene.processing.completed', { async: true })
   async execute(eventData: {
           payload: CreateInfluencerSceneDto;
           videoUrl:string;

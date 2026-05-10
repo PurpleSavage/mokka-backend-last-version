@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { OnEvent } from "@nestjs/event-emitter";
 import { DownloadFilePort } from "src/shared/common/application/ports/downlaod-file.port";
 import { StorageRepository } from "src/shared/common/domain/repositories/storage.repository";
 import { InfluencerRepository } from "../../domain/repository/influencer.repository";
@@ -31,7 +30,6 @@ export class SaveInfluencerFlowUseCase{
         private readonly saveNotificationUseCase:SaveNotificationUseCase,
     ){}
 
-    @OnEvent('influencer.processing.completed', { async: true })
     async execute(eventData: {
         payload: CreateInfluencerDto;
         imageUrl:string;

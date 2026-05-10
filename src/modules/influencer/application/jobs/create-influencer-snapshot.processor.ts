@@ -6,7 +6,6 @@ import { CreateInfluencerSnapshotDto } from '../dtos/responses/create-influencer
 import { AppBaseError } from 'src/shared/errors/base.error';
 import { ExtractErrorInfo } from 'src/shared/common/infrastructure/helpers/ExtractErrorInfo';
 import { NotifierService } from 'src/shared/notifications/infrastructure/sockets/notifier.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
@@ -18,22 +17,18 @@ export class CreateInfluencerSnapshotProcessor extends WorkerHost {
     private readonly createInfluencerSnapshotUseCase: CreateInfluencerSnapshotUseCase,
     private readonly notifierService: NotifierService,
     private readonly logger: PinoLogger,
-    private readonly eventEmitter: EventEmitter2,
     private readonly saveNotificationUseCase:SaveNotificationUseCase,
   ) {
     super();
   }
-  async process(job: Job<CreateInfluencerSnapshotDto>): Promise<void> {
+  async process(job: Job<CreateInfluencerSnapshotDto>): Promise<string> {
     try {
       const createInfluencerSnapshotDto = job.data;
-      const result = await this.createInfluencerSnapshotUseCase.execute(
+      const replicateId = await this.createInfluencerSnapshotUseCase.execute(
         createInfluencerSnapshotDto,
+        job.id as string
       );
-      this.eventEmitter.emit('snapshot.processing.completed', {
-        payload: createInfluencerSnapshotDto,
-        imageUrl: result,
-        jobId: job.id,
-      });
+      return replicateId
     } catch (error) {
       const createinfluencerDto = job.data;
       this.logger.error(

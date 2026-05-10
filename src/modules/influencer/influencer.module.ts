@@ -41,6 +41,12 @@ import { ShareInfluencerUseCase } from "./application/use-cases/share-influencer
 import { EnqueueInfluencerUseCase } from "./application/use-cases/enqueue-influencer.use-case";
 import { EnqueueInfluencerSnapshotUseCase } from "./application/use-cases/enqueue-influencer-snapshot.use-case";
 import { EnqueueInfluencerSceneUseCase } from "./application/use-cases/enqueue-influencer-scene.use-case";
+import { GetInfluencerSceneFromJobUseCase } from "./application/use-cases/get-influencer-scene-from-job.use-case";
+import { GetInfluencerSnapshotFromJobUseCase } from "./application/use-cases/get-influencer-snapshot-from-job.use-case";
+import { GetInfluencerFromJobUseCase } from "./application/use-cases/get-influncer-from-job.use-case";
+import { HandleWebhookCreateInfluencerUseCase } from "./application/use-cases/handle-webhook-create-influencer.use-case";
+import { HandleWebhookCreateScenesUseCase } from "./application/use-cases/handle-webhook-create-scenes.use-case";
+import { HandleWebhookCreateSnapshotsUseCase } from "./application/use-cases/handle-webhook-create-snapshots.use-case";
 
 @Module({
     imports:[
@@ -55,19 +61,25 @@ import { EnqueueInfluencerSceneUseCase } from "./application/use-cases/enqueue-i
         ]),
         BullModule.registerQueue({  
             name: 'influencer-snapshot-queue',
-                    
+            defaultJobOptions: {
+                removeOnComplete: { age: 24 * 3600, count: 1000 },
+                removeOnFail: { age: 7 * 24 * 3600, count: 5000 },
+            }        
         }),
         BullModule.registerQueue({  
             name: 'influencer-scene-queue',
-                    
+            defaultJobOptions: {
+                removeOnComplete: { age: 24 * 3600, count: 1000 },
+                removeOnFail: { age: 7 * 24 * 3600, count: 5000 },
+            }        
         }),
         BullModule.registerQueue({  
             name: 'influencer-queue',
-                    
+            defaultJobOptions: {
+                removeOnComplete: { age: 24 * 3600, count: 1000 },
+                removeOnFail: { age: 7 * 24 * 3600, count: 5000 },
+            }        
         }),
-        BullModule.registerQueue({
-            name:'influencer-snapshot-queue'
-        })
     ],
     providers:[
         ListScenesByInfluencerIdUseCase,
@@ -97,6 +109,12 @@ import { EnqueueInfluencerSceneUseCase } from "./application/use-cases/enqueue-i
         EnqueueInfluencerUseCase,
         EnqueueInfluencerSnapshotUseCase,
         EnqueueInfluencerSceneUseCase,
+        GetInfluencerSceneFromJobUseCase,
+        GetInfluencerSnapshotFromJobUseCase,
+        GetInfluencerFromJobUseCase,
+        HandleWebhookCreateInfluencerUseCase,
+        HandleWebhookCreateScenesUseCase,
+        HandleWebhookCreateSnapshotsUseCase,
         {
             useClass:InfluencerCommandService,
             provide:InfluencerRepository

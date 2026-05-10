@@ -3,3 +3,4 @@ export enum StatusQueue{
     FAILED='failed',
     COMPLETED='completed'
 }
+

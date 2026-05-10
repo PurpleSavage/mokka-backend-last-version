@@ -19,8 +19,7 @@ export class EnqueueInfluencerUseCase {
     try {
       const job = await this.influencerQueue.add('influencer-queue', dto, {
         jobId: uniqueJobId,
-        removeOnComplete: false,
-        removeOnFail: true,
+      
         attempts: 3,
         backoff: {
           type: 'exponential',

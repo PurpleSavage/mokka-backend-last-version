@@ -9,16 +9,18 @@ export class CreateInfluencerSnapshotUseCase{
         private readonly multimediaService:MultimediaGeneratorPort,
         private readonly mdReaderService:MdReaderPort,
     ){}
-    async execute(dto:CreateInfluencerSnapshotDto){
+    async execute(dto:CreateInfluencerSnapshotDto,jobId:string){
         const promptmd = await this.mdReaderService.loadPrompt('snapshot-influencer','influencer')
         const templateFill = this.mdReaderService.fillTemplate(promptmd,dto)
         const config = {
             aspectRatio: dto.aspectRatio, 
             prompt:templateFill,
             urls:dto.url,
+            webhookUrl: 'https://tu-api.com/v1/webhooks/replicate/influencers/influencer',
+            jobId: jobId,
         }
          
-        const imageUrl = await this.multimediaService.generateImage(config)
-        return imageUrl
+        const predictionId = await this.multimediaService.generateImage(config)
+        return predictionId
     }
 }

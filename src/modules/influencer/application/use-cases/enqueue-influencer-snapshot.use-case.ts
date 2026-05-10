@@ -18,8 +18,7 @@ export class EnqueueInfluencerSnapshotUseCase {
     const uniqueJobId = `snapshot-${dto.influencer}-${Date.now()}`;
     try {
       const job = await this.snapshotQueue.add('influencer-snapshot-queue', dto, {
-        removeOnComplete: false,
-        removeOnFail: true,
+        
         jobId:uniqueJobId,
         attempts: 3,
         backoff: {

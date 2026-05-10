@@ -10,6 +10,7 @@ import { AspectRatioImage } from "src/shared/common/infrastructure/enums/image-a
 import { VideoAspectRatio } from "src/shared/common/domain/enums/video-aspectratio";
 
 
+
 @Injectable()
 export class MultimediaService implements MultimediaGeneratorPort{
     private videoModel = "google/veo-3"
@@ -110,51 +111,36 @@ export class MultimediaService implements MultimediaGeneratorPort{
         aspectRatio: string, 
         prompt: string,
         urls?:string[],
+        webhookUrl: string, 
+        jobId: string
     }):Promise<string>{
         try {
+            const { prompt, aspectRatio, urls, webhookUrl, jobId} = config;
             const isValid = Object.values(AspectRatioImage).includes(config.aspectRatio as AspectRatioImage)
-             if (!isValid) {
+            if (!isValid) {
                 throw new HttpException({
                     status: HttpStatus.BAD_REQUEST,
                     error: `Invalid aspect ratio. Valid options: ${Object.keys(AspectRatioImage).join(', ')}`,
                     errorType: 'INVALID_ASPECT_RATIO'
-                }, HttpStatus.BAD_REQUEST)
+                }, HttpStatus.BAD_REQUEST);
             }
-
+            const finalWebhookUrl = `${webhookUrl}?&jobId=${jobId}`;
+            // 2. Configuración del Input para el modelo
             const input = {
                 prompt,
-                aspect_ratio: config.aspectRatio,
-                output_format: "webp",
-                image_input:config.urls
-            }
+                aspect_ratio: aspectRatio,
+                output_format: "jpg",
+                image_input: urls
+            };
 
-            let prediction = await this.multimediaClient.predictions.create({
+            const prediction = await this.multimediaClient.predictions.create({
                 model: this.imageModel,
-                input
-            })
-            
-            prediction = await this.multimediaClient.wait(prediction);
-            
-            if (prediction.status !== 'succeeded') {
-                throw new MultimediaGeneratorError(
-                    'Image generation failed ',
-                    MultimediaErrorTypes.PREDICTION_FAILED,
-                    HttpStatus.INTERNAL_SERVER_ERROR
-                )
-            }
-            
-            const outputArray = prediction.output as string[];
-            const imageUrl: string | undefined = Array.isArray(outputArray) ? outputArray[0] : undefined
-            
-            if (!imageUrl) {
-                throw new MultimediaGeneratorError(
-                    'No image URL in response',
-                    MultimediaErrorTypes.MISSING_OUTPUT,
-                    HttpStatus.INTERNAL_SERVER_ERROR
-                )
-            }
-            
-            return imageUrl
+                input,
+                webhook: finalWebhookUrl, // URL del controlador (ej: .../snapshot)
+                webhook_events_filter: ["completed"], 
+            });
+
+            return prediction.id
         } catch (error) {
             this.logger.error(
                 {

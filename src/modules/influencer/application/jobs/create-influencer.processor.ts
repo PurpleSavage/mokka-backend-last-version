@@ -9,7 +9,6 @@ import { NotifierService } from 'src/shared/notifications/infrastructure/sockets
 import { SavedNotificationVO } from 'src/shared/notifications/domain/value-objects/saved-notification.vo';
 import { StatusQueue } from 'src/shared/common/infrastructure/enums/status-queue';
 import { JobsNotificationsType } from 'src/shared/notifications/domain/enums/jons-notifications-type';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SocketErrorResponseDto } from 'src/shared/notifications/application/dtos/request/socket-error-response.dto';
 import { SaveNotificationUseCase } from 'src/shared/notifications/application/use-cases/save-notification.use-cae';
 
@@ -19,20 +18,20 @@ export class CreateInfluencerProcessor extends WorkerHost {
     private readonly createInfluencerUseCase: CreateInfluencerUseCase,
     private readonly notifierService: NotifierService,
     private readonly logger: PinoLogger,
-    private readonly eventEmitter: EventEmitter2,
     private readonly saveNotificationUseCase:SaveNotificationUseCase,
   ) {
     super();
   }
-  async process(job: Job<CreateInfluencerDto>): Promise<void> {
+  
+  async process(job: Job<CreateInfluencerDto>): Promise<string> {
     try {
       const createInfluencerDto = job.data
-      const result = await this.createInfluencerUseCase.execute(createInfluencerDto)
-      this.eventEmitter.emit('influencer.processing.completed', {
-        payload: createInfluencerDto,
-        audioBuffer: result,
-        jobId: job.id,
-      }); 
+      const replicateId = await this.createInfluencerUseCase.execute(createInfluencerDto,job.id as string)
+      
+      this.logger.info(`Job ${job.id} enqueued in Replicate with ID ${replicateId}`);
+      
+      return replicateId
+
     } catch (error) {
       const createinfluencerDto = job.data
       this.logger.error(
