@@ -1,4 +1,6 @@
-import { StatusQueue, StatusReplicate, StatusReplicateType } from "../enums/status-queue";
+import { StatusQueue } from "../enums/status-queue";
+import { StatusReplicate, StatusReplicateType } from "../enums/status-replicate";
+
 
 export const ReplicateToStatusQueue: Record<StatusReplicateType, StatusQueue> = {
     [StatusReplicate.STARTING]: StatusQueue.PROCESSING,

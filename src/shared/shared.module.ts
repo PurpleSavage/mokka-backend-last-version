@@ -31,6 +31,9 @@ import { SaveNotificationUseCase } from "./notifications/application/use-cases/s
 import { NotificationSchema } from "./notifications/infrastructure/schemas/notification.schema";
 import { NotificationsCommandController } from "./notifications/infrastructure/controllers/notifications-command.controller";
 import { ReadNotificationUseClase } from "src/shared/notifications/application/use-cases/read-notification.use-case";
+import { ValidateRawSignedContextUseCase } from "./common/application/use-cases/validate-raw-signed-context.use-case";
+import { ReplicateValidateRawPort } from "./common/application/use-cases/validate-raw-signed-replicate.port";
+import { ValidateReplicateRawService } from "./common/infrastructure/adapters/validate-replicate-raw.service";
 
 @Global() 
 @Module({
@@ -54,6 +57,7 @@ import { ReadNotificationUseClase } from "src/shared/notifications/application/u
         ListNotificationsUseCase,
         SaveNotificationUseCase,
         ReadNotificationUseClase,
+        ValidateRawSignedContextUseCase,
         {
             useClass:SharedMdReaderService,
             provide:MdReaderPort
@@ -91,6 +95,10 @@ import { ReadNotificationUseClase } from "src/shared/notifications/application/u
             provide:NotificationsPort
         },
         {
+            useClass:ValidateReplicateRawService,
+            provide:ReplicateValidateRawPort
+        },
+        {
             provide: 'REDIS_CLIENT',
             useFactory:(configService: ConfigService) => {
                 const client = new Redis({
@@ -123,7 +131,9 @@ import { ReadNotificationUseClase } from "src/shared/notifications/application/u
         NotifierService,
         NotificationsRepository,
         SaveNotificationUseCase,
-        NotificationsPort
+        NotificationsPort,
+        ValidateRawSignedContextUseCase,
+        ReplicateValidateRawPort
     ]
 })
 export class SharedModule{}
